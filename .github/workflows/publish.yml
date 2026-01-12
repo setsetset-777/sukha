@@ -35,6 +35,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            # set latest tag for default branch
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=beta,enable=true,branch={{beta}}
+            type=sha
 
       - name: Build and push Docker image
         id: push
