@@ -20,4 +20,3 @@ jobs:
     with:
       image_name: ${{ github.repository }}
       registry: ghcr.io
-      ref: ${{ github.sha }}
