@@ -1,0 +1,17 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Home from '@/views/Home.astro'
+import type { PageData } from '@app/api/types'
+
+interface Props {
+  page: PageData
+}
+
+const { page } = Astro.props
+
+const { slug, data, meta, parentSlug } = page ?? {}
+---
+
+<Layout meta={meta} slug={slug} parentSlug={parentSlug}>
+  {slug === 'pageHome' && <Home {...data} />}
+</Layout>

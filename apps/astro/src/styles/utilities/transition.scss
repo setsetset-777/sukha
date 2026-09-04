@@ -1,0 +1,16 @@
+@mixin transition($property, $type: short) {
+  transition-property: #{$property};
+  transition-timing-function: var(--ease-function);
+
+  @if $type == short {
+    transition-duration: var(--ease-time-short);
+  }
+
+  @if $type == medium {
+    transition-duration: var(--ease-time-medium);
+  }
+
+  @if $type == long {
+    transition-duration: var(--ease-time-medium);
+  }
+}

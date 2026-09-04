@@ -1,0 +1,31 @@
+---
+import '../styles/index.scss'
+
+import { getPage } from '@/lib/page'
+import NotFound from '@/layouts/NotFound.astro'
+import Error from '@/layouts/Error.astro'
+import Page from '@/layouts/Page.astro'
+
+import type { PageData } from '@app/api/types'
+
+const { path } = Astro.params
+
+console.log('>>>Page', path)
+
+let page: PageData | null = null
+let error = false
+
+try {
+  page = await getPage(`/${path ?? ''}?${Astro.url.searchParams.toString()}`)
+} catch (e) {
+  console.error(e)
+  error = true
+  Astro.response.status = 500
+}
+
+if (!page) {
+  Astro.response.status = 404
+}
+---
+
+{error ? <Error /> : page ? <Page page={page} /> : <NotFound />}

@@ -1,0 +1,38 @@
+{
+  "name": "@app/api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts"
+    },
+    "./schemas": {
+      "default": "./src/schemas/index.ts",
+      "types": "./src/schemas/index.ts"
+    },
+    "./config": {
+      "default": "./src/config/index.ts",
+      "types": "./src/config/index.ts"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.2",
+  "dependencies": {
+    "@app/logger": "workspace:*",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@app/payload": "workspace:*"
+  }
+}

@@ -1,0 +1,33 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/Hero.astro'
+---
+
+<Layout meta={{ title: 'Page non trouvée' }}>
+  <Hero>
+    <div class="hero">
+      <h1 class="title">Page non trouvée</h1>
+    </div>
+  </Hero>
+  <div class="content"></div>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .hero {
+    padding: var(--content-padding-y) 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(var(--space-48), 10dvh, var(--space-80));
+  }
+
+  .title {
+    font-family: var(--font-family-heading);
+    font-size: var(--hero-tite-font-size);
+  }
+
+  .content {
+    @include content-padding;
+  }
+</style>

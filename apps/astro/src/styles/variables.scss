@@ -1,0 +1,59 @@
+@use './utilities' as *;
+@use 'sass:map';
+@use 'sass:color';
+
+$colors: (
+  'gray-00': #ffffff,
+  'gray-10': #b4b4b4,
+  'gray-20': #a9a9a9,
+  'gray-50': #292929,
+  'gray-80': #222222,
+  'gray-100': #1e1e1e,
+);
+
+:root {
+  // BASE
+  @each $name, $hex in $colors {
+    --color-#{$name}: #{$hex};
+    --color-#{$name}-rgb:
+      #{color.channel($hex, 'red', $space: rgb)}, #{color.channel($hex, 'green', $space: rgb)},
+      #{color.channel($hex, 'blue', $space: rgb)};
+  }
+
+  --font-size-base: #{pxToRem(18px)};
+  --font-size-xs: #{pxToRem(12px)};
+  --font-size-s: #{pxToRem(16px)};
+  --font-size-m: #{pxToRem(18px)};
+  --font-size-l: #{pxToRem(24px)};
+  --font-size-xl: #{pxToRem(32px)};
+  --font-size-xxl: #{pxToRem(48px)};
+  --font-size-xxxl: #{pxToRem(64px)};
+  --font-family-heading: Garamond, serif;
+  --font-family-body: 'Helvetica Neu', Helvetica, sans-serif;
+  --font-family-mono: Monaco, courrier;
+
+  --ease-time-short: 150ms;
+  --ease-time-medium: 300ms;
+  --ease-time-long: 1000ms;
+  --ease-function: ease-in-out;
+
+  --space-2: #{pxToRem(2px)};
+  --space-4: #{pxToRem(4px)};
+  --space-8: #{pxToRem(8px)};
+  --space-12: #{pxToRem(12px)};
+  --space-16: #{pxToRem(16px)};
+  --space-24: #{pxToRem(24px)};
+  --space-32: #{pxToRem(32px)};
+  --space-48: #{pxToRem(48px)};
+  --space-64: #{pxToRem(64px)};
+  --space-80: #{pxToRem(80px)};
+  --space-128: #{pxToRem(128px)};
+
+  --radius-1: #{pxToRem(1px)};
+  --radius-2: #{pxToRem(2px)};
+
+  --blur: 3px;
+
+  // COMPONENTS
+  --layout-max-width: #{pxToRem(1600px)};
+}
