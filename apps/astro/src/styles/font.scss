@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Urbanist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../assets/fonts/urbanist-latin-wght-normal.woff2) format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/barlow-latin-400-normal.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(../assets/fonts/barlow-latin-600-normal.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(../assets/fonts/barlow-latin-400-italic.woff2) format('woff2');
+}

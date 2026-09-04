@@ -4,11 +4,17 @@
 
 $colors: (
   'gray-00': #ffffff,
-  'gray-10': #b4b4b4,
-  'gray-20': #a9a9a9,
-  'gray-50': #292929,
-  'gray-80': #222222,
-  'gray-100': #1e1e1e,
+  'gray-50': #fbfbfb,
+  'gray-100': #eef3f3,
+  'gray-200': #ddebeb,
+  'gray-300': #c2dada,
+  'gray-400': #8cb2ba,
+  'gray-500': #6b8a90,
+  'gray-600': #64767a,
+  'gray-700': #4e5f61,
+  'gray-800': #3a474a,
+  'gray-900': #283133,
+  'gray-950': #161c1d,
 );
 
 :root {
@@ -20,17 +26,19 @@ $colors: (
       #{color.channel($hex, 'blue', $space: rgb)};
   }
 
-  --font-size-base: #{pxToRem(18px)};
-  --font-size-xs: #{pxToRem(12px)};
-  --font-size-s: #{pxToRem(16px)};
-  --font-size-m: #{pxToRem(18px)};
-  --font-size-l: #{pxToRem(24px)};
-  --font-size-xl: #{pxToRem(32px)};
-  --font-size-xxl: #{pxToRem(48px)};
-  --font-size-xxxl: #{pxToRem(64px)};
-  --font-family-heading: Garamond, serif;
-  --font-family-body: 'Helvetica Neu', Helvetica, sans-serif;
-  --font-family-mono: Monaco, courrier;
+  --font-size-base: #{pxToRem(16px)};
+  --font-size-xs: #{pxToRem(10px)};
+  --font-size-s: #{pxToRem(14px)};
+  --font-size-m: #{pxToRem(16px)};
+  --font-size-l: #{pxToRem(20px)};
+  --font-size-xl: #{pxToRem(24px)};
+  --font-size-xxl: #{pxToRem(36px)};
+  --font-family-heading: Urbanist, 'Helvetica Neu', Helvetica, sans-serif;
+  --font-family-body: Brlow, 'Helvetica Neu', Helvetica, sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+  --font-style-normal: normal;
+  --font-style-italic: italic;
 
   --ease-time-short: 150ms;
   --ease-time-medium: 300ms;
