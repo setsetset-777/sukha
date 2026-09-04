@@ -1,0 +1,33 @@
+---
+import Image from '@/components/Image.astro'
+import type { Media } from '@app/api/types'
+
+interface Props {}
+
+const {} = Astro.props
+---
+
+<section class:list={['hero']}>
+  <div class="inner">
+    <slot />
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .hero {
+    --padding-top: var(--space-48);
+    --padding-bottom: var(--space-80);
+    position: relative;
+  }
+
+  .inner {
+    @include content-padding;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    position: relative;
+    z-index: 1;
+    display: flex;
+  }
+</style>

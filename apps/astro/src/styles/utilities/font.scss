@@ -1,0 +1,29 @@
+@mixin font-menu-large {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xxl);
+  color: inherit;
+}
+
+@mixin font-heading-1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xxxl);
+  color: inherit;
+}
+
+@mixin font-heading-2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  color: inherit;
+}
+
+@mixin font-heading-3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-l);
+  color: inherit;
+}
+
+@mixin font-heading-4 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-m);
+  color: inherit;
+}

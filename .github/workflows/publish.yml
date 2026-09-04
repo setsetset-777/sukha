@@ -14,9 +14,20 @@ permissions:
   contents: read
 
 jobs:
-  publish:
-    name: Publish
+  publish-server:
+    name: Publish server
     uses: setsetset-777/toolbox/.github/workflows/docker-publish.yml@main
     with:
-      image_name: ${{ github.repository }}
+      image_name: ${{ github.repository }}-front
       registry: ghcr.io
+      context: .
+      dockerfile: apps/astro/Dockerfile
+
+  publish-payload:
+    name: Publish payload
+    uses: setsetset-777/toolbox/.github/workflows/docker-publish.yml@main
+    with:
+      image_name: ${{ github.repository }}-payload
+      registry: ghcr.io
+      context: .
+      dockerfile: apps/payload/Dockerfile

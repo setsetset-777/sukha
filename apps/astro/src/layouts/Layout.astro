@@ -1,0 +1,201 @@
+---
+import Footer from '@/components/Footer.astro'
+import { ClientRouter } from 'astro:transitions'
+
+import type { Meta, PageSlug } from '@app/api/types'
+
+const analytics = {
+  enable: process.env.ANALYTICS_ENABLE === 'true',
+  id: process.env.ANALYTICS_ID,
+  domain: process.env.ANALYTICS_Domain,
+}
+
+type Props = {
+  meta: Meta
+  noGeneral?: boolean
+  slug?: PageSlug
+  parentSlug?: PageSlug
+}
+
+const { meta, slug } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {meta?.title && <title>{meta.title}</title>}
+    {meta?.description && <meta name="description" content={meta.description} />}
+
+    {/* Open Graph */}
+    {meta?.title && <meta property="og:title" content={meta.title} />}
+    {meta?.description && <meta property="og:description" content={meta.description} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    {
+      meta?.image?.sizes?.og?.url && (
+        <>
+          <meta
+            property="og:image"
+            content={new URL(meta.image.sizes.og.url, process.env.MEDIA_URL).href}
+          />
+          <meta property="og:image:width" content={String(meta.image.sizes.og.width || 1200)} />
+          <meta property="og:image:height" content={String(meta.image.sizes.og.height || 630)} />
+          {meta.image.alt && <meta property="og:image:alt" content={meta.image.alt} />}
+        </>
+      )
+    }
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+    <meta name="theme-color" content="#1e1e1e" />
+
+    {
+      analytics.enable && (
+        <script
+          is:inline
+          defer
+          src={`${analytics.domain}/script.js`}
+          data-website-id={analytics.id}
+        />
+      )
+    }
+
+    <ClientRouter transition:animate="slide" />
+  </head>
+
+  <body data-theme="light" class="body" data-slug={slug}>
+    <div class="container">
+      <div class="container__inner">
+        <div class="content">
+          <main class="main">
+            <slot />
+          </main>
+
+          <Footer />
+        </div>
+      </div>
+    </div>
+    <div class="page-loader" data-page-loader data-active="false"></div>
+  </body>
+</html>
+
+<script>
+  let timeout: NodeJS.Timeout
+
+  const scrollToElement = (selector?: string) => {
+    if (!selector) return
+    const target = document.querySelector(selector)
+    target?.scrollIntoView()
+  }
+
+  const initScrollClicks = () => {
+    document.addEventListener('click', ({ target }) => {
+      if (!(target instanceof HTMLElement)) return
+      if (target.closest('[data-scroll')) {
+        const selector = target.dataset.scroll
+        scrollToElement(selector)
+      }
+    })
+  }
+
+  const initScrollHash = () => {
+    const match = window.location.hash.match(/^#[a-zA-Z0-9-_]+/)
+    const selector = match && match[0]
+
+    if (selector) {
+      scrollToElement(selector)
+    }
+  }
+
+  document.addEventListener('astro:before-preparation', () => {
+    const loader = document.querySelector<HTMLElement>('[data-page-loader')
+    if (!loader) return
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      loader.dataset.active = 'true'
+    }, 150)
+  })
+
+  document.addEventListener('astro:after-preparation', () => {
+    clearTimeout(timeout)
+    const loader = document.querySelector<HTMLElement>('[data-page-loader')
+    if (!loader) return
+    loader.dataset.active = 'false'
+  })
+
+  document.addEventListener('astro:page-load', () => {
+    initScrollHash()
+  })
+
+  initScrollClicks()
+</script>
+
+<style lang="scss">
+  html,
+  body {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-00);
+    font-family: var(--font-family-body);
+    height: 100%;
+    font-size: var(--font-size-s);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    font-display: swap;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    overflow-x: clip;
+    font-size: var(--font-size-m);
+
+    &__inner {
+      max-width: var(--layout-max-width);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .main {
+    flex-grow: 1;
+  }
+
+  .page-loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-gray-50);
+    opacity: 0.5;
+    z-index: 1;
+
+    display: none;
+
+    &[data-active='true'] {
+      display: block;
+    }
+  }
+</style>

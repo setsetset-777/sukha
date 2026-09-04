@@ -1,0 +1,99 @@
+import type { LocalizationConfigWithNoLabels, Locale, CollectionSlug, TypedLocale } from 'payload'
+import type { TFunction } from '@payloadcms/translations'
+import { enTranslations } from '@payloadcms/translations/languages/en'
+import { frTranslations } from '@payloadcms/translations/languages/fr'
+import type { NestedKeysStripped } from '@payloadcms/translations'
+
+const DEFAULT_LOCALE: TypedLocale = 'fr'
+
+export const localization: LocalizationConfigWithNoLabels = {
+  locales: ['fr'],
+  defaultLocale: DEFAULT_LOCALE,
+}
+
+export const normalLocale = (locale?: TypedLocale | null): TypedLocale =>
+  locale ?? (localization.defaultLocale as TypedLocale)
+
+type LocalizedLabel = Record<Locale['code'], string>
+
+export const localizedLabels: {
+  groups: Record<string, LocalizedLabel>
+  fields: Record<string, LocalizedLabel>
+  collections: Partial<
+    Record<
+      CollectionSlug,
+      {
+        singular: LocalizedLabel
+        plural: LocalizedLabel
+      }
+    >
+  >
+} = {
+  groups: {
+    pages: {
+      fr: 'Pages',
+      en: 'Pages',
+    },
+  },
+  fields: {},
+  collections: {
+    users: {
+      singular: {
+        en: 'User',
+        fr: 'Utilisateur',
+      },
+      plural: {
+        en: 'Users',
+        fr: 'Utilisateurs',
+      },
+    },
+  },
+} as const
+
+export const customTranslations: Record<Locale['code'], Record<string, any>> = {
+  en: {
+    validation: {
+      uniqueUrlSlug: 'The URL segment already exists.',
+    },
+    pageHome: {
+      adminProjectLinkLabel: 'Go to projects',
+    },
+    linkToCollection: {
+      description:
+        'Edit the visible {{items}} on the frontend directly from the collection page by editing their published status',
+      label: 'Go to {{collection}}',
+    },
+    cache: {
+      invalidate: 'Empty cache',
+    },
+  },
+  fr: {
+    general: {
+      globals: 'Globales',
+      createNew: 'Ajouter',
+      createNewLabel: 'Ajouter',
+    },
+    validation: {
+      uniqueUrlSlug: "Le segment d'URL existe déjà",
+    },
+    pageHome: {
+      adminProjectLinkLabel: 'Aller aux réalisations',
+    },
+    linkToCollection: {
+      description:
+        'Éditez les {{items}} visibles sur le site directement à partir de leur page de collection en gérant leur statut de publication.',
+      label: 'Aller aux {{collection}}',
+    },
+    cache: {
+      invalidate: 'Vider le cache',
+    },
+  },
+}
+
+export type CustomTranslationsObject = typeof customTranslations.en &
+  typeof frTranslations &
+  typeof enTranslations
+
+export type CustomTranslationsKeys = NestedKeysStripped<CustomTranslationsObject>
+
+export type CustomTFunction = TFunction<CustomTranslationsKeys>

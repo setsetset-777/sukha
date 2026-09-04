@@ -1,0 +1,63 @@
+---
+import Logo777 from '@/assets/svgs/777.svg'
+
+interface Props {}
+
+const {} = Astro.props
+---
+
+<footer class:list={['footer']}>
+  <div class="container">
+    <p class="setsetset">
+      <span>Design & Code par</span>
+      <a href="https://setsetset.net" aria-label="setsetset">
+        <Logo777 />
+      </a>
+    </p>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .footer {
+  }
+
+  .container {
+    position: relative;
+    display: flex;
+    gap: var(--space-64);
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .setsetset {
+    display: flex;
+    column-gap: var(--space-8);
+    row-gap: var(--space-4);
+    align-items: baseline;
+    font-size: var(--font-size-xs);
+    flex-wrap: wrap;
+
+    a {
+      position: relative;
+      top: pxToRem(3px);
+      @include transition(color);
+
+      svg {
+        height: 1em;
+      }
+
+      &:hover {
+        color: var(--color-gold-30);
+      }
+    }
+  }
+
+  @include from(mobile) {
+    .container {
+      flex-direction: row;
+      align-items: end;
+    }
+  }
+</style>

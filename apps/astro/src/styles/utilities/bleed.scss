@@ -1,0 +1,5 @@
+@mixin bleed {
+  width: 100dvw;
+  left: 50%;
+  transform: translateX(-50%);
+}

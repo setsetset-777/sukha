@@ -1,0 +1,51 @@
+@use './functions' as *;
+@use 'sass:map';
+
+$media-height-xs: pxToRem(400px);
+$media-height-s: pxToRem(800px);
+$media-height-m: pxToRem(1200px);
+
+$media-width-xs: pxToRem(480px);
+$media-width-s: pxToRem(768px);
+$media-width-m: pxToRem(1280px);
+$media-width-l: pxToRem(1440px);
+
+$breakpoints: (
+  width: (
+    small-mobile: pxToRem(480px),
+    mobile: pxToRem(768px),
+    big-mobile: pxToRem(900px),
+    desktop: pxToRem(1280px),
+    big-desktop: pxToRem(1440px),
+  ),
+  height: (
+    xs: pxToRem(400px),
+    s: pxToRem(800px),
+    m: pxToRem(1200px),
+  ),
+);
+
+$ranges: (
+  from: '>=',
+  until: '<',
+);
+
+@function breakpoint($break, $type) {
+  @return map.get(map.get($breakpoints, $type), $break);
+}
+
+@function media($break, $type, $direction: from) {
+  @return '#{$type} #{map.get($ranges, $direction)} #{breakpoint($break, $type)}';
+}
+
+@mixin from($break, $type: width) {
+  @media (#{media($break, $type, from)}) {
+    @content;
+  }
+}
+
+@mixin until($break, $type: width) {
+  @media (#{media($break, $type, until)}) {
+    @content;
+  }
+}

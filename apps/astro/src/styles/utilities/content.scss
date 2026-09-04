@@ -1,0 +1,8 @@
+@mixin content-padding {
+  padding-left: var(--content-padding-x-start);
+  padding-right: var(--content-padding-x);
+}
+
+.content-padding {
+  @include content-padding;
+}
