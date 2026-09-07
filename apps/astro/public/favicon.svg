@@ -1,0 +1,20 @@
+<svg width="474" height="465" viewBox="0 0 474 465" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .light-mode { fill: #6B8A90; }
+    .dark-mode { fill: #DDEBEB; }
+
+    @media (prefers-color-scheme: dark) {
+      .light-mode { display: none; }
+    }
+
+    @media (prefers-color-scheme: light) {
+      .dark-mode { display: none; }
+    }
+  </style>
+
+  <!-- Light mode design -->
+  <path class="light-mode" d="M19.5805 0V433.678L231.448 221.543H245.299L473.598 450.129L459.741 463.967L238.37 242.309L17.1303 464.016L0 456.909V0H19.5805Z" fill="#6B8A90"/>
+
+  <!-- Dark mode design -->
+  <path class="dark-mode" d="M19.5805 0V433.678L231.448 221.543H245.299L473.598 450.129L459.741 463.967L238.37 242.309L17.1303 464.016L0 456.909V0H19.5805Z" fill="#DDEBEB"/>
+</svg>
