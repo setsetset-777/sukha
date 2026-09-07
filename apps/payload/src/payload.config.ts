@@ -12,8 +12,15 @@ import { fr } from '@payloadcms/translations/languages/fr'
 import { Users } from '@/collections/Users'
 import { Media } from '@/collections/Media'
 import { Projects } from '@/collections/Projects'
+import { Partners } from '@/collections/Partners'
+import { ProjectTags } from '@/collections/ProjectTags'
+import { ProjectSpecs } from '@/collections/ProjectSpecs'
 
+import { General } from '@/globals/General'
 import { PageHome } from '@/globals/PageHome'
+import { PageAgency } from '@/globals/PageAgency'
+import { PageProjects } from '@/globals/PageProjects'
+import { PageContact } from '@/globals/PageContact'
 
 import { localization, customTranslations } from '@/i18n'
 import regenerateMedia from '@/helpers/regenerateMedia'
@@ -50,8 +57,8 @@ export default buildConfig({
     translations: customTranslations,
   },
   localization,
-  globals: [PageHome],
-  collections: [Users, Media, Projects],
+  globals: [General, PageHome, PageAgency, PageProjects, PageContact],
+  collections: [Users, Media, Projects, Partners, ProjectTags, ProjectSpecs],
   routes: {
     admin: '/',
   },

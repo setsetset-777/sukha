@@ -70,6 +70,9 @@ export interface Config {
     users: User;
     media: Media;
     projects: Project;
+    partners: Partner;
+    projectTags: ProjectTag;
+    projectSpecs: ProjectSpec;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +83,9 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    partners: PartnersSelect<false> | PartnersSelect<true>;
+    projectTags: ProjectTagsSelect<false> | ProjectTagsSelect<true>;
+    projectSpecs: ProjectSpecsSelect<false> | ProjectSpecsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -90,10 +96,18 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | 'fr' | 'fr'[];
   globals: {
+    general: General;
     pageHome: PageHome;
+    pageAgency: PageAgency;
+    pageProjects: PageProject;
+    pageContact: PageContact;
   };
   globalsSelect: {
+    general: GeneralSelect<false> | GeneralSelect<true>;
     pageHome: PageHomeSelect<false> | PageHomeSelect<true>;
+    pageAgency: PageAgencySelect<false> | PageAgencySelect<true>;
+    pageProjects: PageProjectsSelect<false> | PageProjectsSelect<true>;
+    pageContact: PageContactSelect<false> | PageContactSelect<true>;
   };
   locale: 'fr';
   widgets: {
@@ -227,6 +241,113 @@ export interface Project {
   _order?: string | null;
   title: string;
   urlSlug: string;
+  /**
+   * check to display project on home page
+   */
+  featured?: boolean | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  date?: string | null;
+  /**
+   * The image used to represent the project, eg. on the project list or the project hero.
+   */
+  mainImage?: (string | null) | Media;
+  tags?: (string | ProjectTag)[] | null;
+  specs?:
+    | {
+        spec?: (string | null) | ProjectSpec;
+        text?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  gallery?:
+    | {
+        image: string | Media;
+        fullwidth?: boolean | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projectTags".
+ */
+export interface ProjectTag {
+  id: string;
+  _order?: string | null;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projectSpecs".
+ */
+export interface ProjectSpec {
+  id: string;
+  _order?: string | null;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners".
+ */
+export interface Partner {
+  id: string;
+  _order?: string | null;
+  name?: string | null;
+  job?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  url?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -266,6 +387,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: string | Project;
+      } | null)
+    | ({
+        relationTo: 'partners';
+        value: string | Partner;
+      } | null)
+    | ({
+        relationTo: 'projectTags';
+        value: string | ProjectTag;
+      } | null)
+    | ({
+        relationTo: 'projectSpecs';
+        value: string | ProjectSpec;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -422,6 +555,62 @@ export interface ProjectsSelect<T extends boolean = true> {
   _order?: T;
   title?: T;
   urlSlug?: T;
+  featured?: T;
+  text?: T;
+  date?: T;
+  mainImage?: T;
+  tags?: T;
+  specs?:
+    | T
+    | {
+        spec?: T;
+        text?: T;
+        id?: T;
+      };
+  gallery?:
+    | T
+    | {
+        image?: T;
+        fullwidth?: T;
+        description?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners_select".
+ */
+export interface PartnersSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  job?: T;
+  text?: T;
+  url?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projectTags_select".
+ */
+export interface ProjectTagsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projectSpecs_select".
+ */
+export interface ProjectSpecsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -468,6 +657,21 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "general".
+ */
+export interface General {
+  id: string;
+  navigation: {
+    navigationList: ('pageAgence' | 'pageProjects' | 'pageContact')[];
+  };
+  footer?: {
+    text?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pageHome".
  */
 export interface PageHome {
@@ -487,6 +691,90 @@ export interface PageHome {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageAgency".
+ */
+export interface PageAgency {
+  id: string;
+  title: string;
+  urlSlug: string;
+  name?: string | null;
+  job?: string | null;
+  image?: (string | null) | Media;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  collectionLink?: {
+    slug?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageProjects".
+ */
+export interface PageProject {
+  id: string;
+  title: string;
+  urlSlug: string;
+  backLinkLabel?: string | null;
+  beforeLabel?: string | null;
+  specsLabel?: string | null;
+  collectionLink?: {
+    slug?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageContact".
+ */
+export interface PageContact {
+  id: string;
+  title: string;
+  urlSlug: string;
+  catch?: string | null;
+  address?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "general_select".
+ */
+export interface GeneralSelect<T extends boolean = true> {
+  navigation?:
+    | T
+    | {
+        navigationList?: T;
+      };
+  footer?:
+    | T
+    | {
+        text?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pageHome_select".
  */
 export interface PageHomeSelect<T extends boolean = true> {
@@ -499,6 +787,61 @@ export interface PageHomeSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageAgency_select".
+ */
+export interface PageAgencySelect<T extends boolean = true> {
+  title?: T;
+  urlSlug?: T;
+  name?: T;
+  job?: T;
+  image?: T;
+  text?: T;
+  collectionLink?:
+    | T
+    | {
+        slug?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageProjects_select".
+ */
+export interface PageProjectsSelect<T extends boolean = true> {
+  title?: T;
+  urlSlug?: T;
+  backLinkLabel?: T;
+  beforeLabel?: T;
+  specsLabel?: T;
+  collectionLink?:
+    | T
+    | {
+        slug?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageContact_select".
+ */
+export interface PageContactSelect<T extends boolean = true> {
+  title?: T;
+  urlSlug?: T;
+  catch?: T;
+  address?: T;
+  email?: T;
+  phone?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
