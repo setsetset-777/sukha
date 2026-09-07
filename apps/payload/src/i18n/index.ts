@@ -7,7 +7,7 @@ import type { NestedKeysStripped } from '@payloadcms/translations'
 const DEFAULT_LOCALE: TypedLocale = 'fr'
 
 export const localization: LocalizationConfigWithNoLabels = {
-  locales: ['fr'],
+  locales: ['fr', 'en'],
   defaultLocale: DEFAULT_LOCALE,
 }
 
