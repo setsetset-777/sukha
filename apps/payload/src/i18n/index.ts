@@ -35,7 +35,24 @@ export const localizedLabels: {
       en: 'Pages',
     },
   },
-  fields: {},
+  fields: {
+    name: {
+      en: 'Name',
+      fr: 'Nom',
+    },
+    text: {
+      en: 'Text',
+      fr: 'Texte',
+    },
+    url: {
+      en: 'Web address',
+      fr: 'Adresse internet',
+    },
+    job: {
+      en: 'Job',
+      fr: 'Métier',
+    },
+  },
   collections: {
     users: {
       singular: {
@@ -45,6 +62,46 @@ export const localizedLabels: {
       plural: {
         en: 'Users',
         fr: 'Utilisateurs',
+      },
+    },
+    projects: {
+      singular: {
+        en: 'Project',
+        fr: 'Projet',
+      },
+      plural: {
+        en: 'Procjets',
+        fr: 'Projets',
+      },
+    },
+    partners: {
+      singular: {
+        en: 'Partner',
+        fr: 'Partenaire',
+      },
+      plural: {
+        en: 'Partners',
+        fr: 'Partenaires',
+      },
+    },
+    projectTags: {
+      singular: {
+        en: 'Project tag',
+        fr: 'Tag de projet',
+      },
+      plural: {
+        en: 'Project tags',
+        fr: 'Tags de projet',
+      },
+    },
+    projectSpecs: {
+      singular: {
+        en: 'Project specification',
+        fr: 'Spécification de projet',
+      },
+      plural: {
+        en: 'Project specifications',
+        fr: 'Spécifications de projet',
       },
     },
   },
