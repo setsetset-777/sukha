@@ -1,0 +1,27 @@
+{
+  "name": "Sukha - Architecture & Interior Design",
+  "short_name": "Sukha",
+  "icons": [
+    {
+      "src": "/favicon-light-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-light-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-light-icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#4f46e5",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
