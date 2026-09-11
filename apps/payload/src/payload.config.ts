@@ -58,7 +58,7 @@ export default buildConfig({
   },
   localization,
   globals: [General, PageHome, PageAgency, PageProjects, PageContact],
-  collections: [Users, Media, Projects, Partners, ProjectTags, ProjectSpecs],
+  collections: [Users, Media, Projects, Partners, ProjectTags /* ProjectSpecs */],
   routes: {
     admin: '/',
   },

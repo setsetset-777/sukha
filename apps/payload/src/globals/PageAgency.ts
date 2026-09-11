@@ -19,17 +19,16 @@ export const PageAgency: GlobalConfig = {
       name: 'name',
       type: 'text',
       label: localizedLabels.fields.name,
-      localized: true,
     },
     {
       name: 'job',
       type: 'text',
-      label: localizedLabels.fields.name,
+      label: localizedLabels.fields.job,
       localized: true,
     },
     {
       name: 'image',
-      type: 'relationship',
+      type: 'upload',
       relationTo: 'media',
     },
     {
@@ -38,7 +37,20 @@ export const PageAgency: GlobalConfig = {
       label: localizedLabels.fields.text,
       localized: true,
     },
-    linkToCollectionField({ slug: 'partners' }),
+    {
+      name: 'partners',
+      type: 'group',
+      label: localizedLabels.collections.partners?.plural,
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: localizedLabels.fields.title,
+          localized: true,
+        },
+        linkToCollectionField({ slug: 'partners', label: '' }),
+      ],
+    },
   ],
   versions: {
     drafts: true,
