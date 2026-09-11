@@ -22,5 +22,6 @@ export namespace General {
   export interface Data {
     routes: LocalizedRoutes
     footer: Footer
+    navigation: Navigation
   }
 }

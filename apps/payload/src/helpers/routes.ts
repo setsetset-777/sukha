@@ -1,10 +1,5 @@
 import { localization } from '@/i18n'
-import {
-  type BasePayload,
-  type GlobalAfterChangeHook,
-  type CollectionAfterChangeHook,
-  getPayload,
-} from 'payload'
+import { type BasePayload, getPayload } from 'payload'
 import type {
   Manifest,
   RouteConfig,
@@ -17,8 +12,7 @@ import type {
   RoutedCollectionSlug,
   Media,
 } from '@/types'
-import { cacheTag } from 'next/cache'
-import { tags } from './cache'
+import { cached, tags } from '@/helpers/cache'
 import config from '@payload-config'
 
 const { locales, defaultLocale } = localization
@@ -35,19 +29,17 @@ export const routesConfig: RouteConfig = {
 }
 
 export const getRoutes = async (locale: Locale): Promise<LocalizedRoutes> => {
-  'use cache'
+  return cached<LocalizedRoutes>(async () => {
+    const payload = await getPayload({ config })
 
-  cacheTag(tags.routes())
+    locale = locale || (defaultLocale as Locale)
 
-  const payload = await getPayload({ config })
+    const routes = await buildRoutes(payload)
 
-  locale = locale || (defaultLocale as Locale)
+    const localizedRoutes = routes[locale]
 
-  const routes = await buildRoutes(payload)
-
-  const localizedRoutes = routes[locale]
-
-  return localizedRoutes ?? {}
+    return localizedRoutes ?? {}
+  }, tags.routes(locale))
 }
 
 const buildRoutes = async (payload: BasePayload): Promise<Routes> => {

@@ -662,7 +662,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface General {
   id: string;
   navigation: {
-    navigationList: ('pageAgence' | 'pageProjects' | 'pageContact')[];
+    navigationList: ('pageAgency' | 'pageProjects' | 'pageContact')[];
   };
   footer?: {
     text?: string | null;

@@ -1,9 +1,8 @@
 import { titleField } from '@/fields/titleField'
-import { urlFields } from '@/fields/urlFields'
 import { localizedLabels } from '@/i18n'
-import { revalidateTag } from 'next/cache'
-import { tags } from '@/helpers/cache'
+import { invalidate, invalidatePrefix, tags } from '@/helpers/cache'
 import type { CollectionConfig } from 'payload'
+import { Locale } from '@/types'
 
 export const slug = 'projectSpecs'
 
@@ -21,10 +20,9 @@ export const ProjectSpecs: CollectionConfig = {
   fields: [titleField({ localized: true })],
   hooks: {
     afterChange: [
-      async ({ doc }) => {
-        revalidateTag(tags.routes(), 'max')
-        revalidateTag(tags.projectAll(), 'max')
-        revalidateTag(tags.projectSpecs(), 'max')
+      async ({ req }) => {
+        invalidatePrefix('project')
+        invalidate(tags.projectSpecs(req.locale as Locale))
       },
     ],
   },

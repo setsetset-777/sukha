@@ -3,8 +3,8 @@ import { localizedLabels } from '@/i18n'
 import { titleField } from '@/fields/titleField'
 import { urlFields } from '@/fields/urlFields'
 import { linkToCollectionField } from '@/fields/linkToCollectionField'
-import { revalidateTag } from 'next/cache'
-import { tags } from '@/helpers/cache'
+import { invalidate, tags } from '@/helpers/cache'
+import { Locale } from '@/types'
 
 export const PageAgency: GlobalConfig = {
   slug: 'pageAgency',
@@ -48,9 +48,8 @@ export const PageAgency: GlobalConfig = {
   },
   hooks: {
     afterChange: [
-      async () => {
-        revalidateTag(tags.routes(), 'max')
-        revalidateTag(tags.agency(), 'max')
+      async ({ req }) => {
+        invalidate(tags.agency(req.locale as Locale))
       },
     ],
   },

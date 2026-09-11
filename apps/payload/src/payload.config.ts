@@ -86,10 +86,6 @@ export default buildConfig({
       path: '/general',
       method: 'get',
       handler: async (req) => {
-        if (!req.user) {
-          return Response.json({ message: 'Unauthorized' }, { status: 401 })
-        }
-
         req.payload.logger.info('Hiiting endpoint /general')
         const data = await fetchGeneral(req)
         // req.payload.logger.info(data, `Fetched data for general`)
@@ -104,10 +100,6 @@ export default buildConfig({
       path: '/page',
       method: 'get',
       handler: async (req) => {
-        if (!req.user) {
-          return Response.json({ message: 'Unauthorized' }, { status: 401 })
-        }
-
         req.payload.logger.info('Hiiting endpoint /page')
         const [path, search] = (req.query.path as string).split('?')
         let params = new URLSearchParams(search)
