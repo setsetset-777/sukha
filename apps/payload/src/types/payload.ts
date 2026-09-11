@@ -72,7 +72,6 @@ export interface Config {
     projects: Project;
     partners: Partner;
     projectTags: ProjectTag;
-    projectSpecs: ProjectSpec;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -85,7 +84,6 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     projectTags: ProjectTagsSelect<false> | ProjectTagsSelect<true>;
-    projectSpecs: ProjectSpecsSelect<false> | ProjectSpecsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -240,6 +238,9 @@ export interface Project {
   id: string;
   _order?: string | null;
   title: string;
+  /**
+   * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
+   */
   urlSlug: string;
   /**
    * check to display project on home page
@@ -260,7 +261,7 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
-  date?: string | null;
+  place?: string | null;
   /**
    * The image used to represent the project, eg. on the project list or the project hero.
    */
@@ -268,22 +269,13 @@ export interface Project {
   tags?: (string | ProjectTag)[] | null;
   specs?:
     | {
-        spec?: (string | null) | ProjectSpec;
-        text?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
+        title?: string | null;
+        values?:
+          | {
+              item?: string | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -295,6 +287,7 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
+  before?: (string | Media)[] | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -304,18 +297,6 @@ export interface Project {
  * via the `definition` "projectTags".
  */
 export interface ProjectTag {
-  id: string;
-  _order?: string | null;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projectSpecs".
- */
-export interface ProjectSpec {
   id: string;
   _order?: string | null;
   title: string;
@@ -395,10 +376,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projectTags';
         value: string | ProjectTag;
-      } | null)
-    | ({
-        relationTo: 'projectSpecs';
-        value: string | ProjectSpec;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -557,14 +534,19 @@ export interface ProjectsSelect<T extends boolean = true> {
   urlSlug?: T;
   featured?: T;
   text?: T;
-  date?: T;
+  place?: T;
   mainImage?: T;
   tags?: T;
   specs?:
     | T
     | {
-        spec?: T;
-        text?: T;
+        title?: T;
+        values?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
         id?: T;
       };
   gallery?:
@@ -575,6 +557,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  before?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -598,17 +581,6 @@ export interface PartnersSelect<T extends boolean = true> {
  * via the `definition` "projectTags_select".
  */
 export interface ProjectTagsSelect<T extends boolean = true> {
-  _order?: T;
-  title?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projectSpecs_select".
- */
-export interface ProjectSpecsSelect<T extends boolean = true> {
   _order?: T;
   title?: T;
   updatedAt?: T;
@@ -677,6 +649,9 @@ export interface General {
 export interface PageHome {
   id: string;
   title: string;
+  /**
+   * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
+   */
   urlSlug: string;
   meta?: {
     title?: string | null;
@@ -696,6 +671,9 @@ export interface PageHome {
 export interface PageAgency {
   id: string;
   title: string;
+  /**
+   * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
+   */
   urlSlug: string;
   name?: string | null;
   job?: string | null;
@@ -715,8 +693,11 @@ export interface PageAgency {
     };
     [k: string]: unknown;
   } | null;
-  collectionLink?: {
-    slug?: string | null;
+  partners?: {
+    title?: string | null;
+    collectionLink?: {
+      slug?: string | null;
+    };
   };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
@@ -729,6 +710,9 @@ export interface PageAgency {
 export interface PageProject {
   id: string;
   title: string;
+  /**
+   * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
+   */
   urlSlug: string;
   backLinkLabel?: string | null;
   beforeLabel?: string | null;
@@ -746,6 +730,9 @@ export interface PageProject {
 export interface PageContact {
   id: string;
   title: string;
+  /**
+   * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
+   */
   urlSlug: string;
   catch?: string | null;
   address?: string | null;
@@ -802,10 +789,15 @@ export interface PageAgencySelect<T extends boolean = true> {
   job?: T;
   image?: T;
   text?: T;
-  collectionLink?:
+  partners?:
     | T
     | {
-        slug?: T;
+        title?: T;
+        collectionLink?:
+          | T
+          | {
+              slug?: T;
+            };
       };
   _status?: T;
   updatedAt?: T;

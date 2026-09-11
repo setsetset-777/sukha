@@ -2,12 +2,12 @@ import { type CustomTFunction, localizedLabels } from '@/i18n'
 import { Link } from '@payloadcms/ui'
 import type { CollectionSlug, ServerComponentProps, TypedLocale } from 'payload'
 
-export default function LinkToCOllection({ i18n, siblingData, req }: ServerComponentProps) {
+export default function LinkToCollection({ i18n, siblingData, req }: ServerComponentProps) {
   const t = i18n.t as CustomTFunction
   const collectionSlug = siblingData.slug
   // const slug = data.globalType
   const labels = localizedLabels.collections[collectionSlug as CollectionSlug]
-  const locale = req.locale as TypedLocale
+  const locale = req.i18n.language as TypedLocale
   return (
     <div>
       <p>{t('linkToCollection:description', { items: labels?.plural[locale] })}</p>

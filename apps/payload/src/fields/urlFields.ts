@@ -8,7 +8,7 @@ import type {
   CollectionSlug,
   TextFieldSingleValidation,
 } from 'payload'
-import { type CustomTFunction } from '@/i18n'
+import { localizedLabels, type CustomTFunction } from '@/i18n'
 import { getRoutes, routesConfig } from '@/helpers/routes'
 import type { Locale, Route, RouteConfigPage } from '@/types'
 
@@ -57,6 +57,7 @@ export const urlFields = ({
       hidden: hasDefaultValue,
       admin: {
         readOnly: hasDefaultValue,
+        description: localizedLabels.descriptions.urlSlug,
       },
       validate: (async (value, { id, req: { payload, t: defaultT, locale } }) => {
         if (hasDefaultValue || !source || !pageSlug) {
