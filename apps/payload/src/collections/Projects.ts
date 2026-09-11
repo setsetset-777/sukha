@@ -46,7 +46,7 @@ export const Projects: CollectionConfig = {
       localized: true,
     },
     {
-      name: 'date',
+      name: 'place',
       type: 'text',
       localized: true,
     },
@@ -77,15 +77,35 @@ export const Projects: CollectionConfig = {
       label: localizedLabels.collections.projectSpecs?.plural,
       fields: [
         {
-          name: 'spec',
-          type: 'relationship',
-          relationTo: 'projectSpecs',
+          name: 'title',
+          type: 'text',
+          label: localizedLabels.fields.title,
+          localized: true,
         },
         {
-          name: 'text',
-          type: 'richText',
-          label: localizedLabels.fields.text,
+          name: 'values',
+          type: 'array',
+          labels: {
+            singular: {
+              en: 'Value',
+              fr: 'Valeur',
+            },
+            plural: {
+              en: 'Values',
+              fr: 'Valeurs',
+            },
+          },
           localized: true,
+          fields: [
+            {
+              name: 'item',
+              type: 'text',
+              label: {
+                en: 'Value',
+                fr: 'Valeur',
+              },
+            },
+          ],
         },
       ],
     },
@@ -106,6 +126,12 @@ export const Projects: CollectionConfig = {
           fr: 'Image',
         },
       },
+      admin: {
+        components: {
+          beforeInput: ['/components/GalleryBulkAdd'],
+        },
+      },
+
       fields: [
         {
           name: 'image',
@@ -139,6 +165,16 @@ export const Projects: CollectionConfig = {
           localized: true,
         },
       ],
+    },
+    {
+      name: 'before',
+      type: 'upload',
+      relationTo: 'media',
+      label: {
+        en: 'Before gallery ',
+        fr: 'Gallerie avant',
+      },
+      hasMany: true,
     },
   ],
   hooks: {
