@@ -1,7 +1,7 @@
 import { localizedLabels } from '@/i18n'
-import { revalidateTag } from 'next/cache'
-import { tags } from '@/helpers/cache'
+import { invalidate, invalidatePrefix, tags } from '@/helpers/cache'
 import type { CollectionConfig } from 'payload'
+import { Locale } from '@/types'
 
 export const slug = 'partners'
 
@@ -43,9 +43,10 @@ export const Partners: CollectionConfig = {
   ],
   hooks: {
     afterChange: [
-      async ({ doc }) => {
-        revalidateTag(tags.routes(), 'max')
-        revalidateTag(tags.project(doc.id), 'max')
+      async ({ req }) => {
+        invalidate(tags.routes(req.locale as Locale))
+        invalidate(tags.partners(req.locale as Locale))
+        invalidate(tags.agency(req.locale as Locale))
       },
     ],
   },

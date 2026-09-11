@@ -1,5 +1,5 @@
-import { tags } from '@/helpers/cache'
-import { revalidateTag } from 'next/cache'
+import { invalidate, tags } from '@/helpers/cache'
+import { Locale } from '@/types'
 import { GlobalConfig } from 'payload'
 
 export const General: GlobalConfig = {
@@ -25,9 +25,9 @@ export const General: GlobalConfig = {
             {
               label: {
                 fr: 'Agence',
-                en: 'AGency',
+                en: 'Agency',
               },
-              value: 'pageAgence',
+              value: 'pageAgency',
             },
             {
               label: {
@@ -67,8 +67,8 @@ export const General: GlobalConfig = {
   ],
   hooks: {
     afterChange: [
-      async () => {
-        revalidateTag(tags.general(), 'max')
+      async ({ req }) => {
+        invalidate(tags.projectTags(req.locale as Locale))
       },
     ],
   },

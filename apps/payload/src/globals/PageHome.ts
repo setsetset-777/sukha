@@ -2,8 +2,8 @@ import { GlobalConfig } from 'payload'
 import { localizedLabels } from '@/i18n'
 import { titleField } from '@/fields/titleField'
 import { urlFields } from '@/fields/urlFields'
-import { revalidateTag } from 'next/cache'
-import { tags } from '@/helpers/cache'
+import { invalidate, tags } from '@/helpers/cache'
+import { Locale } from '@/types'
 
 export const PageHome: GlobalConfig = {
   slug: 'pageHome',
@@ -22,9 +22,8 @@ export const PageHome: GlobalConfig = {
   },
   hooks: {
     afterChange: [
-      async () => {
-        revalidateTag(tags.routes(), 'max')
-        revalidateTag(tags.home(), 'max')
+      async ({ req }) => {
+        invalidate(tags.home(req.locale as Locale))
       },
     ],
   },
