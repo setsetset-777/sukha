@@ -1,0 +1,44 @@
+---
+
+---
+
+<div class="page-loader" data-page-loader data-active="false"></div>
+
+<script>
+  let timeout: NodeJS.Timeout
+
+  document.addEventListener('astro:before-preparation', () => {
+    const loader = document.querySelector<HTMLElement>('[data-page-loader')
+    if (!loader) return
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      loader.dataset.active = 'true'
+    }, 150)
+  })
+
+  document.addEventListener('astro:after-preparation', () => {
+    clearTimeout(timeout)
+    const loader = document.querySelector<HTMLElement>('[data-page-loader')
+    if (!loader) return
+    loader.dataset.active = 'false'
+  })
+</script>
+
+<style lang="scss">
+  .page-loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-teal-50);
+    opacity: 0.5;
+    z-index: 1;
+
+    display: none;
+
+    &[data-active='true'] {
+      display: block;
+    }
+  }
+</style>

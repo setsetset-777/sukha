@@ -1,14 +1,10 @@
 ---
 import Footer from '@/components/Footer.astro'
-import { ClientRouter } from 'astro:transitions'
+import Head from '@/components/Head.astro'
+import PageLoader from '@/components/PageLoader.astro'
 
 import type { Meta, PageSlug } from '@app/api/types'
-
-const analytics = {
-  enable: process.env.ANALYTICS_ENABLE === 'true',
-  id: process.env.ANALYTICS_ID,
-  domain: process.env.ANALYTICS_Domain,
-}
+import { getGeneral } from '@/lib/page'
 
 type Props = {
   meta: Meta
@@ -17,130 +13,29 @@ type Props = {
   parentSlug?: PageSlug
 }
 
-const { meta, slug } = Astro.props
+const { meta, slug, noGeneral } = Astro.props
+
+const general = !noGeneral ? await getGeneral() : null
+
+const navigation = general?.navigation ?? undefined
+const footer = general?.footer ?? undefined
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {meta?.title && <title>{meta.title}</title>}
-    {meta?.description && <meta name="description" content={meta.description} />}
-
-    {/* Open Graph */}
-    {meta?.title && <meta property="og:title" content={meta.title} />}
-    {meta?.description && <meta property="og:description" content={meta.description} />}
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
-    {
-      meta?.image?.sizes?.og?.url && (
-        <>
-          <meta
-            property="og:image"
-            content={new URL(meta.image.sizes.og.url, process.env.MEDIA_URL).href}
-          />
-          <meta property="og:image:width" content={String(meta.image.sizes.og.width || 1200)} />
-          <meta property="og:image:height" content={String(meta.image.sizes.og.height || 630)} />
-          {meta.image.alt && <meta property="og:image:alt" content={meta.image.alt} />}
-        </>
-      )
-    }
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <!-- Light mode favicons -->
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="/favicon-light.ico"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/favicon-light-16.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/favicon-light-32.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/apple-touch-icon-light.png"
-      media="(prefers-color-scheme: light)"
-    />
-
-    <!-- Dark mode favicons -->
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="/favicon-dark.ico"
-      media="(prefers-color-scheme: dark)"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/favicon-dark-16.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/favicon-dark-32.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/apple-touch-icon-dark.png"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#3A474A" media="(prefers-color-scheme: dark)" />
-
-    {
-      analytics.enable && (
-        <script
-          is:inline
-          defer
-          src={`${analytics.domain}/script.js`}
-          data-website-id={analytics.id}
-        />
-      )
-    }
-
-    <ClientRouter transition:animate="slide" />
-  </head>
-
+  <Head meta={meta} />
   <body data-theme="light" class="body" data-slug={slug}>
     <div class="container">
-      <div class="container__inner">
-        <div class="content">
-          <main class="main">
-            <slot />
-          </main>
-
-          <Footer />
-        </div>
-      </div>
+      <main class="main">
+        <slot />
+      </main>
+      <Footer {...footer} />
     </div>
-    <div class="page-loader" data-page-loader data-active="false"></div>
+    <PageLoader />
   </body>
 </html>
 
 <script>
-  let timeout: NodeJS.Timeout
-
   const scrollToElement = (selector?: string) => {
     if (!selector) return
     const target = document.querySelector(selector)
@@ -166,22 +61,6 @@ const { meta, slug } = Astro.props
     }
   }
 
-  document.addEventListener('astro:before-preparation', () => {
-    const loader = document.querySelector<HTMLElement>('[data-page-loader')
-    if (!loader) return
-    clearTimeout(timeout)
-    timeout = setTimeout(() => {
-      loader.dataset.active = 'true'
-    }, 150)
-  })
-
-  document.addEventListener('astro:after-preparation', () => {
-    clearTimeout(timeout)
-    const loader = document.querySelector<HTMLElement>('[data-page-loader')
-    if (!loader) return
-    loader.dataset.active = 'false'
-  })
-
   document.addEventListener('astro:page-load', () => {
     initScrollHash()
   })
@@ -192,8 +71,8 @@ const { meta, slug } = Astro.props
 <style lang="scss">
   html,
   body {
-    background-color: var(--color-gray-100);
-    color: var(--color-gray-00);
+    background-color: var(--color-teal-00);
+    color: var(--color-teal-950);
     font-family: var(--font-family-body);
     height: 100%;
     font-size: var(--font-size-s);
@@ -205,50 +84,17 @@ const { meta, slug } = Astro.props
     flex-direction: column;
     min-height: 100%;
     position: relative;
-    font-display: swap;
   }
 
   .container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    align-items: center;
+    align-items: stretch;
     overflow-x: clip;
     font-size: var(--font-size-m);
-
-    &__inner {
-      max-width: var(--layout-max-width);
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
   }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-
   .main {
     flex-grow: 1;
-  }
-
-  .page-loader {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: var(--color-gray-50);
-    opacity: 0.5;
-    z-index: 1;
-
-    display: none;
-
-    &[data-active='true'] {
-      display: block;
-    }
   }
 </style>

@@ -4,16 +4,20 @@ import { getPayload } from 'payload'
 import { getRoutes } from '@/helpers/routes'
 import { cached, tags } from '@/helpers/cache'
 import config from '@payload-config'
+import { localizedLabels } from '@/i18n'
 
 type Props = {
   locale: Locale
 }
 
 export const getGeneralData = async ({ locale }: Props): Promise<API.General.Data> => {
+  console.log('getGeneralData')
   return cached<API.General.Data>(async () => {
     const payload = await getPayload({
       config,
     })
+
+    console.log('!!!! getGeneralData not cached')
 
     const [routes, general] = await Promise.all([
       getRoutes(locale),
@@ -40,12 +44,14 @@ export const getGeneralData = async ({ locale }: Props): Promise<API.General.Dat
     return {
       routes,
       footer: {
-        catch: general.footer?.text ?? undefined,
+        text: general.footer?.text ?? undefined,
+        logoAlt: localizedLabels.arias.logo[locale],
       },
       navigation: {
         home: {
           url: routes['pageHome' as API.PageSlug].path,
-          linkLabel: "Retour à l'accueil",
+          linkLabel: localizedLabels.arias.homeLink[locale],
+          logoAlt: localizedLabels.arias.logo[locale],
         },
         menu: serviceItems,
       },

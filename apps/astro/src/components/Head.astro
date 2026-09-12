@@ -1,0 +1,116 @@
+---
+import { ClientRouter } from 'astro:transitions'
+import type { Meta } from '@app/api/types'
+
+interface Props {
+  meta: Meta
+}
+
+const { meta } = Astro.props
+
+const analytics = {
+  enable: process.env.ANALYTICS_ENABLE === 'true',
+  id: process.env.ANALYTICS_ID,
+  domain: process.env.ANALYTICS_Domain,
+}
+---
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {meta?.title && <title>{meta.title}</title>}
+  {meta?.description && <meta name="description" content={meta.description} />}
+
+  {/* Open Graph */}
+  {meta?.title && <meta property="og:title" content={meta.title} />}
+  {meta?.description && <meta property="og:description" content={meta.description} />}
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={Astro.url.href} />
+  {
+    meta?.image?.sizes?.og?.url && (
+      <>
+        <meta
+          property="og:image"
+          content={new URL(meta.image.sizes.og.url, process.env.MEDIA_URL).href}
+        />
+        <meta property="og:image:width" content={String(meta.image.sizes.og.width || 1200)} />
+        <meta property="og:image:height" content={String(meta.image.sizes.og.height || 630)} />
+        {meta.image.alt && <meta property="og:image:alt" content={meta.image.alt} />}
+      </>
+    )
+  }
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Light mode favicons -->
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="/favicon-light.ico"
+    media="(prefers-color-scheme: light)"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="/favicon-light-16.png"
+    media="(prefers-color-scheme: light)"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="/favicon-light-32.png"
+    media="(prefers-color-scheme: light)"
+  />
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/apple-touch-icon-light.png"
+    media="(prefers-color-scheme: light)"
+  />
+
+  <!-- Dark mode favicons -->
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="/favicon-dark.ico"
+    media="(prefers-color-scheme: dark)"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="/favicon-dark-16.png"
+    media="(prefers-color-scheme: dark)"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="/favicon-dark-32.png"
+    media="(prefers-color-scheme: dark)"
+  />
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/apple-touch-icon-dark.png"
+    media="(prefers-color-scheme: dark)"
+  />
+
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#3A474A" media="(prefers-color-scheme: dark)" />
+
+  {
+    analytics.enable && (
+      <script
+        is:inline
+        defer
+        src={`${analytics.domain}/script.js`}
+        data-website-id={analytics.id}
+      />
+    )
+  }
+
+  <ClientRouter transition:animate="slide" />
+</head>

@@ -68,7 +68,7 @@ export const General: GlobalConfig = {
   hooks: {
     afterChange: [
       async ({ req }) => {
-        invalidate(tags.projectTags(req.locale as Locale))
+        invalidate(tags.general(req.locale as Locale))
       },
     ],
   },

@@ -20,6 +20,7 @@ export const localizedLabels: {
   groups: Record<string, LocalizedLabel>
   fields: Record<string, LocalizedLabel>
   descriptions: Record<string, LocalizedLabel>
+  arias: Record<string, LocalizedLabel>
   collections: Partial<
     Record<
       CollectionSlug,
@@ -114,6 +115,16 @@ export const localizedLabels: {
     urlSlug: {
       en: 'URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.',
       fr: "Les segments d'URL doivent être uniques et correspondre au titre si possible. Éviter les espaces et les caractères spéciaux. Laisser vide pour que le champ se remplisse automatiquement.",
+    },
+  },
+  arias: {
+    homeLink: {
+      fr: "Retour à l'accueil",
+      en: 'Back to home',
+    },
+    logo: {
+      fr: 'Sukha',
+      en: 'Sukha',
     },
   },
 } as const

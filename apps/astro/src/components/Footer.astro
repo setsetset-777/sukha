@@ -1,19 +1,20 @@
 ---
-import Logo777 from '@/assets/svgs/777.svg'
+import LogoFooter from '@/assets/svgs/logo-footer.svg'
+import type { General } from '@app/api/types'
 
-interface Props {}
+type Props = General.Footer
 
-const {} = Astro.props
+const { text, logoAlt } = Astro.props
 ---
 
 <footer class:list={['footer']}>
   <div class="container">
-    <p class="setsetset">
-      <span>Design & Code par</span>
-      <a href="https://setsetset.net" aria-label="setsetset">
-        <Logo777 />
-      </a>
-    </p>
+    <div class="sukha">
+      <span class="logo" aria-label={logoAlt}>
+        <LogoFooter />
+      </span>
+      {text && <p>{text}</p>}
+    </div>
   </div>
 </footer>
 
@@ -21,36 +22,33 @@ const {} = Astro.props
   @use '../styles/utilities' as *;
 
   .footer {
+    background-color: var(--color-teal-800);
+    color: var(--color-teal-300);
+    padding: var(--content-padding-y) var(--content-padding-x);
   }
 
   .container {
     position: relative;
     display: flex;
     gap: var(--space-64);
-    flex-direction: column;
-    align-items: start;
+    flex-direction: row;
+    align-items: baseline;
   }
 
-  .setsetset {
+  .sukha {
     display: flex;
-    column-gap: var(--space-8);
-    row-gap: var(--space-4);
+    flex-direction: row;
     align-items: baseline;
-    font-size: var(--font-size-xs);
-    flex-wrap: wrap;
+    gap: var(--space-24);
 
-    a {
+    :global(svg) {
       position: relative;
-      top: pxToRem(3px);
-      @include transition(color);
+      top: pxToRem(1px);
+      color: var(--color-teal-200);
+    }
 
-      svg {
-        height: 1em;
-      }
-
-      &:hover {
-        color: var(--color-gold-30);
-      }
+    p {
+      color: var(--color-teal-300);
     }
   }
 
