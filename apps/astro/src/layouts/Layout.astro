@@ -2,6 +2,7 @@
 import Footer from '@/components/Footer.astro'
 import Head from '@/components/Head.astro'
 import PageLoader from '@/components/PageLoader.astro'
+import Sidebar from '@/components/Sidebar.astro'
 
 import type { Meta, PageSlug } from '@app/api/types'
 import { getGeneral } from '@/lib/page'
@@ -26,9 +27,12 @@ const footer = general?.footer ?? undefined
   <Head meta={meta} />
   <body data-theme="light" class="body" data-slug={slug}>
     <div class="container">
-      <main class="main">
-        <slot />
-      </main>
+      <div class="content">
+        <Sidebar navigation={navigation} slug={slug} />
+        <main class="main">
+          <slot />
+        </main>
+      </div>
       <Footer {...footer} />
     </div>
     <PageLoader />
@@ -94,6 +98,13 @@ const footer = general?.footer ?? undefined
     overflow-x: clip;
     font-size: var(--font-size-m);
   }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+
   .main {
     flex-grow: 1;
   }
