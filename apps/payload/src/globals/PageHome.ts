@@ -12,7 +12,7 @@ export const PageHome: GlobalConfig = {
     fr: 'Accueil',
   },
   fields: [
-    titleField({ localized: true }),
+    titleField(),
     ...urlFields({
       value: '',
     }),

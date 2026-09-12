@@ -19,7 +19,7 @@ export const Projects: CollectionConfig = {
   },
   labels: localizedLabels.collections.projects,
   fields: [
-    titleField({ localized: true }),
+    titleField(),
     ...urlFields({ source: 'title', slug }),
     {
       name: 'featured',

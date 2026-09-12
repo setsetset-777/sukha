@@ -12,7 +12,7 @@ export const PageProjects: GlobalConfig = {
     fr: 'Projets',
   },
   fields: [
-    titleField({ localized: true }),
+    titleField(),
     ...urlFields({ source: 'title', slug: 'pageProjects' }),
     {
       name: 'backLinkLabel',
