@@ -19,7 +19,7 @@ export interface RouteConfig {
   pages: RouteConfigPage[]
 }
 
-export type RoutedGlobalSlug = 'pageHome'
+export type RoutedGlobalSlug = 'pageHome' | 'pageAgency' | 'pageProjects' | 'pageContact'
 
 export type RoutedCollectionSlug = 'projects'
 

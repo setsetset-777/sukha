@@ -1,0 +1,97 @@
+---
+import LogoMain from '@/assets/svgs/logo-main.svg'
+import type { General, PageSlug } from '@app/api/types'
+
+interface Props {
+  navigation?: General.Navigation
+  slug?: PageSlug
+  parentSlug?: PageSlug
+}
+
+const { navigation, slug, parentSlug } = Astro.props
+---
+
+<aside class="sidebar">
+  <div class="container">
+    <div class="header">
+      <a
+        class="logo"
+        href={navigation?.home?.url ?? '/'}
+        aria-label={navigation?.home?.linkLabel ?? 'Accueil'}
+      >
+        <LogoMain />
+      </a>
+    </div>
+
+    {
+      navigation?.menu && (
+        <nav class="menu">
+          <ul class="menu__list" data-menu>
+            {navigation?.menu.map(({ title, url, slug: itemSlug }) => (
+              <li class="menu__item">
+                <a
+                  class:list={[
+                    'menu__link',
+                    (slug === itemSlug || parentSlug === itemSlug) && 'active',
+                  ]}
+                  href={url}
+                  data-menu-item
+                  data-slug={itemSlug}
+                >
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+  </div>
+</aside>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .sidebar {
+    padding-top: var(--content-padding-y);
+    padding-left: var(--content-padding-x);
+    padding-bottom: var(--content-padding-y);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .logo {
+    --width: #{pxToRem(180px)};
+
+    :global(svg) {
+      width: var(--width);
+    }
+  }
+
+  .menu {
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    &__item {
+    }
+
+    &__link {
+      color: var(--color-teal-600);
+      text-decoration: none;
+
+      &:hover {
+        color: var(--color-teal-950);
+      }
+    }
+  }
+</style>

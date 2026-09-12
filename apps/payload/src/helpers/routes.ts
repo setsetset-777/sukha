@@ -25,6 +25,18 @@ export const routesConfig: RouteConfig = {
     {
       slug: 'pageHome',
     },
+    {
+      slug: 'pageAgency',
+    },
+    {
+      slug: 'pageProjects',
+      children: {
+        slug: 'projects',
+      },
+    },
+    {
+      slug: 'pageContact',
+    },
   ],
 }
 
