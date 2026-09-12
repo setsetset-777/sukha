@@ -21,6 +21,7 @@ export const PageContact: GlobalConfig = {
         en: 'Catch',
         fr: 'Signature',
       },
+      localized: true,
     },
     {
       name: 'address',
