@@ -1,14 +1,18 @@
 import { getGeneral } from '@/lib/page'
+import { pathLocale } from '@app/api/i18n'
+import type { Route } from '@app/api/types'
 
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = async ({ site, url }) => {
   const baseUrl = site?.href ?? url.origin
-  const general = await getGeneral()
+  const locale = pathLocale(Astro.url.pathname)
+  const general = await getGeneral(locale)
 
-  const urls = Object.values(general?.routes || [])
-    .map(({ path, updatedAt }) => {
+  const urls = Object.values<Route>(general?.routes || [])
+    .map(({ locales, updatedAt }) => {
       const lastmod = updatedAt ? `<lastmod>${new Date(updatedAt).toISOString()}</lastmod>` : ''
+      const path = locales[locale].path
 
       return `
   <url>

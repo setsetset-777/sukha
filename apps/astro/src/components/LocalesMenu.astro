@@ -1,0 +1,36 @@
+---
+import type { Routes } from '@app/api/types'
+import { localization, pathLocale } from '@app/api/i18n'
+
+interface Props {
+  routes?: Routes
+}
+
+const { routes } = Astro.props
+
+const { locales } = localization
+
+const { pathname } = Astro.url
+const currentLocale = pathLocale(pathname)
+
+const route =
+  routes &&
+  Object.values(routes).find((route) => {
+    console.log(route)
+    return route.locales[currentLocale].path === pathname
+  })
+---
+
+<ul>
+  {
+    locales.map((locale) => (
+      <li>
+        {locale === currentLocale ? (
+          <span>{locale}</span>
+        ) : (
+          <a href={route ? route.locales[locale].path : `/${locale}`}>{locale}</a>
+        )}
+      </li>
+    ))
+  }
+</ul>

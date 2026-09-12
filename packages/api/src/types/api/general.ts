@@ -1,4 +1,4 @@
-import type { LocalizedRoutes, PageSlug } from '../shared'
+import { Locale, Routes, PageSlug } from '../shared'
 
 export namespace General {
   export interface Footer {
@@ -8,21 +8,26 @@ export namespace General {
 
   export interface Navigation {
     home: {
-      url: string
-      linkLabel: string
-      logoAlt: string
+      url?: string
+      linkLabel?: string
+      logoAlt?: string
     }
     menu: NonNullable<
       Array<{
-        title: string
-        url: string
-        slug: PageSlug
+        title?: string
+        url?: string
+        slug?: PageSlug
       }>
     >
   }
 
+  export interface Locales {
+    current: Locale
+    list: Locale[]
+  }
+
   export interface Data {
-    routes: LocalizedRoutes
+    routes: Routes
     footer: Footer
     navigation: Navigation
   }

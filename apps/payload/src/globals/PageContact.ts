@@ -12,7 +12,7 @@ export const PageContact: GlobalConfig = {
     fr: 'Contact',
   },
   fields: [
-    titleField(),
+    titleField({ localized: true }),
     ...urlFields({ source: 'title', slug: 'pageContact' }),
     {
       name: 'catch',

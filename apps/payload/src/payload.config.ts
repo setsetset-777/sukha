@@ -14,6 +14,7 @@ import { Media } from '@/collections/Media'
 import { Projects } from '@/collections/Projects'
 import { Partners } from '@/collections/Partners'
 import { ProjectTags } from '@/collections/ProjectTags'
+import { ProjectSpecs } from '@/collections/ProjectSpecs'
 
 import { General } from '@/globals/General'
 import { PageHome } from '@/globals/PageHome'
@@ -21,7 +22,8 @@ import { PageAgency } from '@/globals/PageAgency'
 import { PageProjects } from '@/globals/PageProjects'
 import { PageContact } from '@/globals/PageContact'
 
-import { localization, customTranslations } from '@/i18n'
+import { customTranslations } from '@/i18n'
+import { localization } from '@app/api/i18n'
 import regenerateMedia from '@/helpers/regenerateMedia'
 
 import { fetchPage } from '@/api/fetch/page'
@@ -57,7 +59,7 @@ export default buildConfig({
   },
   localization,
   globals: [General, PageHome, PageAgency, PageProjects, PageContact],
-  collections: [Users, Media, Projects, Partners, ProjectTags /* ProjectSpecs */],
+  collections: [Users, Media, Projects, Partners, ProjectTags, ProjectSpecs],
   routes: {
     admin: '/',
   },
@@ -85,8 +87,8 @@ export default buildConfig({
       path: '/general',
       method: 'get',
       handler: async (req) => {
-        req.payload.logger.info('Hiiting endpoint /general')
-        const data = await fetchGeneral(req)
+        req.payload.logger.info('Hitting endpoint /general')
+        const data = await fetchGeneral(req.query.locale as Locale)
         req.payload.logger.info(data, `Fetched data for general`)
 
         return Response.json({
@@ -126,7 +128,7 @@ export default buildConfig({
         }
 
         try {
-          const data = await fetchPage(req, path, safeParams)
+          const data = await fetchPage(path, safeParams)
           req.payload.logger.info(data, `Fetched data for ${req.query.path}`)
 
           if (!data) {

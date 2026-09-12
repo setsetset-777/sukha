@@ -1,18 +1,8 @@
-import type { LocalizationConfigWithNoLabels, Locale, CollectionSlug, TypedLocale } from 'payload'
-import type { TFunction } from '@payloadcms/translations'
 import { enTranslations } from '@payloadcms/translations/languages/en'
 import { frTranslations } from '@payloadcms/translations/languages/fr'
+import type { LocalizationConfigWithNoLabels, Locale, CollectionSlug, TypedLocale } from 'payload'
+import type { TFunction } from '@payloadcms/translations'
 import type { NestedKeysStripped } from '@payloadcms/translations'
-
-const DEFAULT_LOCALE: TypedLocale = 'fr'
-
-export const localization: LocalizationConfigWithNoLabels = {
-  locales: ['fr', 'en'],
-  defaultLocale: DEFAULT_LOCALE,
-}
-
-export const normalLocale = (locale?: TypedLocale | null): TypedLocale =>
-  locale ?? (localization.defaultLocale as TypedLocale)
 
 type LocalizedLabel = Record<Locale['code'], string>
 
@@ -100,16 +90,16 @@ export const localizedLabels: {
         fr: 'Tags de projet',
       },
     },
-    projectSpecs: {
-      singular: {
-        en: 'Project specification',
-        fr: 'Spécification de projet',
-      },
-      plural: {
-        en: 'Project specifications',
-        fr: 'Spécifications de projet',
-      },
-    },
+    // projectSpecs: {
+    //   singular: {
+    //     en: 'Project specification',
+    //     fr: 'Spécification de projet',
+    //   },
+    //   plural: {
+    //     en: 'Project specifications',
+    //     fr: 'Spécifications de projet',
+    //   },
+    // },
   },
   descriptions: {
     urlSlug: {

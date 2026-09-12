@@ -1,22 +1,21 @@
-import { localization } from '@/i18n'
+import { localization, normalizeLocale } from '@app/api/i18n'
 import { type BasePayload, getPayload } from 'payload'
 import type {
   Manifest,
   RouteConfig,
-  RoutedPages,
   Locale,
-  Routes,
-  LocalizedRoutes,
   Route,
   RoutedGlobalSlug,
   RoutedCollectionSlug,
   Media,
+  Routes,
+  LocalizedRoute,
 } from '@/types'
 import { cached, tags } from '@/helpers/cache'
 import config from '@payload-config'
+import { PageSlug } from '@app/api/types'
 
-const { locales, defaultLocale } = localization
-const defaultSlugField = 'urlSlug' as const
+const { locales } = localization
 
 export let cachedManifest: Manifest | null | undefined = null
 
@@ -40,114 +39,125 @@ export const routesConfig: RouteConfig = {
   ],
 }
 
-export const getRoutes = async (locale: Locale): Promise<LocalizedRoutes> => {
-  return cached<LocalizedRoutes>(async () => {
+export const getRoutes = async (): Promise<Routes> => {
+  return cached<Routes>(async () => {
     const payload = await getPayload({ config })
 
-    locale = locale || (defaultLocale as Locale)
-
-    const routes = await buildRoutes(payload)
-
-    const localizedRoutes = routes[locale]
-
-    return localizedRoutes ?? {}
-  }, tags.routes(locale))
+    return buildRoutes(payload)
+  }, tags.routes())
 }
 
 const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
-  const routes: Routes = {}
+  const routes: Routes = new Map()
 
-  for (const locale of locales) {
-    routes[locale as Locale] = {}
-    for (const { slug, path, field = defaultSlugField, children } of routesConfig.pages) {
-      const global = await payload.findGlobal({
-        slug: slug as RoutedGlobalSlug,
-        locale: locale as Locale,
+  for (const { slug, path, children } of routesConfig.pages) {
+    const global = (await payload.findGlobal({
+      slug: slug as RoutedGlobalSlug,
+      locale: 'all',
+      select: {
+        id: true,
+        urlSlug: true,
+        updatedAt: true,
+      },
+    })) as {
+      id: string
+      updatedAt: string
+      urlSlug?: Partial<Record<Locale, string>>
+    }
+
+    routes.set(global.id, {
+      id: global.id,
+      slug,
+      type: 'global',
+      updatedAt: global.updatedAt ?? undefined,
+      locales: locales.reduce<Route['locales']>(
+        (acc, locale) => {
+          // For home page, there is no urlSlug, we default to empty string
+          const urlSlug = (global.urlSlug && global.urlSlug[locale as Locale]) ?? ''
+          acc[locale as Locale] = {
+            path: `/${locale}/${path || urlSlug}`,
+            urlSlug,
+          }
+          return acc
+        },
+        {} as Route['locales'],
+      ),
+    })
+
+    if (children) {
+      const collections = await payload.find({
+        collection: children.slug as RoutedCollectionSlug,
+        locale: 'all',
+        select: {
+          id: true,
+          urlSlug: true,
+          updatedAt: true,
+        },
       })
 
-      const doc: RoutedPages = global
-      const urlSlug = doc[field] || ''
-
-      routes[locale as Locale]![slug] = {
-        id: global.id,
-        path: `/${path || urlSlug}`,
-        slug: slug,
-        urlSlug: urlSlug as string,
-        type: 'global',
-        updatedAt: doc.updatedAt ?? undefined,
-        meta: {
-          title: doc.meta?.title ?? undefined,
-          description: doc.meta?.description ?? undefined,
-          image: (doc.meta?.image as Media) ?? undefined,
-        },
-      }
-      if (children) {
-        const parent = doc
-        const collections = await payload.find({
-          collection: children.slug as RoutedCollectionSlug,
-          locale: locale as Locale,
-        })
-
-        for (const collection of collections.docs) {
-          const field = children.field || defaultSlugField
-          const doc: RoutedPages = collection
-
-          const urlSlug = doc[field] as string
-          const separator = children.isHash ? '#' : '/'
-          routes[locale as Locale]![collection.id] = {
-            id: doc.id,
-            path: `/${parent.urlSlug}${separator}${doc.urlSlug}`,
-            slug: children.slug,
-            urlSlug,
-            parent: slug,
-            type: 'collection',
-            updatedAt: doc.updatedAt ?? undefined,
-            meta: {
-              title: doc.title,
+      for (const collection of collections.docs) {
+        routes.set(collection.id, {
+          id: collection.id,
+          slug,
+          type: 'collection',
+          updatedAt: collection.updatedAt ?? undefined,
+          locales: locales.reduce<Route['locales']>(
+            (acc, locale) => {
+              const urlSlug = (collection.urlSlug as Partial<Record<Locale, string>>)[
+                locale as Locale
+              ]
+              acc[locale as Locale] = {
+                path: `/${locale}/${path || urlSlug}`,
+                urlSlug,
+              }
+              return acc
             },
-          }
-        }
+            {} as Route['locales'],
+          ),
+        })
       }
     }
   }
-
-  // payload.logger.info(routes, 'Built routes')
 
   return routes
 }
 
 export const resolveRoute = async ({
   path,
-  locale,
 }: {
   path: string
-  locale?: Locale
-}): Promise<{
-  locale: Locale
-  route: Route
-} | null> => {
-  try {
-    const paths = path.replace(/^\/+/, '').split('/')
-    locale = localization.locales.includes(paths[0]) ? (paths[0] as Locale) : (locale as Locale)
-
-    if (locale) {
-      // Remove locale
-      path = path.replace(new RegExp(`^${locale}(?=\/|$)`), '')
-    }
-
-    const routes = await getRoutes(locale)
-
-    const route = routes && Object.values(routes).find((value) => value.path === path)
-
-    if (!route) {
-      return null
-    }
-
-    return {
-      locale,
-      route,
-    }
-  } catch (e) {
-    throw e
+}): Promise<{ route: Route | null; locale: Locale }> => {
+  const paths = path.replace(/^\/+/, '').split('/')
+  const locale = normalizeLocale(paths[0])
+  const routes = await getRoutes()
+  const normalLocale = normalizeLocale(locale)
+  return {
+    route: [...routes.values()].find((route) => route.locales[normalLocale].path === path) ?? null,
+    locale,
   }
+}
+
+export const getRouteById = async (id: string): Promise<Route | null> => {
+  const routes = await getRoutes()
+  return routes.get(id) || null
+}
+
+export const getRouteBySlug = async (slug: PageSlug): Promise<Route | null> => {
+  const routes = await getRoutes()
+  return [...routes.values()].find((route) => route.slug === slug) ?? null
+}
+
+export const getPathBySlug = async (slug: PageSlug, locale: Locale): Promise<string | null> => {
+  const route = await getRouteBySlug(slug)
+  if (!route) {
+    return null
+  }
+  return getPathOfRoute(route, locale)
+}
+
+export const getPathOfRoute = (route: Route | null, locale: Locale): string | null => {
+  if (!route) {
+    return null
+  }
+  return route.locales[locale].path
 }

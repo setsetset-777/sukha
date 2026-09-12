@@ -13,14 +13,14 @@ import type { Projects } from './projects'
 import type { Contact } from './contact'
 import type { Meta } from '../shared'
 
-export type PageData =
-  | ({
-      meta: Meta
-    } & {
+export type PageData = {
+  meta: Meta
+} & (
+  | {
       data: Home.Data
       slug: 'pageHome'
       parentSlug?: undefined
-    })
+    }
   | {
       data: Agency.Data
       slug: 'pageAgency'
@@ -41,6 +41,7 @@ export type PageData =
       slug: 'pageContact'
       parentSlug?: undefined
     }
+)
 
 export type FetchData = Promise<Record<string, any>>
 

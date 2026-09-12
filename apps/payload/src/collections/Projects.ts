@@ -182,7 +182,7 @@ export const Projects: CollectionConfig = {
       async ({ req, doc }) => {
         invalidatePrefix('projects')
         invalidatePrefix('projectList')
-        invalidate(tags.routes(req.locale as Locale))
+        invalidate(tags.routes())
         invalidate(tags.project(doc.id, req.locale as Locale))
         invalidate(tags.partners(req.locale as Locale))
       },

@@ -19,6 +19,10 @@
     "./config": {
       "default": "./src/config/index.ts",
       "types": "./src/config/index.ts"
+    },
+    "./i18n": {
+      "default": "./src/i18n.ts",
+      "types": "./src/i18n.ts"
     }
   },
   "scripts": {
