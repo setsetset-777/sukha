@@ -65,12 +65,15 @@ export const urlFields = ({
         }
         // Check if url slug is unique among the document siblings
         let routeWithUrlSlug: Route | undefined
-        const routes = await getRoutes(locale as Locale)
+        const routes = await getRoutes()
 
         const parentPage = getParentPage(pageSlug)
 
-        routeWithUrlSlug = Object.values(routes)?.find(
-          ({ slug, urlSlug, parent, id: itemId }: Route) => {
+        routeWithUrlSlug = [...routes.values()].find(
+          ({ slug, locales, parent, id: itemId }: Route) => {
+            payload.logger.info(locales)
+            payload.logger.info(locale)
+            const urlSlug = locales[locale as Locale].urlSlug
             if (parentPage) {
               return parentPage?.slug === parent && urlSlug === value && id !== itemId
             }

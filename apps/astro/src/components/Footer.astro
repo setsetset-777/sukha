@@ -1,10 +1,13 @@
 ---
 import LogoFooter from '@/assets/svgs/logo-footer.svg'
-import type { General } from '@app/api/types'
+import LocalesMenu from '@/components/LocalesMenu.astro'
+import type { General, Routes } from '@app/api/types'
 
-type Props = General.Footer
+type Props = General.Footer & {
+  routes?: Routes
+}
 
-const { text, logoAlt } = Astro.props
+const { text, logoAlt, routes } = Astro.props
 ---
 
 <footer class:list={['footer']}>
@@ -15,6 +18,7 @@ const { text, logoAlt } = Astro.props
       </span>
       {text && <p>{text}</p>}
     </div>
+    <LocalesMenu routes={routes} />
   </div>
 </footer>
 

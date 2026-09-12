@@ -1,16 +1,28 @@
-import { normalLocale } from '@/i18n'
+import { normalizeLocale } from '@app/api/i18n'
 import { Locale } from '@/types'
 import * as API from '@app/api/types'
 import { LRUCache } from 'lru-cache'
 
 type Tag = string
 
+const CACHE_ENABLE = false
+
 const store = new LRUCache<Tag, any>({
   max: 500,
 })
 const pending = new Map<Tag, Promise<any>>()
 
-export function cached<T>(fn: () => Promise<T>, key: Tag): Promise<T> {
+export async function cached<T>(fn: () => Promise<T>, key: Tag): Promise<T> {
+  if (!CACHE_ENABLE) {
+    return fn()
+      .then((result) => {
+        return result
+      })
+      .catch((err) => {
+        throw err
+      })
+  }
+
   if (store.has(key)) {
     return store.get(key)
   }
@@ -66,17 +78,17 @@ export const invalidatePrefix = (prefix: Prefix) => {
 }
 
 export const tags = {
-  routes: (locale: Locale) => `${prefixes.routes}:${normalLocale(locale)}`,
-  general: (locale: Locale) => `${prefixes.general}:${normalLocale(locale)}`,
-  project: (id: string, locale: Locale) => `${prefixes.project}:${id}:${normalLocale(locale)}`,
+  routes: () => `${prefixes.routes}`,
+  general: (locale: Locale) => `${prefixes.general}:${normalizeLocale(locale)}`,
+  project: (id: string, locale: Locale) => `${prefixes.project}:${id}:${normalizeLocale(locale)}`,
   projects: (params: API.Projects.SearchParams, locale: Locale) =>
-    `${prefixes.projects}:${JSON.stringify(params)}:${normalLocale(locale)}`,
+    `${prefixes.projects}:${JSON.stringify(params)}:${normalizeLocale(locale)}`,
   projectList: (params: API.Projects.SearchParams, locale: Locale) =>
-    `${prefixes.projectList}:${JSON.stringify(params)}:${normalLocale(locale)}`,
-  home: (locale: Locale) => `${prefixes.home}:${normalLocale(locale)}`,
-  agency: (locale: Locale) => `${prefixes.agency}:${normalLocale(locale)}`,
-  projectTags: (locale: Locale) => `${prefixes.projectTags}:${normalLocale(locale)}`,
-  projectSpecs: (locale: Locale) => `${prefixes.projectSpecs}:${normalLocale(locale)}`,
-  contact: (locale: Locale) => `${prefixes.contact}:${normalLocale(locale)}`,
-  partners: (locale: Locale) => `${prefixes.partners}:${normalLocale(locale)}`,
+    `${prefixes.projectList}:${JSON.stringify(params)}:${normalizeLocale(locale)}`,
+  home: (locale: Locale) => `${prefixes.home}:${normalizeLocale(locale)}`,
+  agency: (locale: Locale) => `${prefixes.agency}:${normalizeLocale(locale)}`,
+  projectTags: (locale: Locale) => `${prefixes.projectTags}:${normalizeLocale(locale)}`,
+  projectSpecs: (locale: Locale) => `${prefixes.projectSpecs}:${normalizeLocale(locale)}`,
+  contact: (locale: Locale) => `${prefixes.contact}:${normalizeLocale(locale)}`,
+  partners: (locale: Locale) => `${prefixes.partners}:${normalizeLocale(locale)}`,
 }

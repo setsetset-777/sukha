@@ -29,17 +29,18 @@ export type RoutedPages = DataFromGlobalSlug<'pageHome'> | DataFromCollectionSlu
 
 export type Locale = TypedLocale
 
+export interface LocalizedRoute {
+  path: string
+  urlSlug?: string
+}
+
 export type Route = {
   id: string
-  path: string
   slug: PageSlug
-  urlSlug: string
   parent?: PageSlug
   type: 'global' | 'collection'
   updatedAt?: string
-  meta?: API.Meta
+  locales: Record<Locale, LocalizedRoute>
 }
 
-export type LocalizedRoutes = { [key: string]: Route }
-
-export type Routes = Partial<Record<Locale, LocalizedRoutes>>
+export type Routes = Map<string, Route>

@@ -44,7 +44,7 @@ export const Partners: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ req }) => {
-        invalidate(tags.routes(req.locale as Locale))
+        invalidate(tags.routes())
         invalidate(tags.partners(req.locale as Locale))
         invalidate(tags.agency(req.locale as Locale))
       },

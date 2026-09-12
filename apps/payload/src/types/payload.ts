@@ -72,6 +72,7 @@ export interface Config {
     projects: Project;
     partners: Partner;
     projectTags: ProjectTag;
+    projectSpecs: ProjectSpec;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     projectTags: ProjectTagsSelect<false> | ProjectTagsSelect<true>;
+    projectSpecs: ProjectSpecsSelect<false> | ProjectSpecsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -335,6 +337,18 @@ export interface Partner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projectSpecs".
+ */
+export interface ProjectSpec {
+  id: string;
+  _order?: string | null;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -376,6 +390,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projectTags';
         value: string | ProjectTag;
+      } | null)
+    | ({
+        relationTo: 'projectSpecs';
+        value: string | ProjectSpec;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -581,6 +599,17 @@ export interface PartnersSelect<T extends boolean = true> {
  * via the `definition` "projectTags_select".
  */
 export interface ProjectTagsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projectSpecs_select".
+ */
+export interface ProjectSpecsSelect<T extends boolean = true> {
   _order?: T;
   title?: T;
   updatedAt?: T;

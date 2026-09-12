@@ -3,7 +3,7 @@ import type { Payload } from './payload'
 // TODO Check Paylaod dependency
 export type PageSlug = Payload.PageSlug
 export type Media = Payload.Media | null
-export type LocalizedRoutes = Payload.LocalizedRoutes
+export type Locale = Payload.Locale
 
 export interface Meta {
   title?: string
@@ -16,3 +16,19 @@ export interface Meta {
 export interface PaginatedDocs<Item> extends Omit<Payload.PaginatedDocs, 'docs'> {
   docs: Item[]
 }
+
+export interface Route {
+  id: string
+  slug: PageSlug
+  parent?: PageSlug
+  updatedAt?: string
+  locales: Record<
+    Locale,
+    {
+      path: string
+      urlSlug?: string
+    }
+  >
+}
+
+export type Routes = Record<string, Route>
