@@ -13,7 +13,7 @@ export const PageAgency: GlobalConfig = {
     fr: 'Agence',
   },
   fields: [
-    titleField({ localized: true }),
+    titleField(),
     ...urlFields({ source: 'title', slug: 'pageAgency' }),
     {
       name: 'name',

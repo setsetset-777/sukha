@@ -1,3 +1,4 @@
+import { localizedLabels } from '@/i18n'
 import type { Field, LabelFunction, StaticLabel } from 'payload'
 
 type TitleField = {
@@ -5,15 +6,13 @@ type TitleField = {
   localized?: boolean
 }
 
-const defaultLabel = {
-  en: 'Title',
-  fr: 'Titre',
-}
+const defaultLabel = localizedLabels.fields.title
+
+const localized = true
 
 export const titleField = (
-  { label = defaultLabel, localized }: TitleField = {
+  { label = defaultLabel }: TitleField = {
     label: defaultLabel,
-    localized: false,
   },
 ): Field => {
   return {

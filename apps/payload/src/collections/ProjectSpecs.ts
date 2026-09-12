@@ -17,7 +17,7 @@ export const ProjectSpecs: CollectionConfig = {
     defaultColumns: ['title', '_status'],
   },
   labels: localizedLabels.collections.projectSpecs,
-  fields: [titleField({ localized: true })],
+  fields: [titleField()],
   hooks: {
     afterChange: [
       async ({ req }) => {
