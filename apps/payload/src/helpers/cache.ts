@@ -12,15 +12,11 @@ const pending = new Map<Tag, Promise<any>>()
 
 export function cached<T>(fn: () => Promise<T>, key: Tag): Promise<T> {
   if (store.has(key)) {
-    // console.log(`>>>> cache: hitting cache for ${key}`)
     return store.get(key)
   }
   if (pending.has(key)) {
-    // console.log(`>>>> cache: pending cache for ${key}`)
     return pending.get(key) as Promise<T>
   }
-
-  // console.log(`>>>> cache: missing cache for ${key}`)
 
   const promise = fn()
     .then((result) => {
@@ -51,7 +47,7 @@ const prefixes = {
   home: 'home',
   projects: 'projects',
   project: 'project',
-  presentation: 'agency',
+  agency: 'agency',
   projectTags: 'projectTags',
   projectSpecs: 'projectSpecs',
   contact: 'contact',
@@ -70,17 +66,17 @@ export const invalidatePrefix = (prefix: Prefix) => {
 }
 
 export const tags = {
-  routes: (locale: Locale) => `general:${normalLocale(locale)}`,
-  general: (locale: Locale) => `general:${normalLocale(locale)}`,
-  project: (id: string, locale: Locale) => `project:${id}:${normalLocale(locale)}`,
+  routes: (locale: Locale) => `${prefixes.routes}:${normalLocale(locale)}`,
+  general: (locale: Locale) => `${prefixes.general}:${normalLocale(locale)}`,
+  project: (id: string, locale: Locale) => `${prefixes.project}:${id}:${normalLocale(locale)}`,
   projects: (params: API.Projects.SearchParams, locale: Locale) =>
     `${prefixes.projects}:${JSON.stringify(params)}:${normalLocale(locale)}`,
   projectList: (params: API.Projects.SearchParams, locale: Locale) =>
     `${prefixes.projectList}:${JSON.stringify(params)}:${normalLocale(locale)}`,
-  home: (locale: Locale) => `home:${normalLocale(locale)}`,
-  agency: (locale: Locale) => `agency:${normalLocale(locale)}`,
-  projectTags: (locale: Locale) => `projectTags:${normalLocale(locale)}`,
-  projectSpecs: (locale: Locale) => `projectSpecs:${normalLocale(locale)}`,
-  contact: (locale: Locale) => `contact:${normalLocale(locale)}`,
-  partners: (locale: Locale) => `partners:${normalLocale(locale)}`,
+  home: (locale: Locale) => `${prefixes.home}:${normalLocale(locale)}`,
+  agency: (locale: Locale) => `${prefixes.agency}:${normalLocale(locale)}`,
+  projectTags: (locale: Locale) => `${prefixes.projectTags}:${normalLocale(locale)}`,
+  projectSpecs: (locale: Locale) => `${prefixes.projectSpecs}:${normalLocale(locale)}`,
+  contact: (locale: Locale) => `${prefixes.contact}:${normalLocale(locale)}`,
+  partners: (locale: Locale) => `${prefixes.partners}:${normalLocale(locale)}`,
 }

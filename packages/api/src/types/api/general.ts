@@ -2,13 +2,15 @@ import type { LocalizedRoutes, PageSlug } from '../shared'
 
 export namespace General {
   export interface Footer {
-    catch?: string
+    text?: string
+    logoAlt?: string
   }
 
   export interface Navigation {
     home: {
       url: string
       linkLabel: string
+      logoAlt: string
     }
     menu: NonNullable<
       Array<{
