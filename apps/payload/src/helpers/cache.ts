@@ -5,15 +5,13 @@ import { LRUCache } from 'lru-cache'
 
 type Tag = string
 
-const CACHE_ENABLE = false
-
 const store = new LRUCache<Tag, any>({
   max: 500,
 })
 const pending = new Map<Tag, Promise<any>>()
 
 export async function cached<T>(fn: () => Promise<T>, key: Tag): Promise<T> {
-  if (!CACHE_ENABLE) {
+  if (!process.env.DISABLE_CACHE) {
     return fn()
       .then((result) => {
         return result
