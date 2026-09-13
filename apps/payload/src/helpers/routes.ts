@@ -1,5 +1,9 @@
 import { localization, normalizeLocale } from '@app/api/i18n'
 import { type BasePayload, getPayload } from 'payload'
+import { cached, tags } from '@/helpers/cache'
+import { trimPath } from '@/helpers/trimPath'
+import config from '@payload-config'
+import { PageSlug } from '@app/api/types'
 import type {
   Manifest,
   RouteConfig,
@@ -7,13 +11,8 @@ import type {
   Route,
   RoutedGlobalSlug,
   RoutedCollectionSlug,
-  Media,
   Routes,
-  LocalizedRoute,
 } from '@/types'
-import { cached, tags } from '@/helpers/cache'
-import config from '@payload-config'
-import { PageSlug } from '@app/api/types'
 
 const { locales } = localization
 
@@ -75,7 +74,7 @@ const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
           // For home page, there is no urlSlug, we default to empty string
           const urlSlug = (global.urlSlug && global.urlSlug[locale as Locale]) ?? ''
           acc[locale as Locale] = {
-            path: `/${locale}/${path || urlSlug}`,
+            path: trimPath(`/${locale}/${path || urlSlug}`),
             urlSlug,
           }
           return acc

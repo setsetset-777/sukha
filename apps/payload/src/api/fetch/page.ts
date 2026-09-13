@@ -1,6 +1,7 @@
 import { resolveRoute } from '@/helpers/routes'
-import type * as API from '@app/api/types'
 import { getHomeData } from '@/api/data/home'
+import { trimPath } from '@/helpers/trimPath'
+import type * as API from '@app/api/types'
 import type { SearchParams } from '@app/api/schemas'
 
 export const fetchPage = async (
@@ -8,7 +9,7 @@ export const fetchPage = async (
   params: SearchParams,
 ): Promise<API.PageData | null> => {
   try {
-    const { route, locale } = await resolveRoute({ path })
+    const { route, locale } = await resolveRoute({ path: trimPath(path) })
 
     if (!route) {
       return null
