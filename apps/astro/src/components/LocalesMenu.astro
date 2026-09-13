@@ -16,7 +16,6 @@ const currentLocale = pathLocale(pathname)
 const route =
   routes &&
   Object.values(routes).find((route) => {
-    console.log(route)
     return route.locales[currentLocale].path === pathname
   })
 ---
