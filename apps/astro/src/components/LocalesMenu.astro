@@ -21,10 +21,10 @@ const route =
   })
 ---
 
-<ul>
+<ul class="locales-menu">
   {
     locales.map((locale) => (
-      <li>
+      <li class="locales-menu__item">
         {locale === currentLocale ? (
           <span>{locale}</span>
         ) : (
@@ -34,3 +34,41 @@ const route =
     ))
   }
 </ul>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .locales-menu {
+    --gap: var(--space-4);
+
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+
+    &__item {
+      text-transform: uppercase;
+
+      span {
+        font-weight: var(--font-weight-bold);
+        color: var(--color-teal-00);
+      }
+
+      a {
+        font-weight: var(--font-weight-normal);
+        @include transition(font-weight);
+        text-decoration: none;
+
+        &:hover {
+          font-weight: var(--font-weight-bold);
+        }
+      }
+
+      &:not(:last-child) {
+        &:after {
+          content: '/';
+          margin-left: var(--gap);
+        }
+      }
+    }
+  }
+</style>
