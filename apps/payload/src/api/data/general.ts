@@ -1,17 +1,18 @@
 import type * as API from '@app/api/types'
-import type { Locale } from '@/types'
+import type { LocaleCode } from '@/types'
 import { getPayload } from 'payload'
 import { getPathBySlug, getPathOfRoute, getRouteBySlug, getRoutes } from '@/helpers/routes'
 import { cached, tags } from '@/helpers/cache'
 import config from '@payload-config'
-import { localizedLabels } from '@/i18n'
-import { localization } from '@app/api/i18n'
+import { type CustomTFunction } from '@/i18n'
+import { I18n } from '@payloadcms/translations'
 
 type Props = {
-  locale: Locale
+  locale: LocaleCode
+  i18n: I18n
 }
 
-export const getGeneralData = async ({ locale }: Props): Promise<API.General.Data> => {
+export const getGeneralData = async ({ locale, i18n }: Props): Promise<API.General.Data> => {
   return cached<API.General.Data>(async () => {
     const payload = await getPayload({
       config,
@@ -44,6 +45,8 @@ export const getGeneralData = async ({ locale }: Props): Promise<API.General.Dat
       })
     }
 
+    const t = i18n.t as CustomTFunction
+
     return {
       routes: Object.fromEntries(
         [...routes].map(([key, { id, slug, parent, updatedAt, locales }]) => [
@@ -59,13 +62,13 @@ export const getGeneralData = async ({ locale }: Props): Promise<API.General.Dat
       ),
       footer: {
         text: general.footer?.text ?? undefined,
-        logoAlt: localizedLabels.arias.logo[locale],
+        logoAlt: t('general:logo'),
       },
       navigation: {
         home: {
           url: (await getPathBySlug('pageHome', locale)) ?? undefined,
-          linkLabel: localizedLabels.arias.homeLink[locale] ?? undefined,
-          logoAlt: localizedLabels.arias.logo[locale] ?? undefined,
+          linkLabel: t('general:homeLink'),
+          logoAlt: t('general:logo'),
         },
         menu: serviceItems,
       },

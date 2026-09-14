@@ -4,6 +4,7 @@ import type { Payload } from './payload'
 export type PageSlug = Payload.PageSlug
 export type Media = Payload.Media | null
 export type Locale = Payload.Locale
+export type LocaleCode = Payload.LocaleCode
 
 export interface Meta {
   title?: string
@@ -23,7 +24,7 @@ export interface Route {
   parent?: PageSlug
   updatedAt?: string
   locales: Record<
-    Locale,
+    LocaleCode,
     {
       path: string
       urlSlug?: string

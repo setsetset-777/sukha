@@ -10,7 +10,7 @@ import type {
 } from 'payload'
 import { localizedLabels, type CustomTFunction } from '@/i18n'
 import { getRoutes, routesConfig } from '@/helpers/routes'
-import type { Locale, Route, RouteConfigPage } from '@/types'
+import type { LocaleCode, Route, RouteConfigPage } from '@/types'
 
 type UrlFieldsProps = {
   slug?: CollectionSlug | GlobalSlug
@@ -73,7 +73,7 @@ export const urlFields = ({
           ({ slug, locales, parent, id: itemId }: Route) => {
             payload.logger.info(locales)
             payload.logger.info(locale)
-            const urlSlug = locales[locale as Locale].urlSlug
+            const urlSlug = locales[locale as LocaleCode].urlSlug
             if (parentPage) {
               return parentPage?.slug === parent && urlSlug === value && id !== itemId
             }
@@ -85,7 +85,7 @@ export const urlFields = ({
 
         if (!isUnique) {
           const t = defaultT as CustomTFunction
-          return t('validation:uniqueUrlSlug')
+          return t('admin:validation:uniqueUrlSlug')
         }
       }) as TextFieldSingleValidation,
       hooks: {

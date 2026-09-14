@@ -10,7 +10,6 @@ export const localizedLabels: {
   groups: Record<string, LocalizedLabel>
   fields: Record<string, LocalizedLabel>
   descriptions: Record<string, LocalizedLabel>
-  arias: Record<string, LocalizedLabel>
   collections: Partial<
     Record<
       CollectionSlug,
@@ -90,16 +89,16 @@ export const localizedLabels: {
         fr: 'Tags de projet',
       },
     },
-    // projectSpecs: {
-    //   singular: {
-    //     en: 'Project specification',
-    //     fr: 'Spécification de projet',
-    //   },
-    //   plural: {
-    //     en: 'Project specifications',
-    //     fr: 'Spécifications de projet',
-    //   },
-    // },
+    projectSpecs: {
+      singular: {
+        en: 'Project specification',
+        fr: 'Spécification de projet',
+      },
+      plural: {
+        en: 'Project specifications',
+        fr: 'Spécifications de projet',
+      },
+    },
   },
   descriptions: {
     urlSlug: {
@@ -107,54 +106,58 @@ export const localizedLabels: {
       fr: "Les segments d'URL doivent être uniques et correspondre au titre si possible. Éviter les espaces et les caractères spéciaux. Laisser vide pour que le champ se remplisse automatiquement.",
     },
   },
-  arias: {
-    homeLink: {
-      fr: "Retour à l'accueil",
-      en: 'Back to home',
-    },
-    logo: {
-      fr: 'Sukha',
-      en: 'Sukha',
-    },
-  },
 } as const
 
 export const customTranslations: Record<Locale['code'], Record<string, any>> = {
   en: {
-    validation: {
-      uniqueUrlSlug: 'The URL segment already exists.',
+    admin: {
+      validation: {
+        uniqueUrlSlug: 'The URL segment already exists.',
+      },
+      linkToCollection: {
+        description:
+          'Edit the visible {{items}} on the frontend directly from the collection page by editing their published status',
+        label: 'Go to {{collection}}',
+      },
+      cache: {
+        invalidate: 'Empty cache',
+      },
     },
-    pageHome: {
+    general: {
+      logo: 'Sukha',
+      homeLink: 'Back to home',
+    },
+    home: {
       adminProjectLinkLabel: 'Go to projects',
-    },
-    linkToCollection: {
-      description:
-        'Edit the visible {{items}} on the frontend directly from the collection page by editing their published status',
-      label: 'Go to {{collection}}',
-    },
-    cache: {
-      invalidate: 'Empty cache',
+      slidesArialLabel: 'Images of featured projects',
     },
   },
   fr: {
+    admin: {
+      general: {
+        globals: 'Globales',
+        createNew: 'Ajouter',
+        createNewLabel: 'Ajouter',
+      },
+      validation: {
+        uniqueUrlSlug: "Le segment d'URL existe déjà",
+      },
+      linkToCollection: {
+        description:
+          'Éditez les {{items}} visibles sur le site directement à partir de leur page de collection en gérant leur statut de publication.',
+        label: 'Aller aux {{collection}}',
+      },
+      cache: {
+        invalidate: 'Vider le cache',
+      },
+    },
     general: {
-      globals: 'Globales',
-      createNew: 'Ajouter',
-      createNewLabel: 'Ajouter',
+      logo: 'Sukha',
+      homeLink: "Retour à l'accueil",
     },
-    validation: {
-      uniqueUrlSlug: "Le segment d'URL existe déjà",
-    },
-    pageHome: {
+    home: {
       adminProjectLinkLabel: 'Aller aux réalisations',
-    },
-    linkToCollection: {
-      description:
-        'Éditez les {{items}} visibles sur le site directement à partir de leur page de collection en gérant leur statut de publication.',
-      label: 'Aller aux {{collection}}',
-    },
-    cache: {
-      invalidate: 'Vider le cache',
+      slidesArialLabel: 'Images des projects mis en avant',
     },
   },
 }

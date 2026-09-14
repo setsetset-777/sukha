@@ -1,4 +1,4 @@
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 import type {
   BasePayload,
   CollectionSlug,
@@ -10,7 +10,7 @@ import type {
 interface Props<T extends CollectionSlug> {
   slug: T
   payload: BasePayload
-  locale?: Locale
+  locale?: LocaleCode
   where?: Where
   pagination?: {
     page?: number

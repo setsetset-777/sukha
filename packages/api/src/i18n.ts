@@ -1,23 +1,59 @@
-import type { Locale } from '@app/api/types'
-
-export const defaultLocale: Locale = 'fr'
+import type { Locale, LocaleCode } from '@/types'
 
 export const localization: {
   locales: Locale[]
-  defaultLocale: Locale
+  defaultLocale: LocaleCode
 } = {
-  locales: ['fr', 'en'],
-  defaultLocale,
+  locales: [
+    {
+      label: 'FR',
+      code: 'fr',
+    },
+    {
+      label: 'EN',
+      code: 'en',
+    },
+  ],
+  defaultLocale: 'fr',
 }
 
-export const normalizeLocale = (locale?: Locale | string | null): Locale => {
-  if (localization.locales.includes(locale as Locale)) {
-    return locale as Locale
+export const defaultLocale = localization.locales.find(
+  ({ code }) => code === localization.defaultLocale,
+)!
+
+export const localeCodes = localization.locales.map(({ code }) => code)
+
+export const normalizeLocale = (code?: LocaleCode | string | null): Locale => {
+  const locale = localization.locales.find((locale) => locale.code === code)
+  return locale ?? defaultLocale
+}
+
+export const getLocaleFromPath = (path: string): Locale => {
+  const { locale } = normalizePath(path)
+  return locale
+}
+
+export const normalizePath = (
+  path: string,
+): {
+  locale: Locale
+  path: string | null
+} => {
+  const reg = /^(\/)?([a-z]{2}(?![a-z]))?(\/)?(.*)/
+  const match = path.match(reg)
+  if (!match) {
+    return {
+      locale: normalizeLocale(null),
+      path: null,
+    }
   }
-  return localization.defaultLocale as Locale
-}
-
-export const pathLocale = (path: string): Locale => {
-  const paths = path.replace(/^\/+/, '').split('/')
-  return normalizeLocale(paths[0])
+  const locale = normalizeLocale(match[2])
+  let cleanPath = `/${locale}`
+  if (match[4]) {
+    cleanPath += `/${match[4]}`
+  }
+  return {
+    locale,
+    path: cleanPath,
+  }
 }

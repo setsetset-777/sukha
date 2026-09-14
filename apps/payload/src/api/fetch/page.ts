@@ -3,10 +3,12 @@ import { getHomeData } from '@/api/data/home'
 import { trimPath } from '@/helpers/trimPath'
 import type * as API from '@app/api/types'
 import type { SearchParams } from '@app/api/schemas'
+import type { I18n } from '@payloadcms/translations'
 
 export const fetchPage = async (
   path: string,
   params: SearchParams,
+  i18n: I18n,
 ): Promise<API.PageData | null> => {
   try {
     const { route, locale } = await resolveRoute({ path: trimPath(path) })
@@ -22,7 +24,8 @@ export const fetchPage = async (
     switch (slug) {
       case 'pageHome':
         data = await getHomeData({
-          locale,
+          locale: locale.code,
+          i18n,
         })
         return {
           slug,

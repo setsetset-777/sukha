@@ -1,20 +1,19 @@
-import { localization, normalizeLocale } from '@app/api/i18n'
+import { localeCodes, normalizePath } from '@app/api/i18n'
 import { type BasePayload, getPayload } from 'payload'
 import { cached, tags } from '@/helpers/cache'
 import { trimPath } from '@/helpers/trimPath'
 import config from '@payload-config'
-import { PageSlug } from '@app/api/types'
 import type {
   Manifest,
   RouteConfig,
-  Locale,
   Route,
   RoutedGlobalSlug,
   RoutedCollectionSlug,
   Routes,
+  Locale,
+  LocaleCode,
+  PageSlug,
 } from '@/types'
-
-const { locales } = localization
 
 export let cachedManifest: Manifest | null | undefined = null
 
@@ -61,7 +60,7 @@ const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
     })) as {
       id: string
       updatedAt: string
-      urlSlug?: Partial<Record<Locale, string>>
+      urlSlug?: Partial<Record<LocaleCode, string>>
     }
 
     routes.set(global.id, {
@@ -69,11 +68,11 @@ const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
       slug,
       type: 'global',
       updatedAt: global.updatedAt ?? undefined,
-      locales: locales.reduce<Route['locales']>(
+      locales: localeCodes.reduce<Route['locales']>(
         (acc, locale) => {
           // For home page, there is no urlSlug, we default to empty string
-          const urlSlug = (global.urlSlug && global.urlSlug[locale as Locale]) ?? ''
-          acc[locale as Locale] = {
+          const urlSlug = (global.urlSlug && global.urlSlug[locale as LocaleCode]) ?? ''
+          acc[locale as LocaleCode] = {
             path: trimPath(`/${locale}/${path || urlSlug}`),
             urlSlug,
           }
@@ -94,19 +93,22 @@ const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
         },
       })
 
+      const separator = children.isHash ? '#' : '/'
+
       for (const collection of collections.docs) {
         routes.set(collection.id, {
           id: collection.id,
           slug,
           type: 'collection',
           updatedAt: collection.updatedAt ?? undefined,
-          locales: locales.reduce<Route['locales']>(
+          locales: localeCodes.reduce<Route['locales']>(
             (acc, locale) => {
-              const urlSlug = (collection.urlSlug as Partial<Record<Locale, string>>)[
-                locale as Locale
+              const parentUrlSlug = global.urlSlug![locale as LocaleCode]
+              const urlSlug = (collection.urlSlug as Partial<Record<LocaleCode, string>>)[
+                locale as LocaleCode
               ]
-              acc[locale as Locale] = {
-                path: `/${locale}/${path || urlSlug}`,
+              acc[locale as LocaleCode] = {
+                path: `/${locale}/${parentUrlSlug}${separator}${path || urlSlug}`,
                 urlSlug,
               }
               return acc
@@ -126,37 +128,76 @@ export const resolveRoute = async ({
 }: {
   path: string
 }): Promise<{ route: Route | null; locale: Locale }> => {
-  const paths = path.replace(/^\/+/, '').split('/')
-  const locale = normalizeLocale(paths[0])
+  const { locale, path: search } = normalizePath(path)
   const routes = await getRoutes()
-  const normalLocale = normalizeLocale(locale)
+
+  const route =
+    [...routes.values()].find(
+      (route) => route.locales[locale.code as LocaleCode].path === search,
+    ) ?? null
+
   return {
-    route: [...routes.values()].find((route) => route.locales[normalLocale].path === path) ?? null,
+    route,
     locale,
   }
 }
 
 export const getRouteById = async (id: string): Promise<Route | null> => {
   const routes = await getRoutes()
+  return getRouteByIdSync(id, routes)
+}
+
+export const getRouteByIdSync = (id: string, routes: Routes): Route | null => {
   return routes.get(id) || null
 }
 
 export const getRouteBySlug = async (slug: PageSlug): Promise<Route | null> => {
   const routes = await getRoutes()
+  return getRouteBySlugSync(slug, routes)
+}
+
+export const getRouteBySlugSync = (slug: PageSlug, routes: Routes): Route | null => {
   return [...routes.values()].find((route) => route.slug === slug) ?? null
 }
 
-export const getPathBySlug = async (slug: PageSlug, locale: Locale): Promise<string | null> => {
-  const route = await getRouteBySlug(slug)
+export const getPathBySlug = async (slug: PageSlug, locale: LocaleCode): Promise<string | null> => {
+  const routes = await getRoutes()
+  return getPathBySlugSync(slug, locale, routes)
+}
+
+export const getPathBySlugSync = (
+  slug: PageSlug,
+  locale: LocaleCode,
+  routes: Routes,
+): string | null => {
+  const route = getRouteBySlugSync(slug, routes)
   if (!route) {
     return null
   }
   return getPathOfRoute(route, locale)
 }
 
-export const getPathOfRoute = (route: Route | null, locale: Locale): string | null => {
+export const getPathOfRoute = (route: Route | null, locale: LocaleCode): string | null => {
   if (!route) {
     return null
   }
   return route.locales[locale].path
+}
+
+export const getProjectsTagsUrl = async (tags: string[], locale: LocaleCode): Promise<string> => {
+  const routes = await getRoutes()
+  return getProjectsTagsUrlSync(tags, locale, routes)
+}
+
+export const getProjectsTagsUrlSync = (
+  tags: string[],
+  locale: LocaleCode,
+  routes: Routes,
+): string => {
+  const projectsUrl = getPathBySlugSync('pageProjects', locale, routes)
+  const params = new URLSearchParams()
+  tags.forEach((tag) => {
+    params.append('tag', tag)
+  })
+  return `${projectsUrl}?${params.toString()}`
 }
