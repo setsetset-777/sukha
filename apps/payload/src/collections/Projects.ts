@@ -3,7 +3,7 @@ import { urlFields } from '@/fields/urlFields'
 import { localizedLabels } from '@/i18n'
 import { invalidate, invalidatePrefix, tags } from '@/helpers/cache'
 import type { CollectionConfig } from 'payload'
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 
 export const slug = 'projects'
 
@@ -183,8 +183,8 @@ export const Projects: CollectionConfig = {
         invalidatePrefix('projects')
         invalidatePrefix('projectList')
         invalidate(tags.routes())
-        invalidate(tags.project(doc.id, req.locale as Locale))
-        invalidate(tags.partners(req.locale as Locale))
+        invalidate(tags.project(doc.id, req.locale as LocaleCode))
+        invalidate(tags.partners(req.locale as LocaleCode))
       },
     ],
   },

@@ -1,5 +1,5 @@
 import { normalizeLocale } from '@app/api/i18n'
-import { Locale } from '@/types'
+import type { LocaleCode } from '@/types'
 import * as API from '@app/api/types'
 import { LRUCache } from 'lru-cache'
 
@@ -77,16 +77,17 @@ export const invalidatePrefix = (prefix: Prefix) => {
 
 export const tags = {
   routes: () => `${prefixes.routes}`,
-  general: (locale: Locale) => `${prefixes.general}:${normalizeLocale(locale)}`,
-  project: (id: string, locale: Locale) => `${prefixes.project}:${id}:${normalizeLocale(locale)}`,
-  projects: (params: API.Projects.SearchParams, locale: Locale) =>
+  general: (locale: LocaleCode) => `${prefixes.general}:${normalizeLocale(locale)}`,
+  project: (id: string, locale: LocaleCode) =>
+    `${prefixes.project}:${id}:${normalizeLocale(locale)}`,
+  projects: (params: API.Projects.SearchParams, locale: LocaleCode) =>
     `${prefixes.projects}:${JSON.stringify(params)}:${normalizeLocale(locale)}`,
-  projectList: (params: API.Projects.SearchParams, locale: Locale) =>
+  projectList: (params: API.Projects.SearchParams, locale: LocaleCode) =>
     `${prefixes.projectList}:${JSON.stringify(params)}:${normalizeLocale(locale)}`,
-  home: (locale: Locale) => `${prefixes.home}:${normalizeLocale(locale)}`,
-  agency: (locale: Locale) => `${prefixes.agency}:${normalizeLocale(locale)}`,
-  projectTags: (locale: Locale) => `${prefixes.projectTags}:${normalizeLocale(locale)}`,
-  projectSpecs: (locale: Locale) => `${prefixes.projectSpecs}:${normalizeLocale(locale)}`,
-  contact: (locale: Locale) => `${prefixes.contact}:${normalizeLocale(locale)}`,
-  partners: (locale: Locale) => `${prefixes.partners}:${normalizeLocale(locale)}`,
+  home: (locale: LocaleCode) => `${prefixes.home}:${normalizeLocale(locale)}`,
+  agency: (locale: LocaleCode) => `${prefixes.agency}:${normalizeLocale(locale)}`,
+  projectTags: (locale: LocaleCode) => `${prefixes.projectTags}:${normalizeLocale(locale)}`,
+  projectSpecs: (locale: LocaleCode) => `${prefixes.projectSpecs}:${normalizeLocale(locale)}`,
+  contact: (locale: LocaleCode) => `${prefixes.contact}:${normalizeLocale(locale)}`,
+  partners: (locale: LocaleCode) => `${prefixes.partners}:${normalizeLocale(locale)}`,
 }

@@ -2,7 +2,7 @@ import { titleField } from '@/fields/titleField'
 import { localizedLabels } from '@/i18n'
 import { invalidate, invalidatePrefix, tags } from '@/helpers/cache'
 import type { CollectionConfig } from 'payload'
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 
 export const slug = 'projectSpecs'
 
@@ -22,7 +22,7 @@ export const ProjectSpecs: CollectionConfig = {
     afterChange: [
       async ({ req }) => {
         invalidatePrefix('project')
-        invalidate(tags.projectSpecs(req.locale as Locale))
+        invalidate(tags.projectSpecs(req.locale as LocaleCode))
       },
     ],
   },

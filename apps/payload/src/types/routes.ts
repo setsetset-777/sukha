@@ -1,4 +1,9 @@
-import type { TypedLocale, DataFromGlobalSlug, DataFromCollectionSlug } from 'payload'
+import type {
+  Locale as PayloadLocale,
+  TypedLocale as PayloadTypedLocale,
+  DataFromGlobalSlug,
+  DataFromCollectionSlug,
+} from 'payload'
 import type { PageSlug } from '@/types'
 import type * as API from '@app/api/types'
 
@@ -27,7 +32,11 @@ export type RoutedPageSlug = RoutedGlobalSlug | RoutedCollectionSlug
 
 export type RoutedPages = DataFromGlobalSlug<'pageHome'> | DataFromCollectionSlug<'projects'>
 
-export type Locale = TypedLocale
+export type LocaleCode = PayloadTypedLocale
+export type Locale = {
+  code: LocaleCode
+  label: string
+}
 
 export interface LocalizedRoute {
   path: string
@@ -40,7 +49,7 @@ export type Route = {
   parent?: PageSlug
   type: 'global' | 'collection'
   updatedAt?: string
-  locales: Record<Locale, LocalizedRoute>
+  locales: Record<LocaleCode, LocalizedRoute>
 }
 
 export type Routes = Map<string, Route>

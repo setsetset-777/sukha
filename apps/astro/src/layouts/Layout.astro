@@ -3,7 +3,7 @@ import Footer from '@/components/Footer.astro'
 import Head from '@/components/Head.astro'
 import PageLoader from '@/components/PageLoader.astro'
 import Sidebar from '@/components/Sidebar.astro'
-import { pathLocale } from '@app/api/i18n'
+import { getLocaleFromPath } from '@app/api/i18n'
 
 import type { Meta, PageSlug } from '@app/api/types'
 import { getGeneral } from '@/lib/page'
@@ -17,8 +17,8 @@ type Props = {
 
 const { meta, slug, noGeneral } = Astro.props
 
-const locale = pathLocale(Astro.url.pathname)
-const general = !noGeneral ? await getGeneral(locale) : null
+const locale = getLocaleFromPath(Astro.url.pathname)
+const general = !noGeneral ? await getGeneral(locale.code) : null
 
 const navigation = general?.navigation ?? undefined
 const footer = general?.footer ?? undefined

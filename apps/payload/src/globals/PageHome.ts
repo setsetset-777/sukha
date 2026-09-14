@@ -3,7 +3,7 @@ import { localizedLabels } from '@/i18n'
 import { titleField } from '@/fields/titleField'
 import { urlFields } from '@/fields/urlFields'
 import { invalidate, tags } from '@/helpers/cache'
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 
 export const PageHome: GlobalConfig = {
   slug: 'pageHome',
@@ -16,6 +16,15 @@ export const PageHome: GlobalConfig = {
     ...urlFields({
       value: '',
     }),
+    {
+      name: 'projectLinkLabel',
+      type: 'text',
+      label: {
+        fr: 'Label du lien vers le project',
+        en: 'Project Link Label',
+      },
+      localized: true,
+    },
   ],
   admin: {
     group: localizedLabels.groups.pages,
@@ -23,7 +32,7 @@ export const PageHome: GlobalConfig = {
   hooks: {
     afterChange: [
       async ({ req }) => {
-        invalidate(tags.home(req.locale as Locale))
+        invalidate(tags.home(req.locale as LocaleCode))
       },
     ],
   },

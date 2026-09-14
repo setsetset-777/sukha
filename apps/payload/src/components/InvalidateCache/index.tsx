@@ -40,7 +40,7 @@ export default function InvalidateCache(props: AfterListClientProps) {
   return (
     <Fragment>
       <Button buttonStyle="secondary" onClick={invalidateCache} disabled={isLoading}>
-        {t('cache:invalidate')}
+        {t('admin:cache:invalidate')}
       </Button>
       {isLoading && <LoadingOverlay />}
     </Fragment>

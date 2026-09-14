@@ -1,6 +1,6 @@
 ---
-import type { Routes } from '@app/api/types'
-import { localization, pathLocale } from '@app/api/i18n'
+import type { Routes, LocaleCode } from '@app/api/types'
+import { localization, getLocaleFromPath } from '@app/api/i18n'
 
 interface Props {
   routes?: Routes
@@ -11,7 +11,7 @@ const { routes } = Astro.props
 const { locales } = localization
 
 const { pathname } = Astro.url
-const currentLocale = pathLocale(pathname)
+const currentLocale: LocaleCode = getLocaleFromPath(pathname).code
 
 const route =
   routes &&
@@ -22,12 +22,12 @@ const route =
 
 <ul class="locales-menu">
   {
-    locales.map((locale) => (
+    locales.map(({ code, label }) => (
       <li class="locales-menu__item">
-        {locale === currentLocale ? (
-          <span>{locale}</span>
+        {code === currentLocale ? (
+          <span>{label}</span>
         ) : (
-          <a href={route ? route.locales[locale].path : `/${locale}`}>{locale}</a>
+          <a href={route ? route.locales[code as LocaleCode].path : `/${code}`}>{label}</a>
         )}
       </li>
     ))

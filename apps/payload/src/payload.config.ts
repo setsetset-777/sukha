@@ -29,7 +29,7 @@ import regenerateMedia from '@/helpers/regenerateMedia'
 import { fetchPage } from '@/api/fetch/page'
 import { fetchGeneral } from '@/api/fetch/general'
 
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 import safeProjectsParams from '@/helpers/safeProjectsParams'
 import { invalidateAll } from '@/helpers/cache'
 
@@ -88,7 +88,7 @@ export default buildConfig({
       method: 'get',
       handler: async (req) => {
         req.payload.logger.info('Hitting endpoint /general')
-        const data = await fetchGeneral(req.query.locale as Locale)
+        const data = await fetchGeneral(req.query.locale as LocaleCode, req.i18n)
         req.payload.logger.info(data, `Fetched data for general`)
 
         return Response.json({
@@ -113,7 +113,7 @@ export default buildConfig({
               limit: params.get('limit') ?? undefined,
             },
             req.payload,
-            req.locale as Locale,
+            req.locale as LocaleCode,
           )
         } catch (e) {
           return Response.json(
@@ -128,7 +128,7 @@ export default buildConfig({
         }
 
         try {
-          const data = await fetchPage(path, safeParams)
+          const data = await fetchPage(path, safeParams, req.i18n)
           req.payload.logger.info(data, `Fetched data for ${req.query.path}`)
 
           if (!data) {

@@ -6,7 +6,7 @@ export default function GoToProjects({ i18n }: ServerComponentProps) {
   const t = i18n.t as CustomTFunction
   return (
     <div>
-      <Link href="/collections/projects">{t('pageHome:adminProjectLinkLabel')}</Link>
+      <Link href="/collections/projects">{t('home:pageHome:adminProjectLinkLabel')}</Link>
     </div>
   )
 }

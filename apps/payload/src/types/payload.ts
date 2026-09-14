@@ -302,6 +302,10 @@ export interface ProjectTag {
   id: string;
   _order?: string | null;
   title: string;
+  /**
+   * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
+   */
+  urlSlug: string;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -601,6 +605,7 @@ export interface PartnersSelect<T extends boolean = true> {
 export interface ProjectTagsSelect<T extends boolean = true> {
   _order?: T;
   title?: T;
+  urlSlug?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -682,6 +687,7 @@ export interface PageHome {
    * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
    */
   urlSlug: string;
+  projectLinkLabel?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -796,6 +802,7 @@ export interface GeneralSelect<T extends boolean = true> {
 export interface PageHomeSelect<T extends boolean = true> {
   title?: T;
   urlSlug?: T;
+  projectLinkLabel?: T;
   meta?:
     | T
     | {

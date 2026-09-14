@@ -1,7 +1,7 @@
 import { localizedLabels } from '@/i18n'
-import { invalidate, invalidatePrefix, tags } from '@/helpers/cache'
+import { invalidate, tags } from '@/helpers/cache'
 import type { CollectionConfig } from 'payload'
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 
 export const slug = 'partners'
 
@@ -45,8 +45,8 @@ export const Partners: CollectionConfig = {
     afterChange: [
       async ({ req }) => {
         invalidate(tags.routes())
-        invalidate(tags.partners(req.locale as Locale))
-        invalidate(tags.agency(req.locale as Locale))
+        invalidate(tags.partners(req.locale as LocaleCode))
+        invalidate(tags.agency(req.locale as LocaleCode))
       },
     ],
   },

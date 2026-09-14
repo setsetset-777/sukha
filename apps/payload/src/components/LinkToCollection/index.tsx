@@ -10,7 +10,7 @@ export default function LinkToCollection({ i18n, siblingData, req }: ServerCompo
   const locale = req.i18n.language as TypedLocale
   return (
     <div>
-      <p>{t('linkToCollection:description', { items: labels?.plural[locale] })}</p>
+      <p>{t('admin:linkToCollection:description', { items: labels?.plural[locale] })}</p>
       <Link
         className="btn btn--style-secondary btn--size-medium"
         href={`/collections/${collectionSlug}`}

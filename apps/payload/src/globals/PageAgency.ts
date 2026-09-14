@@ -4,7 +4,7 @@ import { titleField } from '@/fields/titleField'
 import { urlFields } from '@/fields/urlFields'
 import { linkToCollectionField } from '@/fields/linkToCollectionField'
 import { invalidate, tags } from '@/helpers/cache'
-import { Locale } from '@/types'
+import { LocaleCode } from '@/types'
 
 export const PageAgency: GlobalConfig = {
   slug: 'pageAgency',
@@ -61,7 +61,7 @@ export const PageAgency: GlobalConfig = {
   hooks: {
     afterChange: [
       async ({ req }) => {
-        invalidate(tags.agency(req.locale as Locale))
+        invalidate(tags.agency(req.locale as LocaleCode))
       },
     ],
   },
