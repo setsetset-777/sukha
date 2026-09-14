@@ -1,17 +1,30 @@
 ---
+import Slider from '@/components/Slider.astro'
 import type { Home } from '@app/api/types'
 
 type Props = Home.Data
 
-const {} = Astro.props
+const { projects, slidesArialLabel } = Astro.props
 ---
 
 <div class="page">
-  <h1>Home</h1>
+  <div data-scroll-view>
+    <Slider projects={projects} slidesArialLabel={slidesArialLabel} />
+  </div>
 </div>
 
 <script></script>
 
 <style lang="scss">
   @use '../styles/utilities' as *;
+
+  .page {
+    flex-grow: 1;
+    padding-top: var(--content-padding-top);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100dvh;
+    box-sizing: border-box;
+  }
 </style>

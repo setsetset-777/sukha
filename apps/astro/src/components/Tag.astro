@@ -1,0 +1,32 @@
+---
+interface Props {
+  label: string
+  url: string
+}
+
+const { label, url } = Astro.props
+---
+
+<a class="tag" href={url}>
+  {label}
+</a>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .tag {
+    background-color: var(--color-teal-700);
+    border-radius: var(--radius-2);
+    text-transform: uppercase;
+    color: var(--color-teal-200);
+    @include transition('color, background-color');
+    padding: var(--space-2) var(--space-4);
+    text-decoration: none;
+    font-size: var(--font-size-xs);
+
+    &:hover {
+      background-color: var(--color-teal-300);
+      color: var(--color-teal-800);
+    }
+  }
+</style>

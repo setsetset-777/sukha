@@ -1,5 +1,6 @@
 ---
 import LogoMain from '@/assets/svgs/logo-main.svg'
+import ArrowDown from '@/assets/svgs/arrow-down.svg'
 import type { General, PageSlug } from '@app/api/types'
 
 interface Props {
@@ -46,6 +47,12 @@ const { navigation, slug, parentSlug } = Astro.props
         </nav>
       )
     }
+
+    <div class="actions">
+      <button class="action action__scroll" data-scroll="[data-scroll-view]">
+        <ArrowDown />
+      </button>
+    </div>
   </div>
 </aside>
 
@@ -53,29 +60,40 @@ const { navigation, slug, parentSlug } = Astro.props
   @use '../styles/utilities' as *;
 
   .sidebar {
-    padding-top: var(--content-padding-y);
-    padding-left: var(--content-padding-x);
-    padding-bottom: var(--content-padding-y);
+    padding: var(--content-padding-y) var(--content-padding-x);
     display: flex;
     flex-direction: column;
+    height: 100dvh;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    width: pxToRem(240px);
   }
 
   .container {
     flex-grow: 1;
-    display: flex;
+    display: grid;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+
+  .header {
+    grid-column: span 2;
   }
 
   .logo {
     --width: #{pxToRem(180px)};
 
     :global(svg) {
-      width: var(--width);
+      max-width: var(--width);
+      width: 100%;
     }
   }
 
   .menu {
+    align-content: end;
     &__list {
       display: flex;
       flex-direction: column;
@@ -91,6 +109,33 @@ const { navigation, slug, parentSlug } = Astro.props
 
       &:hover {
         color: var(--color-teal-950);
+      }
+    }
+  }
+
+  .actions {
+    align-content: end;
+  }
+
+  .action {
+    color: var(--color-teal-600);
+    @include transition(color);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-teal-950);
+    }
+
+    &__scroll {
+      :global(svg) {
+        pointer-events: none;
+        @include transition(transform);
+      }
+
+      &:hover {
+        :global(svg) {
+          transform: translateY(#{pxToRem(4px)});
+        }
       }
     }
   }
