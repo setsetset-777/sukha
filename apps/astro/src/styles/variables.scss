@@ -27,7 +27,8 @@ $colors: (
   }
 
   --font-size-base: #{pxToRem(16px)};
-  --font-size-xs: #{pxToRem(10px)};
+  --font-size-xxs: #{pxToRem(10px)};
+  --font-size-xs: #{pxToRem(12px)};
   --font-size-s: #{pxToRem(14px)};
   --font-size-m: #{pxToRem(16px)};
   --font-size-l: #{pxToRem(20px)};
@@ -66,4 +67,7 @@ $colors: (
   --layout-max-width: #{pxToRem(1600px)};
   --content-padding-x: var(--space-48);
   --content-padding-y: var(--space-48);
+  --content-padding-top: #{pxToRem(180px)};
+  --section-background-color-light: var(--color-teal-200);
+  --section-background-color-dark: var(--color-teal-600);
 }

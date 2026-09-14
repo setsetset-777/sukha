@@ -53,6 +53,7 @@ const footer = general?.footer ?? undefined
       if (!(target instanceof HTMLElement)) return
       if (target.closest('[data-scroll')) {
         const selector = target.dataset.scroll
+        console.log(selector)
         scrollToElement(selector)
       }
     })
@@ -81,7 +82,7 @@ const footer = general?.footer ?? undefined
     color: var(--color-teal-950);
     font-family: var(--font-family-body);
     height: 100%;
-    font-size: var(--font-size-s);
+    font-size: var(--font-size-m);
     scroll-behavior: smooth;
   }
 
@@ -109,5 +110,7 @@ const footer = general?.footer ?? undefined
 
   .main {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 </style>
