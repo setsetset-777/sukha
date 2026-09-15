@@ -91,6 +91,8 @@ const { navigation, slug, parentSlug } = Astro.props
 
   .header {
     grid-column: span 2;
+    position: sticky;
+    top: var(--layout-padding-y);
   }
 
   .logo {
@@ -104,6 +106,7 @@ const { navigation, slug, parentSlug } = Astro.props
 
   .menu {
     align-content: end;
+
     &__list {
       display: flex;
       flex-direction: column;
@@ -121,11 +124,11 @@ const { navigation, slug, parentSlug } = Astro.props
       position: relative;
 
       &:hover {
-        color: var(--color-teal-950);
+        color: var(--body-color);
       }
 
       &.active {
-        color: var(--color-teal-950);
+        color: var(--body-color);
 
         &:before {
           content: '';
@@ -157,7 +160,7 @@ const { navigation, slug, parentSlug } = Astro.props
     cursor: pointer;
 
     &:hover {
-      color: var(--color-teal-950);
+      color: var(--body-color);
     }
 
     &__scroll {

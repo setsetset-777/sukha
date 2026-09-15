@@ -53,11 +53,13 @@ const footer = general?.footer ?? undefined
 </script>
 
 <style lang="scss">
+  @use '../styles/utilities' as *;
+
   html,
   body {
     background-color: var(--color-teal-00);
-    color: var(--color-teal-950);
-    font-family: var(--font-family-body);
+    color: var(--body-color);
+    @include font();
     height: 100%;
     font-size: var(--font-size-m);
     scroll-behavior: smooth;

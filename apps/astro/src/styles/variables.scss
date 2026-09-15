@@ -37,6 +37,7 @@ $colors: (
   --font-family-heading: Urbanist, 'Helvetica Neu', Helvetica, sans-serif;
   --font-family-body: Barlow, 'Helvetica Neu', Helvetica, sans-serif;
   --font-weight-normal: 400;
+  --font-weight-medium: 500;
   --font-weight-bold: 600;
   --font-style-normal: normal;
   --font-style-italic: italic;
@@ -65,6 +66,8 @@ $colors: (
   --blur: 3px;
 
   // COMPONENTS
+  --body-color: var(--color-teal-800);
+  --heading-color: var(--color-teal-950);
   --layout-max-width: #{pxToRem(1600px)};
   --layout-padding-x: var(--space-48);
   --layout-padding-y: var(--space-48);
