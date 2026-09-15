@@ -5,6 +5,7 @@ import type {
   DataFromCollectionSlug,
   PaginatedDocs,
   Where,
+  SelectType,
 } from 'payload'
 
 interface Props<T extends CollectionSlug> {
@@ -16,6 +17,7 @@ interface Props<T extends CollectionSlug> {
     page?: number
     limit?: number
   }
+  select?: SelectType
 }
 
 export default async function listPublishedCollection<T extends CollectionSlug>({
@@ -24,6 +26,7 @@ export default async function listPublishedCollection<T extends CollectionSlug>(
   locale,
   where,
   pagination,
+  select,
 }: Props<T>): Promise<PaginatedDocs<DataFromCollectionSlug<T>>> {
   return payload.find({
     collection: slug,
@@ -38,5 +41,6 @@ export default async function listPublishedCollection<T extends CollectionSlug>(
       },
       ...where,
     },
+    select,
   })
 }

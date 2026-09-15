@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import Agency from '@/views/Agency.astro'
 import Home from '@/views/Home.astro'
 import type { PageData } from '@app/api/types'
 
@@ -14,4 +15,5 @@ const { slug, data, meta, parentSlug } = page ?? {}
 
 <Layout meta={meta} slug={slug} parentSlug={parentSlug}>
   {slug === 'pageHome' && <Home {...data} />}
+  {slug === 'pageAgency' && <Agency {...data} />}
 </Layout>

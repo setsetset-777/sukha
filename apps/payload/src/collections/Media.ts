@@ -11,6 +11,11 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'credit',
+      type: 'relationship',
+      relationTo: 'partners',
+    },
   ],
   upload: {
     staticDir: 'media',

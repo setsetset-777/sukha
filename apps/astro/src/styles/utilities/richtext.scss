@@ -1,5 +1,8 @@
 .payload-richtext {
-  p {
-    margin-bottom: var(--space-8);
+  p,
+  ul {
+    &:not(:last-child) {
+      margin-bottom: var(--space-16);
+    }
   }
 }

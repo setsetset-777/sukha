@@ -176,6 +176,11 @@ export const Projects: CollectionConfig = {
       },
       hasMany: true,
     },
+    {
+      name: 'photoCredit',
+      type: 'relationship',
+      relationTo: 'partners',
+    },
   ],
   hooks: {
     afterChange: [

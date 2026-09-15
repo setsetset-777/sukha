@@ -170,6 +170,7 @@ export interface User {
 export interface Media {
   id: string;
   alt: string;
+  credit?: (string | null) | Partner;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -234,6 +235,35 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners".
+ */
+export interface Partner {
+  id: string;
+  _order?: string | null;
+  name: string;
+  job?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  url?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
@@ -290,6 +320,15 @@ export interface Project {
       }[]
     | null;
   before?: (string | Media)[] | null;
+  photoCredit?: (string | null) | Partner;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -306,35 +345,6 @@ export interface ProjectTag {
    * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
    */
   urlSlug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "partners".
- */
-export interface Partner {
-  id: string;
-  _order?: string | null;
-  name?: string | null;
-  job?: string | null;
-  text?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  url?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -470,6 +480,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  credit?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -580,6 +591,14 @@ export interface ProjectsSelect<T extends boolean = true> {
         id?: T;
       };
   before?: T;
+  photoCredit?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -728,11 +747,19 @@ export interface PageAgency {
     };
     [k: string]: unknown;
   } | null;
-  partners?: {
-    title?: string | null;
+  partners: {
+    title: string;
     collectionLink?: {
       slug?: string | null;
     };
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
   };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
@@ -755,6 +782,14 @@ export interface PageProject {
   collectionLink?: {
     slug?: string | null;
   };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -773,6 +808,14 @@ export interface PageContact {
   address?: string | null;
   email?: string | null;
   phone?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -835,6 +878,13 @@ export interface PageAgencySelect<T extends boolean = true> {
               slug?: T;
             };
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -855,6 +905,13 @@ export interface PageProjectsSelect<T extends boolean = true> {
     | {
         slug?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -870,6 +927,13 @@ export interface PageContactSelect<T extends boolean = true> {
   address?: T;
   email?: T;
   phone?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

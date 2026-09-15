@@ -28,39 +28,61 @@ const { navigation, slug, parentSlug } = Astro.props
       navigation?.menu && (
         <nav class="menu">
           <ul class="menu__list" data-menu>
-            {navigation?.menu.map(({ title, url, slug: itemSlug }) => (
-              <li class="menu__item">
-                <a
-                  class:list={[
-                    'menu__link',
-                    (slug === itemSlug || parentSlug === itemSlug) && 'active',
-                  ]}
-                  href={url}
-                  data-menu-item
-                  data-slug={itemSlug}
-                >
-                  {title}
-                </a>
-              </li>
-            ))}
+            {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
+              const isActive = slug === itemSlug || parentSlug === itemSlug
+              const hasParent = !!parentSlug
+              return (
+                <li class="menu__item">
+                  <a
+                    class:list={['menu__link', isActive && 'active']}
+                    href={url}
+                    data-menu-item
+                    data-slug={itemSlug}
+                  >
+                    <span>{title}</span>
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </nav>
       )
     }
 
     <div class="actions">
-      <button class="action action__scroll" data-scroll="[data-scroll-view]">
+      <button class="action action__scroll">
         <ArrowDown />
       </button>
     </div>
   </div>
 </aside>
 
+<script>
+  const initScrollButton = () => {
+    const buttonSelector = '.action__scroll'
+    const targetSelector = '[data-scroll-view]'
+
+    const target = document.querySelector(targetSelector)
+
+    if (!target) {
+      return
+    }
+
+    const button = document.querySelector<HTMLButtonElement>(buttonSelector)
+
+    button?.setAttribute('data-scroll', targetSelector)
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initScrollButton()
+  })
+</script>
+
 <style lang="scss">
   @use '../styles/utilities' as *;
 
   .sidebar {
-    padding: var(--content-padding-y) var(--content-padding-x);
+    padding: var(--layout-padding-y) var(--layout-padding-x);
     display: flex;
     flex-direction: column;
     height: 100dvh;
@@ -68,6 +90,7 @@ const { navigation, slug, parentSlug } = Astro.props
     position: sticky;
     top: 0;
     width: pxToRem(240px);
+    flex-shrink: 0;
   }
 
   .container {
@@ -104,11 +127,35 @@ const { navigation, slug, parentSlug } = Astro.props
     }
 
     &__link {
+      display: block;
       color: var(--color-teal-600);
       text-decoration: none;
+      @include transition('color, transform');
+      position: relative;
 
       &:hover {
         color: var(--color-teal-950);
+      }
+
+      &.active {
+        color: var(--color-teal-950);
+
+        &:before {
+          content: '';
+          display: block;
+          width: pxToRem(12px);
+          height: pxToRem(1px);
+          background-color: var(--color-teal-600);
+          position: absolute;
+          bottom: 0.5em;
+          right: calc(100% + var(--space-8));
+        }
+      }
+
+      &:not(.active) {
+        &:hover {
+          // transform: translateX(4px);
+        }
       }
     }
   }
@@ -136,6 +183,10 @@ const { navigation, slug, parentSlug } = Astro.props
         :global(svg) {
           transform: translateY(#{pxToRem(4px)});
         }
+      }
+
+      &:not([data-scroll]) {
+        display: none;
       }
     }
   }

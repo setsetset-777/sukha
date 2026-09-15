@@ -1,0 +1,24 @@
+---
+import type { Partner } from '@app/api/types'
+
+type Props = Partner
+
+const { name, job, url, text } = Astro.props
+---
+
+<div class="partner">
+  <div class="header">
+    <h4 class="name">{name}</h4>
+    {job && <h5 class="job">{job}</h5>}
+  </div>
+  <div class="content">
+    {text && <div class="text" set:html={text} />}
+    {
+      url && (
+        <a class="url" href={url}>
+          {url}
+        </a>
+      )
+    }
+  </div>
+</div>

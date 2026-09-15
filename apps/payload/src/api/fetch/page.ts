@@ -1,5 +1,8 @@
 import { resolveRoute } from '@/helpers/routes'
 import { getHomeData } from '@/api/data/home'
+import { getAgencyData } from '@/api/data/agency'
+import { getContactData } from '@/api/data/contact'
+import { getProjectsData } from '@/api/data/projects'
 import { trimPath } from '@/helpers/trimPath'
 import type * as API from '@app/api/types'
 import type { SearchParams } from '@app/api/schemas'
@@ -24,6 +27,36 @@ export const fetchPage = async (
     switch (slug) {
       case 'pageHome':
         data = await getHomeData({
+          locale: locale.code,
+          i18n,
+        })
+        return {
+          slug,
+          ...data,
+        }
+
+      case 'pageAgency':
+        data = await getAgencyData({
+          locale: locale.code,
+          i18n,
+        })
+        return {
+          slug,
+          ...data,
+        }
+
+      case 'pageProjects':
+        data = await getProjectsData({
+          locale: locale.code,
+          i18n,
+        })
+        return {
+          slug,
+          ...data,
+        }
+
+      case 'pageContact':
+        data = await getContactData({
           locale: locale.code,
           i18n,
         })
