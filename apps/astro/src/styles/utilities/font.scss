@@ -1,29 +1,30 @@
-@mixin font-menu-large {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-xxl);
-  color: inherit;
+@mixin font($family: body, $size: m, $weight: normal) {
+  font-family: var(--font-family-#{$family});
+  font-weight: var(--font-weight-#{$weight});
+  font-size: var(--font-size-#{$size});
 }
 
-@mixin font-heading-1 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-xxxl);
-  color: inherit;
-}
+$heading-size-map: (
+  1: (
+    size: xxl,
+    weight: medium,
+  ),
+  2: (
+    size: xl,
+    weight: medium,
+  ),
+  3: (
+    size: l,
+    weight: medium,
+  ),
+  4: (
+    size: m,
+    weight: medium,
+  ),
+);
 
-@mixin font-heading-2 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-xl);
-  color: inherit;
-}
-
-@mixin font-heading-3 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-l);
-  color: inherit;
-}
-
-@mixin font-heading-4 {
-  font-family: var(--font-family-heading);
-  font-size: var(--font-size-m);
-  color: inherit;
+@mixin heading($h: 4) {
+  $size: map-get($heading-size-map, $h);
+  @include font($family: heading, $size: map-get($size, size), $weight: map-get($size, weight));
+  color: var(--heading-color);
 }

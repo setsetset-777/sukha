@@ -1,8 +1,6 @@
 ---
 import type { Agency } from '@app/api/types'
 import Image from '@/components/Image.astro'
-import Partner from '@/components/Partner.astro'
-import H1 from '@/components/H1.astro'
 
 type Props = Agency.Data
 
@@ -10,8 +8,8 @@ const { title, image, name, job, text, partners } = Astro.props
 ---
 
 <div class="page">
-  <section class="title">
-    <H1 title={title} />
+  <section class="header">
+    <h1 class="title">{title}</h1>
   </section>
   <div class="body">
     <section class="hero">
@@ -97,6 +95,10 @@ const { title, image, name, job, text, partners } = Astro.props
       gap: var(--section-gap);
     }
 
+    .title {
+      @include heading(1);
+    }
+
     .hero {
       position: relative;
       @include bleed(dark);
@@ -123,8 +125,7 @@ const { title, image, name, job, text, partners } = Astro.props
     }
 
     .name {
-      font-family: var(--font-family-heading);
-      font-size: var(--font-size-xl);
+      @include heading(2);
       color: var(--color-teal-50);
     }
 
@@ -155,9 +156,7 @@ const { title, image, name, job, text, partners } = Astro.props
 
       &__title {
         @extend .grid;
-        font-family: var(--font-family-heading);
-        font-weight: var(--font-weight-bold);
-        font-size: var(--font-size-xl);
+        @include heading(2);
 
         span {
           grid-column-start: 2;
@@ -182,9 +181,7 @@ const { title, image, name, job, text, partners } = Astro.props
       }
 
       &__name {
-        font-family: var(--font-family-heading);
-        font-weight: var(--font-weight-bold);
-        font-size: var(--font-size-l);
+        @include heading(3);
       }
 
       &__job {
@@ -203,7 +200,7 @@ const { title, image, name, job, text, partners } = Astro.props
         @include transition(color);
 
         &:hover {
-          color: var(--color-teal-950);
+          color: var(--body-color);
         }
       }
     }

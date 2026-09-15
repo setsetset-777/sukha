@@ -38,10 +38,11 @@ export const initScrollButton = (buttonSelector: string) => {
 
   const observer = new IntersectionObserver(
     ([entry]) => {
-      if (entry.isIntersecting) {
-        button?.setAttribute('data-scroll', targetSelector)
-      } else {
+      console.log(entry)
+      if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
         button?.removeAttribute('data-scroll')
+      } else {
+        button?.setAttribute('data-scroll', targetSelector)
       }
     },
     {

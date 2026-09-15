@@ -92,9 +92,11 @@ const {
             inert
             data-slider-pause
           >
-            <a href={url} class="title">
-              <h3>{title}</h3>
-            </a>
+            <h3>
+              <a href={url} class="title">
+                {title}
+              </a>
+            </h3>
             {tags.length > 0 && (
               <ul class="tags">
                 {tags.map(({ label, url }) => (
@@ -278,13 +280,13 @@ const {
     }
 
     .title {
-      font-family: var(--font-family-heading);
+      @include heading(4);
       text-decoration: none;
       color: var(--color-teal-600);
       @include transition(color);
 
       &:hover {
-        color: var(--color-teal-950);
+        color: var(--body-color);
       }
     }
 
