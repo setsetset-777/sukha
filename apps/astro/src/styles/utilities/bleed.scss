@@ -1,5 +1,18 @@
-@mixin bleed {
-  width: 100dvw;
-  left: 50%;
-  transform: translateX(-50%);
+@mixin bleed($color: light) {
+  position: relative;
+
+  & > * {
+    position: relative;
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    background-color: var(--section-background-color-#{$color});
+    position: absolute;
+    width: 100dvw;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
 }

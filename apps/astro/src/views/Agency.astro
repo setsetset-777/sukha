@@ -99,6 +99,7 @@ const { title, image, name, job, text, partners } = Astro.props
 
     .hero {
       position: relative;
+      @include bleed(dark);
 
       &__inner {
         position: relative;
@@ -108,17 +109,6 @@ const { title, image, name, job, text, partners } = Astro.props
         align-items: end;
         padding-bottom: var(--space-48);
         padding-right: var(--layout-padding-x);
-      }
-
-      &:before {
-        content: '';
-        display: block;
-        background-color: var(--color-teal-600);
-        position: absolute;
-        width: 100dvw;
-        top: 0;
-        left: 0;
-        bottom: 0;
       }
     }
 
