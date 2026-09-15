@@ -58,23 +58,10 @@ const { navigation, slug, parentSlug } = Astro.props
 </aside>
 
 <script>
-  const initScrollButton = () => {
-    const buttonSelector = '.action__scroll'
-    const targetSelector = '[data-scroll-view]'
-
-    const target = document.querySelector(targetSelector)
-
-    if (!target) {
-      return
-    }
-
-    const button = document.querySelector<HTMLButtonElement>(buttonSelector)
-
-    button?.setAttribute('data-scroll', targetSelector)
-  }
+  import { initScrollButton } from '@/lib/scroll'
 
   document.addEventListener('astro:page-load', () => {
-    initScrollButton()
+    initScrollButton('.action__scroll')
   })
 </script>
 
@@ -166,7 +153,7 @@ const { navigation, slug, parentSlug } = Astro.props
 
   .action {
     color: var(--color-teal-600);
-    @include transition(color);
+    @include transition('color, opacity');
     cursor: pointer;
 
     &:hover {
@@ -186,7 +173,8 @@ const { navigation, slug, parentSlug } = Astro.props
       }
 
       &:not([data-scroll]) {
-        display: none;
+        opacity: 0;
+        pointer-events: none;
       }
     }
   }

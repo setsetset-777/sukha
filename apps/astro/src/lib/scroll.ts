@@ -22,3 +22,36 @@ export const initScrollHash = () => {
     scrollToElement(selector)
   }
 }
+
+export const initScrollButton = (buttonSelector: string) => {
+  const targetSelector = '[data-scroll-view]'
+
+  const target = document.querySelector(targetSelector)
+
+  if (!target) {
+    return
+  }
+
+  const sentinel = document.createElement('span')
+  sentinel.classList.add('scroll-sentinel')
+  target.prepend(sentinel)
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        button?.setAttribute('data-scroll', targetSelector)
+      } else {
+        button?.removeAttribute('data-scroll')
+      }
+    },
+    {
+      threshold: 0,
+    },
+  )
+
+  observer.observe(sentinel)
+
+  const button = document.querySelector<HTMLButtonElement>(buttonSelector)
+
+  button?.setAttribute('data-scroll', targetSelector)
+}
