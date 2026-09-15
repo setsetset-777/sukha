@@ -28,16 +28,22 @@ const { text, logoAlt, routes } = Astro.props
   .footer {
     background-color: var(--color-teal-800);
     color: var(--color-teal-300);
-    padding: var(--content-padding-y) var(--content-padding-x);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .container {
+    padding: var(--layout-padding-y) var(--layout-padding-x);
     position: relative;
     display: flex;
     gap: var(--space-64);
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
+    max-width: var(--layout-max-width);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .sukha {

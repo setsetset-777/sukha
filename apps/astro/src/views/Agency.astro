@@ -1,0 +1,221 @@
+---
+import type { Agency } from '@app/api/types'
+import Image from '@/components/Image.astro'
+import Partner from '@/components/Partner.astro'
+import H1 from '@/components/H1.astro'
+
+type Props = Agency.Data
+
+const { title, image, name, job, text, partners } = Astro.props
+---
+
+<div class="page">
+  <section class="title">
+    <H1 title={title} />
+  </section>
+  <div class="body">
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="image" data-scroll-view>
+          {
+            image && (
+              <Image
+                src={image.url}
+                alt={image.alt}
+                srcset={{
+                  '800w': image.sizes?.[2000]?.url!,
+                  '1200w': image.sizes?.[3000]?.url!,
+                }}
+                fetchpriority="high"
+                loading="eager"
+                decoding="async"
+                fit="contain"
+              />
+            )
+          }
+        </div>
+        <div class="info">
+          {name && <h3 class="name">{name}</h3>}
+          {job && <h4 class="job">{job}</h4>}
+        </div>
+      </div>
+    </section>
+    {
+      text && (
+        <section class="text">
+          <div class="text__inner" set:html={text} />
+        </section>
+      )
+    }
+    {
+      partners.list.length > 0 && (
+        <section class="partners">
+          <h3 class="partners__title">
+            <span>{partners.title}</span>
+          </h3>
+          <div class="partners__list">
+            {partners.list.map(({ name, job, url, text }) => (
+              <article class="partner">
+                <div class="partner__header">
+                  <h4 class="partner__name">{name}</h4>
+                  {job && <h5 class="partner__job">{job}</h5>}
+                </div>
+                <div class="partner__body">
+                  {text && <div class="partner__text" set:html={text} />}
+                  {url && (
+                    <a class="partner__link" href={url}>
+                      {url}
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .page {
+    --grid-column-left-width: #{pxToRem(240px)};
+    --base-gap: var(--space-48);
+    --section-gap: var(--space-64);
+
+    padding-top: var(--content-padding-top);
+    padding-bottom: var(--content-padding-bottom);
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap);
+
+    .body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--section-gap);
+    }
+
+    .hero {
+      position: relative;
+
+      &__inner {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        gap: var(--base-gap);
+        align-items: end;
+        padding-bottom: var(--space-48);
+        padding-right: var(--layout-padding-x);
+      }
+
+      &:before {
+        content: '';
+        display: block;
+        background-color: var(--color-teal-600);
+        position: absolute;
+        width: 100dvw;
+        top: 0;
+        left: 0;
+        bottom: 0;
+      }
+    }
+
+    .image {
+      width: pxToRem(420px);
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .name {
+      font-family: var(--font-family-heading);
+      font-size: var(--font-size-xl);
+      color: var(--color-teal-50);
+    }
+
+    .job {
+      color: var(--color-teal-200);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: var(--grid-column-left-width) 1fr;
+      gap: var(--base-gap);
+    }
+
+    .text {
+      @extend .grid;
+      padding-right: var(--layout-padding-x);
+
+      &__inner {
+        grid-column-start: 2;
+        max-width: pxToRem(640px);
+      }
+    }
+
+    .partners {
+      display: flex;
+      flex-direction: column;
+      gap: var(--base-gap);
+
+      &__title {
+        @extend .grid;
+        font-family: var(--font-family-heading);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-xl);
+
+        span {
+          grid-column-start: 2;
+        }
+      }
+
+      &__list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--base-gap);
+      }
+    }
+
+    .partner {
+      @extend .grid;
+
+      &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: var(--space-4);
+      }
+
+      &__name {
+        font-family: var(--font-family-heading);
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-l);
+      }
+
+      &__job {
+        color: var(--color-teal-600);
+      }
+
+      &__body {
+        max-width: pxToRem(400px);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-8);
+      }
+
+      &__link {
+        color: var(--color-teal-600);
+        @include transition(color);
+
+        &:hover {
+          color: var(--color-teal-950);
+        }
+      }
+    }
+  }
+</style>

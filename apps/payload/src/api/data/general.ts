@@ -20,7 +20,7 @@ export const getGeneralData = async ({ locale, i18n }: Props): Promise<API.Gener
 
     const [routes, general] = await Promise.all([
       getRoutes(),
-      payload.findGlobal({ slug: 'general', draft: false }),
+      payload.findGlobal({ slug: 'general', locale, draft: false }),
     ])
 
     const serviceItems = []

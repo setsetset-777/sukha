@@ -47,6 +47,7 @@ export const PageAgency: GlobalConfig = {
           type: 'text',
           label: localizedLabels.fields.title,
           localized: true,
+          required: true,
         },
         linkToCollectionField({ slug: 'partners', label: '' }),
       ],

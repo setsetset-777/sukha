@@ -57,6 +57,7 @@ $colors: (
   --space-64: #{pxToRem(64px)};
   --space-80: #{pxToRem(80px)};
   --space-128: #{pxToRem(128px)};
+  --space-160: #{pxToRem(160px)};
 
   --radius-1: #{pxToRem(1px)};
   --radius-2: #{pxToRem(2px)};
@@ -65,9 +66,10 @@ $colors: (
 
   // COMPONENTS
   --layout-max-width: #{pxToRem(1600px)};
-  --content-padding-x: var(--space-48);
-  --content-padding-y: var(--space-48);
-  --content-padding-top: #{pxToRem(180px)};
+  --layout-padding-x: var(--space-48);
+  --layout-padding-y: var(--space-48);
+  --content-padding-top: var(--space-160);
+  --content-padding-bottom: var(--space-80);
   --section-background-color-light: var(--color-teal-200);
   --section-background-color-dark: var(--color-teal-600);
 }

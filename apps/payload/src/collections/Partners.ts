@@ -22,6 +22,7 @@ export const Partners: CollectionConfig = {
       type: 'text',
       label: localizedLabels.fields.name,
       localized: true,
+      required: true,
     },
     {
       name: 'job',

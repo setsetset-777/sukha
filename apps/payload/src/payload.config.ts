@@ -74,8 +74,8 @@ export default buildConfig({
   sharp,
   plugins: [
     seoPlugin({
-      collections: [],
-      globals: ['pageHome'],
+      collections: ['projects'],
+      globals: ['pageHome', 'pageAgency', 'pageContact', 'pageProjects'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `[BRand]. — ${doc.title}`,
       generateDescription: () => '',

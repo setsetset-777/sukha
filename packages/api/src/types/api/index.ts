@@ -5,6 +5,7 @@ export * from './agency'
 export * from './projects'
 export * from './project'
 export * from './contact'
+export * from './partner'
 
 import type { Home } from './home'
 import type { Agency } from './agency'
