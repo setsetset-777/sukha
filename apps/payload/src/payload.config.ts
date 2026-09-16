@@ -32,6 +32,7 @@ import { fetchGeneral } from '@/api/fetch/general'
 import { LocaleCode } from '@/types'
 import safeProjectsParams from '@/helpers/safeProjectsParams'
 import { invalidateAll } from '@/helpers/cache'
+import { fetchProjects } from './api/fetch/projects'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -141,6 +142,61 @@ export default buildConfig({
           })
         } catch (e) {
           console.error(`Error retrieving page for ${path}`, e)
+          return Response.json(
+            {
+              ok: false,
+              message: e instanceof Error ? e.message : String(e),
+            },
+            {
+              status: 500,
+            },
+          )
+        }
+      },
+    },
+    {
+      path: '/projects-list',
+      method: 'get',
+      handler: async (req) => {
+        req.payload.logger.info('Hiiting endpoint /projects')
+
+        let params = new URLSearchParams(req.search)
+        let safeParams
+
+        try {
+          safeParams = await safeProjectsParams(
+            {
+              tag: params.getAll('tag'),
+              page: params.get('page') ?? undefined,
+              limit: params.get('limit') ?? undefined,
+            },
+            req.payload,
+            req.locale as LocaleCode,
+          )
+        } catch (e) {
+          return Response.json(
+            {
+              ok: false,
+              message: e instanceof Error ? e.message : String(e),
+            },
+            {
+              status: 400,
+            },
+          )
+        }
+
+        try {
+          const data = await fetchProjects({
+            locale: req.locale as LocaleCode,
+            params: safeParams,
+          })
+
+          return Response.json({
+            ok: true,
+            ...data,
+          })
+        } catch (e) {
+          console.error(`Error retrieving projects`, e)
           return Response.json(
             {
               ok: false,

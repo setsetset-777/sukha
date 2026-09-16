@@ -1,0 +1,81 @@
+---
+import Image from '@/components/Image.astro'
+import type { Projects } from '@app/api/types'
+
+type Props = Projects.Project
+
+const { url, image, title } = Astro.props
+---
+
+<a href={url} class="project-list-item" data-project-list-item>
+  <div class="project-list-item__image">
+    {image && (
+      <Image
+        src={image.url}
+        alt={image.alt}
+        srcset={{
+          '400w': image.sizes?.[500]?.url!,
+          '800w': image.sizes?.[1000]?.url!,
+        }}
+        noBackground={true}
+      />
+    )}
+  </div>
+  <div class="project-list-item__info">
+    <span class="project-list-item__title">{title}</span>
+  </div>
+</a>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .project-list-item {
+    $root: &;
+
+    @include bleed();
+    display: flex;
+    gap: var(--space-24);
+    padding-bottom: var(--project-item-padding);
+    align-items: end;
+    text-decoration: none;
+
+    &__image {
+      height: var(--project-item-height);
+      position: relative;
+      border-radius: var(--radius-1);
+      overflow: hidden;
+
+      :global(img) {
+        background-blend-mode: luminosity;
+        @include transition(filter);
+      }
+    }
+
+    &__info {
+      max-width: pxToRem(240px);
+    }
+
+    &__title {
+      @include heading(3);
+      color: var(--color-teal-700);
+      @include transition(color);
+    }
+
+    &:hover {
+      @include bleed(dark);
+
+      #{$root} {
+        &__title {
+          color: var(--color-teal-200);
+        }
+
+        &__image {
+          :global(img) {
+            mix-blend-mode: luminosity;
+            filter: grayscale(1);
+          }
+        }
+      }
+    }
+  }
+</style>

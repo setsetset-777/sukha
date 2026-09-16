@@ -1,0 +1,265 @@
+---
+import type { Projects } from '@app/api/types'
+import ProjectList from '@/components/ProjectList.astro'
+import ProjectListSkeleton from '@/components/ProjectListSkeleton.astro'
+import ProjectListMore from '@/components/ProjectListMore.astro'
+import FilterSvg from '@/assets/svgs/filter.svg'
+import CloseSvg from '@/assets/svgs/close.svg'
+
+type Props = Projects.Data
+
+const { title, tags, list, moreLabel } = Astro.props
+---
+
+<div class="page">
+  <section class="header">
+    <h1 class="title">{title}</h1>
+  </section>
+  <div class="body">
+    <div class="filters">
+      <FilterSvg />
+      <fieldset class="filters__fieldset" data-slider-field>
+        <ul class="filters__list">
+          {tags.map(({ label, slug }) => (
+            <li class="filters__item filter">
+              <input
+                class="filter__input"
+                type="checkbox"
+                id={slug}
+                name="projects-tag"
+                value={slug}
+              />
+              <label for={slug} class="filter__label">
+                <span class="filter__unselect" aria-hidden>
+                  <CloseSvg />
+                </span>
+                <span class="filter__text">{label}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </fieldset>
+    </div>
+    <div
+      class="projects"
+      id="projects"
+      aria-live="polite"
+      data-more={list.hasNextPage ? 'true' : undefined}
+      data-state={list.totalDocs > 0 ? 'idle' : 'empty'}
+    >
+      <div class="projects__list" data-projects-loader-list>
+        <ProjectList projects={list.docs} />
+        {Array.from({ length: 3 }).map(() => (
+          <div class="loader">
+            <ProjectListSkeleton />
+          </div>
+        ))}
+      </div>
+      <div class="empty">Aucun projets trouvés</div>
+      <div class="more">
+        <ProjectListMore label={moreLabel} />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import ProjectLoader from '../lib/ProjectsLoader'
+
+  const checkName = 'projects-tag'
+
+  function onPageLoad() {
+    initTagsChecked()
+    initLoader()
+  }
+
+  function initLoader() {
+    const element = document.querySelector<HTMLElement>('#projects')
+
+    if (!element) return
+
+    const loader = new ProjectLoader({ element })
+
+    loader.init()
+
+    document.querySelector('[data-slider-field]')?.addEventListener('change', async (e) => {
+      if (!(e.currentTarget instanceof HTMLElement)) return
+
+      const tags = Array.from(
+        e.currentTarget.querySelectorAll<HTMLInputElement>(`input[name="${checkName}"]:checked`),
+      ).map((item) => item.value)
+
+      await loader.fetch({ tags })
+    })
+  }
+
+  function initTagsChecked() {
+    const url = new URL(window.location.href)
+    const tags = url.searchParams.getAll('tag')
+
+    Array.from(document.querySelectorAll<HTMLInputElement>(`input[name="${checkName}"]`)).forEach(
+      (input) => {
+        input.checked = !!tags?.includes(input.value)
+      },
+    )
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    onPageLoad()
+  })
+</script>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .page {
+    padding-top: var(--content-padding-top);
+    padding-bottom: var(--content-padding-bottom);
+    display: flex;
+    flex-direction: column;
+    gap: var(--page-gap);
+
+    .body {
+      display: flex;
+      flex-direction: row;
+      gap: var(--content-gap-row);
+      align-items: start;
+    }
+
+    .title {
+      @include heading(1);
+    }
+
+    .filters {
+      position: sticky;
+      top: calc(
+        var(--content-padding-top) + var(--font-size-xxl) * var(--font-height-heading) +
+          var(--page-gap)
+      );
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      min-width: pxToRem(240px);
+      padding-bottom: var(--content-padding-bottom);
+
+      &__list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-8);
+      }
+    }
+  }
+
+  .filter {
+    $filter: &;
+
+    --padding-left: var(--space-8);
+    --padding-right: var(--space-16);
+    --padding-y: var(--space-2);
+    --svg-size: #{pxToRem(16px)};
+    --gap: var(--space-8);
+    --left-position: calc(-1 * (var(--padding-left) + var(--svg-size) + var(--gap)));
+
+    position: relative;
+
+    &__label {
+      position: relative;
+      left: var(--left-position);
+      padding: var(--padding-y) var(--padding-right) var(--padding-y) var(--padding-left);
+      display: inline-flex;
+      gap: var(--gap);
+      align-items: center;
+      @include transition(background-color);
+      border-radius: var(--radius-1);
+
+      &:hover {
+        background-color: var(--color-teal-200);
+      }
+    }
+
+    &__input {
+      display: none;
+
+      &:checked + #{$filter}__label {
+        background-color: var(--color-teal-200);
+        cursor: pointer;
+
+        #{$filter}__unselect {
+          opacity: 1;
+        }
+      }
+
+      &:not(checked) + #{$filter}__label {
+        #{$filter}__unselect {
+          opacity: 0;
+        }
+      }
+    }
+
+    &__unselect {
+      display: flex;
+      @include transition(opacity);
+    }
+
+    &__text {
+      display: flex;
+      cursor: pointer;
+    }
+  }
+
+  .empty {
+  }
+
+  .loader {
+    grid-column: span var(--project-list-item-span);
+
+    &:nth-of-type(n + 2) {
+      display: none;
+    }
+  }
+
+  .more {
+    @include transition(opacity);
+  }
+
+  .projects {
+    --gap: var(--space-80);
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+    }
+
+    &[data-state^='loading'] {
+      .more {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+    }
+
+    &:not([data-state='empty']) {
+      .empty {
+        display: none;
+      }
+    }
+
+    &:not([data-state^='loading']) {
+      .loader {
+        display: none;
+      }
+    }
+
+    &:not([data-more]) {
+      .more {
+        display: none;
+      }
+    }
+
+    &[data-state='loading'] {
+      & :global(.project-list-item) {
+        display: none;
+      }
+    }
+  }
+</style>

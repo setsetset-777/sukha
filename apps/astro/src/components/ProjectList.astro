@@ -1,0 +1,16 @@
+---
+import ProjectListItem from './ProjectListItem.astro'
+import type { Projects } from '@app/api/types'
+
+interface Props {
+  projects: Projects.List['docs']
+}
+
+const { projects } = Astro.props
+---
+
+<Fragment>
+  {projects.map((project) => {
+    return <ProjectListItem {...project} />
+  })}
+</Fragment>

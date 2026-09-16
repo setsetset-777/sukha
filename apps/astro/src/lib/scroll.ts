@@ -38,7 +38,6 @@ export const initScrollButton = (buttonSelector: string) => {
 
   const observer = new IntersectionObserver(
     ([entry]) => {
-      console.log(entry)
       if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
         button?.removeAttribute('data-scroll')
       } else {

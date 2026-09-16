@@ -15,22 +15,20 @@ const { title, image, name, job, text, partners } = Astro.props
     <section class="hero">
       <div class="hero__inner">
         <div class="image" data-scroll-view>
-          {
-            image && (
-              <Image
-                src={image.url}
-                alt={image.alt}
-                srcset={{
-                  '800w': image.sizes?.[2000]?.url!,
-                  '1200w': image.sizes?.[3000]?.url!,
-                }}
-                fetchpriority="high"
-                loading="eager"
-                decoding="async"
-                fit="contain"
-              />
-            )
-          }
+          {image && (
+            <Image
+              src={image.url}
+              alt={image.alt}
+              srcset={{
+                '800w': image.sizes?.[2000]?.url!,
+                '1200w': image.sizes?.[3000]?.url!,
+              }}
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
+              fit="contain"
+            />
+          )}
         </div>
         <div class="info">
           {name && <h3 class="name">{name}</h3>}
@@ -38,40 +36,36 @@ const { title, image, name, job, text, partners } = Astro.props
         </div>
       </div>
     </section>
-    {
-      text && (
-        <section class="text">
-          <div class="text__inner" set:html={text} />
-        </section>
-      )
-    }
-    {
-      partners.list.length > 0 && (
-        <section class="partners">
-          <h3 class="partners__title">
-            <span>{partners.title}</span>
-          </h3>
-          <div class="partners__list">
-            {partners.list.map(({ name, job, url, text }) => (
-              <article class="partner">
-                <div class="partner__header">
-                  <h4 class="partner__name">{name}</h4>
-                  {job && <h5 class="partner__job">{job}</h5>}
-                </div>
-                <div class="partner__body">
-                  {text && <div class="partner__text" set:html={text} />}
-                  {url && (
-                    <a class="partner__link" href={url}>
-                      {url}
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )
-    }
+    {text && (
+      <section class="text">
+        <div class="text__inner" set:html={text} />
+      </section>
+    )}
+    {partners.list.length > 0 && (
+      <section class="partners">
+        <h3 class="partners__title">
+          <span>{partners.title}</span>
+        </h3>
+        <div class="partners__list">
+          {partners.list.map(({ name, job, url, text }) => (
+            <article class="partner">
+              <div class="partner__header">
+                <h4 class="partner__name">{name}</h4>
+                {job && <h5 class="partner__job">{job}</h5>}
+              </div>
+              <div class="partner__body">
+                {text && <div class="partner__text" set:html={text} />}
+                {url && (
+                  <a class="partner__link" href={url}>
+                    {url}
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
   </div>
 </div>
 
@@ -87,7 +81,7 @@ const { title, image, name, job, text, partners } = Astro.props
     padding-bottom: var(--content-padding-bottom);
     display: flex;
     flex-direction: column;
-    gap: var(--section-gap);
+    gap: var(--page-gap);
 
     .body {
       display: flex;

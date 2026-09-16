@@ -779,6 +779,7 @@ export interface PageProject {
   backLinkLabel?: string | null;
   beforeLabel?: string | null;
   specsLabel?: string | null;
+  moreLabel?: string | null;
   collectionLink?: {
     slug?: string | null;
   };
@@ -900,6 +901,7 @@ export interface PageProjectsSelect<T extends boolean = true> {
   backLinkLabel?: T;
   beforeLabel?: T;
   specsLabel?: T;
+  moreLabel?: T;
   collectionLink?:
     | T
     | {

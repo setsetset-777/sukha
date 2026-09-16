@@ -1,0 +1,21 @@
+---
+import Action from '@/components/Action.astro'
+
+interface Props {
+  label?: string
+}
+
+const { label } = Astro.props
+---
+
+<div class="project-list-more" data-projects-loader-more>
+  <Action label={label} type="right" />
+</div>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .project-list-more {
+    margin-top: var(--space-48);
+  }
+</style>
