@@ -1,15 +1,33 @@
-import type { PaginatedDocs } from '../shared'
+import type { Media, PaginatedDocs } from '../shared'
 
 export namespace Projects {
-  export interface Project {}
+  export interface Project {
+    title: string
+    image?: Media
+    url?: string
+  }
 
   export interface SearchParams {
-    service?: string[]
+    tag?: string[]
     limit?: number
     page?: number
   }
 
-  export interface Data {}
+  interface Tag {
+    label: string
+    slug: string
+  }
+
+  export interface Data {
+    title: string
+    urlSlug: string
+    backLinkLabel?: string
+    beforeLabel?: string
+    specsLabel?: string
+    moreLabel?: string
+    tags: Tag[]
+    list: List
+  }
 
   export type List = PaginatedDocs<Project>
 }

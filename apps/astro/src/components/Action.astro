@@ -1,0 +1,44 @@
+---
+import ArrowRightSvg from '@/assets/svgs/arrow-right.svg'
+
+type Props = {
+  label?: string
+  href?: string
+  type?: 'right' | null
+  className?: string
+}
+
+const { label, className, href, type } = Astro.props
+
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag href={href} class:list={[className]}>
+  {type === 'right' && <ArrowRightSvg />}
+  <span>{label}</span>
+</Tag>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  a,
+  button {
+    --color-dark: var(--color-teal-600);
+    --color-light: var(--color-teal-200);
+
+    display: inline-flex;
+    border: var(--color-dark) solid 1px;
+    border-radius: var(--radius-1);
+    padding: var(--space-8) var(--space-16);
+    gap: var(--space-8);
+    align-items: center;
+    color: var(--color-dark);
+    @include transition('color, background-color');
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-light);
+      background-color: var(--color-dark);
+    }
+  }
+</style>

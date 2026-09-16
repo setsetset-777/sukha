@@ -1,0 +1,29 @@
+---
+import api from '@app/api'
+import ProjectList from '@/components/ProjectList.astro'
+
+const params = new URLSearchParams(Astro.url.search)
+const tagName = 'tag'
+
+const tags = params.getAll(tagName) ?? undefined
+const page = params.get('page') ?? undefined
+const limit = params.get('limit') ?? undefined
+
+const req = await api.projects({ [tagName]: tags, page, limit })
+
+if (!req) {
+  Astro.response.status = 404
+  return
+}
+
+const { docs, hasNextPage, totalDocs, totalPages, page: currentPage } = req
+
+Astro.response.headers.set('Has-More', String(hasNextPage))
+Astro.response.headers.set('Total-Docs', String(totalDocs))
+Astro.response.headers.set('Total-Pages', String(totalPages))
+Astro.response.headers.set('Current-Page', String(currentPage))
+
+export const partial = true
+---
+
+<ProjectList projects={docs} />

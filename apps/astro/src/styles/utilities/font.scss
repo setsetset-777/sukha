@@ -29,4 +29,5 @@ $heading-size-map: (
   $size: map.get($heading-size-map, $h);
   @include font($family: heading, $size: map.get($size, size), $weight: map.get($size, weight));
   color: var(--heading-color);
+  line-height: var(--font-height-heading);
 }

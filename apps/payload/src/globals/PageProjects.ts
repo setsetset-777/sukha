@@ -41,6 +41,15 @@ export const PageProjects: GlobalConfig = {
       },
       localized: true,
     },
+    {
+      name: 'moreLabel',
+      type: 'text',
+      label: {
+        en: 'Label for load more button',
+        fr: "Énoncé pour le bouton 'Charger plus de projects'",
+      },
+      localized: true,
+    },
     linkToCollectionField({ slug: 'projects' }),
   ],
   admin: {

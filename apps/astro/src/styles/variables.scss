@@ -41,6 +41,7 @@ $colors: (
   --font-weight-bold: 600;
   --font-style-normal: normal;
   --font-style-italic: italic;
+  --font-height-heading: 1.4;
 
   --ease-time-short: 150ms;
   --ease-time-medium: 300ms;
@@ -66,6 +67,7 @@ $colors: (
   --blur: 3px;
 
   // COMPONENTS
+  --page-gap: var(--space-64);
   --body-color: var(--color-teal-800);
   --heading-color: var(--color-teal-950);
   --layout-max-width: #{pxToRem(1600px)};
@@ -73,6 +75,12 @@ $colors: (
   --layout-padding-y: var(--space-48);
   --content-padding-top: var(--space-160);
   --content-padding-bottom: var(--space-80);
+  --content-gap-row: var(--space-48);
+  --content-gap-col: var(--space-48);
   --section-background-color-light: var(--color-teal-200);
   --section-background-color-dark: var(--color-teal-600);
+  --section-background-color-gray: var(--color-teal-50);
+  --project-item-height: #{pxToRem(400px)};
+  --project-item-padding: var(--space-48);
+  --project-item-gap: var(--space-48);
 }
