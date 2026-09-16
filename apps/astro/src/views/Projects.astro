@@ -211,8 +211,6 @@ const { title, tags, list, moreLabel } = Astro.props
   }
 
   .loader {
-    grid-column: span var(--project-list-item-span);
-
     &:nth-of-type(n + 2) {
       display: none;
     }
@@ -241,24 +239,28 @@ const { title, tags, list, moreLabel } = Astro.props
     &:not([data-state='empty']) {
       .empty {
         display: none;
+        opacity: 0;
       }
     }
 
     &:not([data-state^='loading']) {
       .loader {
         display: none;
+        opacity: 0;
       }
     }
 
     &:not([data-more]) {
       .more {
         display: none;
+        opacity: 0;
       }
     }
 
     &[data-state='loading'] {
       & :global(.project-list-item) {
         display: none;
+        opacity: 0;
       }
     }
   }
