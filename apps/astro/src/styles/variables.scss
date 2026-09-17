@@ -80,7 +80,9 @@ $colors: (
   --section-background-color-light: var(--color-teal-200);
   --section-background-color-dark: var(--color-teal-600);
   --section-background-color-gray: var(--color-teal-50);
+  --section-padding-bottom: var(--space-48);
   --project-item-height: #{pxToRem(400px)};
-  --project-item-padding: var(--space-48);
+  --project-item-padding: var(--section-padding-bottom);
   --project-item-gap: var(--space-48);
+  --image-background-color: var(--color-teal-100);
 }

@@ -32,16 +32,24 @@ export const initScrollButton = (buttonSelector: string) => {
     return
   }
 
+  const showButton = () => button?.setAttribute('data-scroll', targetSelector)
+  const hideButton = () => button?.removeAttribute('data-scroll')
+
   const sentinel = document.createElement('span')
   sentinel.classList.add('scroll-sentinel')
   target.prepend(sentinel)
 
-  const observer = new IntersectionObserver(
+  const footer = document.querySelector('footer.footer')
+  let isHidden = false
+
+  const sentinelObserver = new IntersectionObserver(
     ([entry]) => {
       if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
-        button?.removeAttribute('data-scroll')
+        hideButton()
+        isHidden = true
       } else {
-        button?.setAttribute('data-scroll', targetSelector)
+        showButton()
+        isHidden = false
       }
     },
     {
@@ -49,7 +57,24 @@ export const initScrollButton = (buttonSelector: string) => {
     },
   )
 
-  observer.observe(sentinel)
+  const footerObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        hideButton()
+      } else if (!isHidden) {
+        showButton()
+      }
+    },
+    {
+      threshold: 0,
+    },
+  )
+
+  sentinelObserver.observe(sentinel)
+
+  if (footer) {
+    footerObserver.observe(footer)
+  }
 
   const button = document.querySelector<HTMLButtonElement>(buttonSelector)
 

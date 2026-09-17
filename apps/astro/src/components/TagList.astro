@@ -1,0 +1,31 @@
+---
+import Tag from '@/components/Tag.astro'
+import type { Tag as TagType } from '@app/api/types'
+
+interface Props {
+  tags: TagType[]
+}
+
+const { tags } = Astro.props
+
+if (!tags || tags.length <= 0) return
+---
+
+<ul class="tag-list">
+  {tags.map(({ label, url }) => (
+    <li>
+      <Tag label={label} url={url} />
+    </li>
+  ))}
+</ul>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: var(--space-8);
+  }
+</style>

@@ -1,17 +1,82 @@
 ---
 import type { Project } from '@app/api/types'
 import Image from '@/components/Image.astro'
+import Action from '@/components/Action.astro'
+import TagList from '@/components/TagList.astro'
+import Gallery from '@/components/Gallery.astro'
 
 type Props = Project.Data
 
-const { title } = Astro.props
+const { title, image, place, tags, text, backLink, gallery, existing } = Astro.props
 ---
 
 <div class="page">
   <div class="header">
     <h1 class="title">{title}</h1>
   </div>
-  <div class="body"></div>
+
+  <div class="body">
+    <section class="image">
+      {image && (
+        <Image
+          src={image.url}
+          alt={image.alt}
+          srcset={{
+            '1200w': image.sizes?.[2000]?.url!,
+            '2400w': image.sizes?.[3000]?.url!,
+          }}
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+          width={image.width}
+          height={image.height}
+          fit="contain"
+        />
+      )}
+    </section>
+
+    <section class="info" data-scroll-view>
+      <div class="info__header">
+        {place && <h3 class="place">{place}</h3>}
+
+        <TagList tags={tags} />
+      </div>
+      <div class="info__content">{text && <div class="text" set:html={text} />}</div>
+      <div class="info__footer">
+        {backLink && <Action label={backLink.label} href={backLink.url} type="left" />}
+      </div>
+    </section>
+
+    <Gallery images={gallery} />
+
+    {existing && existing.images.length > 0 && (
+      <section class="existing">
+        <h3 class="existing__title">{existing.label}</h3>
+        <div class="existing__gallery">
+          {existing.images.map(
+            (image) =>
+              image && (
+                <div class="existing__image">
+                  <Image
+                    src={image.url}
+                    alt={image.alt}
+                    srcset={{
+                      '600w': image.sizes?.[1000]?.url!,
+                      '1200w': image.sizes?.[2000]?.url!,
+                    }}
+                    loading="lazy"
+                    decoding="async"
+                    fit="contain"
+                    width={image.width}
+                    height={image.height}
+                  />
+                </div>
+              ),
+          )}
+        </div>
+      </section>
+    )}
+  </div>
 </div>
 
 <style lang="scss">
@@ -22,6 +87,7 @@ const { title } = Astro.props
 
     padding-top: var(--content-padding-top);
     padding-bottom: var(--content-padding-bottom);
+    padding-right: var(--layout-padding-x);
     display: flex;
     flex-direction: column;
     gap: var(--page-gap);
@@ -35,5 +101,61 @@ const { title } = Astro.props
 
   .title {
     @include heading(1);
+  }
+
+  .image {
+    @include bleed;
+    padding-bottom: var(--section-padding-bottom);
+    max-height: 100dvh;
+
+    :global(img) {
+      position: relative;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    align-items: start;
+    max-width: #{pxToRem(600px)};
+
+    &__header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      align-items: start;
+    }
+  }
+
+  .place {
+    @include heading(3);
+    color: var(--body-color);
+  }
+
+  .existing {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-24);
+
+    &__title {
+      @include heading(3);
+    }
+
+    &__gallery {
+      @include bleed();
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-24);
+      padding-bottom: var(--section-padding-bottom);
+    }
+
+    &__image {
+      position: relative;
+      mix-blend-mode: luminosity;
+      filter: grayscale(1);
+      height: pxToRem(360px);
+      --image-background-color: var(--color-teal-300);
+    }
   }
 </style>

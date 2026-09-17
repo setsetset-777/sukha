@@ -4,6 +4,7 @@
   font-family: var(--font-family-#{$family});
   font-weight: var(--font-weight-#{$weight});
   font-size: var(--font-size-#{$size});
+  color: var(--#{$family}-color);
 }
 
 $heading-size-map: (
@@ -28,6 +29,5 @@ $heading-size-map: (
 @mixin heading($h: 4) {
   $size: map.get($heading-size-map, $h);
   @include font($family: heading, $size: map.get($size, size), $weight: map.get($size, weight));
-  color: var(--heading-color);
   line-height: var(--font-height-heading);
 }
