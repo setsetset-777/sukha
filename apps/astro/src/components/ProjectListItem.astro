@@ -18,6 +18,7 @@ const { url, image, title } = Astro.props
           '800w': image.sizes?.[1000]?.url!,
         }}
         noBackground={true}
+        fit="contain"
       />
     )}
   </div>
