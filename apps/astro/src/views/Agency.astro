@@ -20,13 +20,15 @@ const { title, image, name, job, text, partners } = Astro.props
               src={image.url}
               alt={image.alt}
               srcset={{
-                '800w': image.sizes?.[2000]?.url!,
-                '1200w': image.sizes?.[3000]?.url!,
+                '600w': image.sizes?.[1000]?.url!,
+                '1200w': image.sizes?.[2000]?.url!,
               }}
               fetchpriority="high"
               loading="eager"
               decoding="async"
               fit="contain"
+              width={image.width}
+              height={image.height}
             />
           )}
         </div>
@@ -110,6 +112,7 @@ const { title, image, name, job, text, partners } = Astro.props
 
     .image {
       width: pxToRem(420px);
+      --image-background-color: var(--color-teal-700);
     }
 
     .info {

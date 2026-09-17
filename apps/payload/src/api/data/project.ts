@@ -27,7 +27,7 @@ export const getProjectData = async ({
         config,
       })
 
-      const [routes, general, project, pageProjects] = await Promise.all([
+      const [routes, general, project] = await Promise.all([
         getRoutes(),
         payload.findGlobal({ slug: 'general', locale }),
         payload.findByID({
@@ -36,7 +36,6 @@ export const getProjectData = async ({
           id,
           draft: false,
         }),
-        payload.findGlobal({ slug: 'pageProjects', locale, draft: false }),
       ])
 
       const { meta, title, mainImage, place, tags, text, gallery, existing, specs, credit } =
@@ -69,7 +68,7 @@ export const getProjectData = async ({
           gallery:
             gallery?.map(({ image, fullwidth, description }) => ({
               image: image as Media,
-              fullwidth: fullwidth ?? undefined,
+              fullWidth: fullwidth ?? undefined,
               description: description ?? undefined,
             })) || [],
           existing:

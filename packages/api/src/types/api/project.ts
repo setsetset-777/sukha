@@ -2,10 +2,12 @@ import { Media } from '../shared'
 import { Tag } from '.'
 
 export namespace Project {
+  export type Gallery = GalleryItem[]
+
   export interface GalleryItem {
     image: Media
-    fullwidth?: boolean
-    descrption?: string
+    fullWidth?: boolean
+    description?: string
   }
 
   export interface Spec {
@@ -23,7 +25,7 @@ export namespace Project {
       label?: string
       url: string
     }
-    gallery: GalleryItem[]
+    gallery: Gallery
     existing?: {
       label?: string
       images: Media[]

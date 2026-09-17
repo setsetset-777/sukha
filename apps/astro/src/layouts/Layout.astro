@@ -45,11 +45,12 @@ const footer = general?.footer ?? undefined
 
 <script>
   import { initScrollHash, initScrollClicks } from '@/lib/scroll'
+  initScrollClicks()
+
   document.addEventListener('astro:page-load', () => {
     initScrollHash()
+    document.documentElement.classList.add('is-loaded')
   })
-
-  initScrollClicks()
 </script>
 
 <style lang="scss">
@@ -62,6 +63,9 @@ const footer = general?.footer ?? undefined
     @include font();
     height: 100%;
     font-size: var(--font-size-m);
+  }
+
+  html.is-loaded {
     scroll-behavior: smooth;
   }
 
@@ -99,5 +103,6 @@ const footer = general?.footer ?? undefined
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 </style>

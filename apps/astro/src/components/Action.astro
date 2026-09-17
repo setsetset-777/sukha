@@ -1,10 +1,11 @@
 ---
 import ArrowRightSvg from '@/assets/svgs/arrow-right.svg'
+import ArrowLeftSvg from '@/assets/svgs/arrow-left.svg'
 
 type Props = {
   label?: string
   href?: string
-  type?: 'right' | null
+  type?: 'right' | 'left' | null
   className?: string
 }
 
@@ -15,6 +16,7 @@ const Tag = href ? 'a' : 'button'
 
 <Tag href={href} class:list={[className]}>
   {type === 'right' && <ArrowRightSvg />}
+  {type === 'left' && <ArrowLeftSvg />}
   <span>{label}</span>
 </Tag>
 
@@ -35,6 +37,7 @@ const Tag = href ? 'a' : 'button'
     color: var(--color-dark);
     @include transition('color, background-color');
     cursor: pointer;
+    text-decoration: none;
 
     &:hover {
       color: var(--color-light);

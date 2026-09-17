@@ -14,10 +14,9 @@ const { url, image, title } = Astro.props
         src={image.url}
         alt={image.alt}
         srcset={{
-          '400w': image.sizes?.[500]?.url!,
-          '800w': image.sizes?.[1000]?.url!,
+          '600w': image.sizes?.[1000]?.url!,
+          '1200w': image.sizes?.[2000]?.url!,
         }}
-        noBackground={true}
         fit="contain"
       />
     )}
@@ -75,6 +74,7 @@ const { url, image, title } = Astro.props
           :global(img) {
             mix-blend-mode: luminosity;
             filter: grayscale(1);
+            --image-background-color: transparent;
           }
         }
       }

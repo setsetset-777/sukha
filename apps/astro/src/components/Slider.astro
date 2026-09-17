@@ -1,6 +1,6 @@
 ---
 import Image from '@/components/Image.astro'
-import Tag from '@/components/Tag.astro'
+import TagList from '@/components/TagList.astro'
 import ChevronLeft from '@/assets/svgs/chevron-left.svg'
 import ChevronRight from '@/assets/svgs/chevron-right.svg'
 import type { Home } from '@app/api/types'
@@ -25,32 +25,30 @@ const {
 <div class="slider" aria-label={slidesArialLabel} data-slider>
   <div class="main">
     <div class="slides" aria-live="polite">
-      {
-        projects.map(({ image }, index) => (
-          <div
-            class="slide"
-            data-slider-item
-            data-slider-active="false"
-            aria-hidden="true"
-            data-slider-ariable
-            inert
-          >
-            {image && (
-              <Image
-                src={image.url}
-                alt={image.alt}
-                srcset={{
-                  '800w': image.sizes?.[2000]?.url!,
-                  '1200w': image.sizes?.[3000]?.url!,
-                }}
-                fetchpriority="high"
-                loading="eager"
-                decoding="async"
-              />
-            )}
-          </div>
-        ))
-      }
+      {projects.map(({ image }, index) => (
+        <div
+          class="slide"
+          data-slider-item
+          data-slider-active="false"
+          aria-hidden="true"
+          data-slider-ariable
+          inert
+        >
+          {image && (
+            <Image
+              src={image.url}
+              alt={image.alt}
+              srcset={{
+                '800w': image.sizes?.[2000]?.url!,
+                '1200w': image.sizes?.[3000]?.url!,
+              }}
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
+            />
+          )}
+        </div>
+      ))}
     </div>
     <div class="remote">
       <div class="controls">
@@ -58,16 +56,14 @@ const {
           <ChevronLeft />
         </button>
         <ul class="control-list">
-          {
-            Array.from(Array(projects.length)).map((_, index) => (
-              <button
-                class="control-list__item"
-                aria-label={`${controlAriaLabel} ${index + 1}`}
-                data-slider-goto={index}
-                data-slider-active="false"
-              />
-            ))
-          }
+          {Array.from(Array(projects.length)).map((_, index) => (
+            <button
+              class="control-list__item"
+              aria-label={`${controlAriaLabel} ${index + 1}`}
+              data-slider-goto={index}
+              data-slider-active="false"
+            />
+          ))}
         </ul>
         <button class="control control__next" data-slider-next aria-label={nextAriaLabel}>
           <ChevronRight />
@@ -81,34 +77,24 @@ const {
       <span>{`${projects.length}`.padStart(2, '0')}</span>
     </div>
     <div class="cards" aria-live="polite">
-      {
-        projects.map(({ title, url, tags }, index) => (
-          <article
-            class="card"
-            data-slider-card
-            data-slider-active="false"
-            aria-hidden="true"
-            data-slider-ariable
-            inert
-            data-slider-pause
-          >
-            <h3>
-              <a href={url} class="title">
-                {title}
-              </a>
-            </h3>
-            {tags.length > 0 && (
-              <ul class="tags">
-                {tags.map(({ label, url }) => (
-                  <li>
-                    <Tag label={label} url={url} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </article>
-        ))
-      }
+      {projects.map(({ title, url, tags }, index) => (
+        <article
+          class="card"
+          data-slider-card
+          data-slider-active="false"
+          aria-hidden="true"
+          data-slider-ariable
+          inert
+          data-slider-pause
+        >
+          <h3>
+            <a href={url} class="title">
+              {title}
+            </a>
+          </h3>
+          <TagList tags={tags} />
+        </article>
+      ))}
     </div>
   </div>
 </div>
