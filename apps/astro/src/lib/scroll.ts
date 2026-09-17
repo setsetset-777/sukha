@@ -1,7 +1,7 @@
 export const scrollToElement = (selector?: string) => {
   if (!selector) return
   const target = document.querySelector(selector)
-  target?.scrollIntoView()
+  target?.scrollIntoView({ behavior: 'smooth' })
 }
 
 export const initScrollClicks = () => {
