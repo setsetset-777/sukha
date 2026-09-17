@@ -31,7 +31,7 @@ export const getProjectsData = async ({
         config,
       })
 
-      const [pageProjects, projectTags, projects] = await Promise.all([
+      const [pageProjects, projectTags, projects, general] = await Promise.all([
         payload.findGlobal({
           slug: 'pageProjects',
           locale,
@@ -42,10 +42,13 @@ export const getProjectsData = async ({
           locale,
           params,
         }),
+        payload.findGlobal({
+          slug: 'general',
+          locale,
+        }),
       ])
 
-      const { meta, title, urlSlug, backLinkLabel, beforeLabel, specsLabel, moreLabel } =
-        pageProjects
+      const { meta, title, urlSlug } = pageProjects
       const t = i18n.t as CustomTFunction
 
       // filter down tags for which no projects exists
@@ -66,6 +69,8 @@ export const getProjectsData = async ({
       )
       const tags = tagsWithProjectslength.filter(({ length }) => length > 0)
 
+      const { moreLabel } = general.misc ?? {}
+
       return {
         meta: {
           title: meta?.title ?? undefined,
@@ -75,9 +80,6 @@ export const getProjectsData = async ({
         data: {
           title,
           urlSlug,
-          backLinkLabel: backLinkLabel ?? undefined,
-          beforeLabel: beforeLabel ?? undefined,
-          specsLabel: specsLabel ?? undefined,
           moreLabel: moreLabel ?? undefined,
           tags: tags.map(({ title, urlSlug }) => {
             return {

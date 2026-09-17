@@ -301,10 +301,10 @@ export interface Project {
   tags?: (string | ProjectTag)[] | null;
   specs?:
     | {
-        title?: string | null;
+        spec?: (string | null) | ProjectSpec;
         values?:
           | {
-              item?: string | null;
+              item: string;
               id?: string | null;
             }[]
           | null;
@@ -319,8 +319,8 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
-  before?: (string | Media)[] | null;
-  photoCredit?: (string | null) | Partner;
+  existing?: (string | Media)[] | null;
+  credit?: (string | null) | Partner;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -573,7 +573,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   specs?:
     | T
     | {
-        title?: T;
+        spec?: T;
         values?:
           | T
           | {
@@ -590,8 +590,8 @@ export interface ProjectsSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
-  before?: T;
-  photoCredit?: T;
+  existing?: T;
+  credit?: T;
   meta?:
     | T
     | {
@@ -692,6 +692,28 @@ export interface General {
   footer?: {
     text?: string | null;
   };
+  misc?: {
+    /**
+     * Displayed on a project page
+     */
+    backLinkLabel?: string | null;
+    /**
+     * Displayed on a project page
+     */
+    moreLabel?: string | null;
+    /**
+     * Displayed on a project page
+     */
+    existingLabel?: string | null;
+    /**
+     * Displayed on a project page
+     */
+    specsLabel?: string | null;
+    /**
+     * Displayed on a project page
+     */
+    creditsLabel?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -776,10 +798,6 @@ export interface PageProject {
    * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
    */
   urlSlug: string;
-  backLinkLabel?: string | null;
-  beforeLabel?: string | null;
-  specsLabel?: string | null;
-  moreLabel?: string | null;
   collectionLink?: {
     slug?: string | null;
   };
@@ -834,6 +852,15 @@ export interface GeneralSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
+      };
+  misc?:
+    | T
+    | {
+        backLinkLabel?: T;
+        moreLabel?: T;
+        existingLabel?: T;
+        specsLabel?: T;
+        creditsLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -898,10 +925,6 @@ export interface PageAgencySelect<T extends boolean = true> {
 export interface PageProjectsSelect<T extends boolean = true> {
   title?: T;
   urlSlug?: T;
-  backLinkLabel?: T;
-  beforeLabel?: T;
-  specsLabel?: T;
-  moreLabel?: T;
   collectionLink?:
     | T
     | {

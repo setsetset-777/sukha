@@ -1,4 +1,5 @@
 import { Media } from '../shared'
+import { Tag } from '.'
 
 export namespace Home {
   export interface Project {
@@ -6,10 +7,7 @@ export namespace Home {
     image: Media
     title: string
     url: string
-    tags: Array<{
-      label: string
-      url: string
-    }>
+    tags: Array<Tag>
   }
 
   export interface Data {

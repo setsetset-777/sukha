@@ -14,42 +14,6 @@ export const PageProjects: GlobalConfig = {
   fields: [
     titleField(),
     ...urlFields({ source: 'title', slug: 'pageProjects' }),
-    {
-      name: 'backLinkLabel',
-      type: 'text',
-      label: {
-        en: 'Back link label',
-        fr: 'Énoncé du lien de retour',
-      },
-      localized: true,
-    },
-    {
-      name: 'beforeLabel',
-      type: 'text',
-      label: {
-        en: 'Label for before section',
-        fr: "Énoncé pour section 'Avant'",
-      },
-      localized: true,
-    },
-    {
-      name: 'specsLabel',
-      type: 'text',
-      label: {
-        en: 'Label for specifications section',
-        fr: "Énoncé pour section 'Spécifications'",
-      },
-      localized: true,
-    },
-    {
-      name: 'moreLabel',
-      type: 'text',
-      label: {
-        en: 'Label for load more button',
-        fr: "Énoncé pour le bouton 'Charger plus de projects'",
-      },
-      localized: true,
-    },
     linkToCollectionField({ slug: 'projects' }),
   ],
   admin: {

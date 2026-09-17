@@ -58,7 +58,10 @@ export default buildConfig({
     supportedLanguages: { en, fr },
     translations: customTranslations,
   },
-  localization,
+  localization: {
+    ...localization,
+    fallback: true,
+  },
   globals: [General, PageHome, PageAgency, PageProjects, PageContact],
   collections: [Users, Media, Projects, Partners, ProjectTags, ProjectSpecs],
   routes: {

@@ -24,30 +24,28 @@ const { navigation, slug, parentSlug } = Astro.props
       </a>
     </div>
 
-    {
-      navigation?.menu && (
-        <nav class="menu">
-          <ul class="menu__list" data-menu>
-            {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
-              const isActive = slug === itemSlug || parentSlug === itemSlug
-              const hasParent = !!parentSlug
-              return (
-                <li class="menu__item">
-                  <a
-                    class:list={['menu__link', isActive && 'active']}
-                    href={url}
-                    data-menu-item
-                    data-slug={itemSlug}
-                  >
-                    <span>{title}</span>
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
-      )
-    }
+    {navigation?.menu && (
+      <nav class="menu">
+        <ul class="menu__list" data-menu>
+          {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
+            const isActive = slug === itemSlug || parentSlug === itemSlug
+            const hasParent = !!parentSlug
+            return (
+              <li class="menu__item">
+                <a
+                  class:list={['menu__link', isActive && 'active']}
+                  href={url}
+                  data-menu-item
+                  data-slug={itemSlug}
+                >
+                  <span>{title}</span>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </nav>
+    )}
 
     <div class="actions">
       <button class="action action__scroll">
@@ -70,6 +68,7 @@ const { navigation, slug, parentSlug } = Astro.props
 
   .sidebar {
     padding: var(--layout-padding-y) var(--layout-padding-x);
+    padding-bottom: var(--content-padding-bottom);
     display: flex;
     flex-direction: column;
     height: 100dvh;

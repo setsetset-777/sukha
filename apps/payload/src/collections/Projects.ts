@@ -71,16 +71,54 @@ export const Projects: CollectionConfig = {
       relationTo: 'projectTags',
       hasMany: true,
     },
+    // {
+    //   name: 'specs',
+    //   type: 'array',
+    //   label: localizedLabels.collections.projectSpecs?.plural,
+    //   fields: [
+    //     {
+    //       name: 'title',
+    //       type: 'text',
+    //       label: localizedLabels.fields.title,
+    //       localized: true,
+    //     },
+    //     {
+    //       name: 'values',
+    //       type: 'array',
+    //       labels: {
+    //         singular: {
+    //           en: 'Value',
+    //           fr: 'Valeur',
+    //         },
+    //         plural: {
+    //           en: 'Values',
+    //           fr: 'Valeurs',
+    //         },
+    //       },
+    //       localized: true,
+    //       fields: [
+    //         {
+    //           name: 'item',
+    //           type: 'text',
+    //           label: {
+    //             en: 'Value',
+    //             fr: 'Valeur',
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       name: 'specs',
       type: 'array',
       label: localizedLabels.collections.projectSpecs?.plural,
       fields: [
         {
-          name: 'title',
-          type: 'text',
+          name: 'spec',
+          type: 'relationship',
           label: localizedLabels.fields.title,
-          localized: true,
+          relationTo: 'projectSpecs',
         },
         {
           name: 'values',
@@ -95,7 +133,6 @@ export const Projects: CollectionConfig = {
               fr: 'Valeurs',
             },
           },
-          localized: true,
           fields: [
             {
               name: 'item',
@@ -104,6 +141,8 @@ export const Projects: CollectionConfig = {
                 en: 'Value',
                 fr: 'Valeur',
               },
+              localized: true,
+              required: true,
             },
           ],
         },
@@ -167,17 +206,17 @@ export const Projects: CollectionConfig = {
       ],
     },
     {
-      name: 'before',
+      name: 'existing',
       type: 'upload',
       relationTo: 'media',
       label: {
-        en: 'Before gallery ',
-        fr: 'Gallerie avant',
+        en: 'Existing gallery ',
+        fr: 'Gallerie existant',
       },
       hasMany: true,
     },
     {
-      name: 'photoCredit',
+      name: 'credit',
       type: 'relationship',
       relationTo: 'partners',
     },

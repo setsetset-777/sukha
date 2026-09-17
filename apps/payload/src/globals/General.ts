@@ -64,6 +64,101 @@ export const General: GlobalConfig = {
         },
       ],
     },
+    {
+      name: 'misc',
+      type: 'group',
+      label: {
+        en: 'Miscellaneous',
+        fr: 'Divers',
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'backLinkLabel',
+              type: 'text',
+              label: {
+                en: 'Back link label',
+                fr: 'Énoncé du lien de retour',
+              },
+              localized: true,
+              admin: {
+                description: {
+                  en: 'Displayed on a project page',
+                  fr: 'Affiché sur une page projet',
+                },
+              },
+            },
+            {
+              name: 'moreLabel',
+              type: 'text',
+              label: {
+                en: 'Label for load more button',
+                fr: "Énoncé pour bouton 'Charger plus de projects'",
+              },
+              localized: true,
+              admin: {
+                description: {
+                  en: 'Displayed on a project page',
+                  fr: 'Affiché sur une page projet',
+                },
+              },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'existingLabel',
+              type: 'text',
+              label: {
+                en: "Label for section 'Existing'",
+                fr: "Énoncé pour section 'Existant'",
+              },
+              localized: true,
+              admin: {
+                description: {
+                  en: 'Displayed on a project page',
+                  fr: 'Affiché sur une page projet',
+                },
+              },
+            },
+            {
+              name: 'specsLabel',
+              type: 'text',
+              label: {
+                en: "Label for section 'Specifications'",
+                fr: "Énoncé pour section 'Spécifications'",
+              },
+              localized: true,
+              admin: {
+                description: {
+                  en: 'Displayed on a project page',
+                  fr: 'Affiché sur une page projet',
+                },
+              },
+            },
+          ],
+        },
+        {
+          name: 'creditsLabel',
+          type: 'text',
+          label: {
+            en: "Label for section 'Credits'",
+            fr: "Énoncé pour section 'Crédits'",
+          },
+          localized: true,
+          admin: {
+            description: {
+              en: 'Displayed on a project page',
+              fr: 'Affiché sur une page projet',
+            },
+          },
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [
