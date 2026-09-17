@@ -49,7 +49,6 @@ const footer = general?.footer ?? undefined
 
   document.addEventListener('astro:page-load', () => {
     initScrollHash()
-    document.documentElement.classList.add('is-loaded')
   })
 </script>
 
@@ -63,10 +62,6 @@ const footer = general?.footer ?? undefined
     @include font();
     height: 100%;
     font-size: var(--font-size-m);
-  }
-
-  html.is-loaded {
-    scroll-behavior: smooth;
   }
 
   body {
