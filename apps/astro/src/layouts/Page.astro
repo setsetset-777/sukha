@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro'
 import Home from '@/views/Home.astro'
 import Agency from '@/views/Agency.astro'
 import Projects from '@/views/Projects.astro'
+import Project from '@/views/Project.astro'
 import type { PageData } from '@app/api/types'
 
 interface Props {
@@ -18,4 +19,5 @@ const { slug, data, meta, parentSlug } = page ?? {}
   {slug === 'pageHome' && <Home {...data} />}
   {slug === 'pageAgency' && <Agency {...data} />}
   {slug === 'pageProjects' && <Projects {...data} />}
+  {slug === 'projects' && <Project {...data} />}
 </Layout>
