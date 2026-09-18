@@ -4,9 +4,10 @@ import type { Media, Project } from '@app/api/types'
 
 interface Props {
   images: Project.Gallery
+  credit: Project.Credit
 }
 
-const { images } = Astro.props
+const { images, credit } = Astro.props
 const gallery: Array<Project.GalleryItem[]> = []
 
 images.forEach((image) => {
@@ -30,54 +31,62 @@ images.forEach((image) => {
 ---
 
 <div class="gallery">
-  {gallery.map((images) => {
-    return (
-      <div class="row">
-        {images.map(
-          ({ fullWidth, image, description }) =>
-            image && (
-              <div
-                class:list={['image', fullWidth && 'image--full']}
-                style={
-                  images.length > 1 && image.width && image.height
-                    ? `--gallery-aspect-ratio: ${image.width / image.height}`
-                    : undefined
-                }
-              >
-                {fullWidth ? (
-                  <Fragment>
+  <div class="gallery__list">
+    {gallery.map((images) => {
+      return (
+        <div class="gallery__row">
+          {images.map(
+            ({ fullWidth, image, description }) =>
+              image && (
+                <div
+                  class:list={['gallery__image', fullWidth && 'gallery__image--full']}
+                  style={
+                    images.length > 1 && image.width && image.height
+                      ? `--gallery-aspect-ratio: ${image.width / image.height}`
+                      : undefined
+                  }
+                >
+                  {fullWidth ? (
+                    <Fragment>
+                      <Image
+                        src={image.url}
+                        alt={image.alt}
+                        srcset={{
+                          '800w': image.sizes?.[1000]?.url!,
+                          '1600w': image.sizes?.[2000]?.url!,
+                        }}
+                        width={image.width}
+                        height={image.height}
+                        loading="lazy"
+                      />
+                      {description && <p class="text">{description}</p>}
+                    </Fragment>
+                  ) : (
                     <Image
                       src={image.url}
                       alt={image.alt}
                       srcset={{
+                        '400w': image.sizes?.[500]?.url!,
                         '800w': image.sizes?.[1000]?.url!,
-                        '1600w': image.sizes?.[2000]?.url!,
                       }}
                       width={image.width}
                       height={image.height}
                       loading="lazy"
                     />
-                    {description && <p class="text">{description}</p>}
-                  </Fragment>
-                ) : (
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    srcset={{
-                      '400w': image.sizes?.[500]?.url!,
-                      '800w': image.sizes?.[1000]?.url!,
-                    }}
-                    width={image.width}
-                    height={image.height}
-                    loading="lazy"
-                  />
-                )}
-              </div>
-            ),
-        )}
-      </div>
-    )
-  })}
+                  )}
+                </div>
+              ),
+          )}
+        </div>
+      )
+    })}
+  </div>
+  {credit && (
+    <div class="credit">
+      <h4 class="credit__title">{credit.label}</h4>
+      <span class="credit__value">{credit.value}</span>
+    </div>
+  )}
 </div>
 
 <style lang="scss">
@@ -86,40 +95,62 @@ images.forEach((image) => {
   .gallery {
     --row-gap: var(--space-48);
     --column-gap: var(--space-48);
-
     display: flex;
     flex-direction: column;
-    gap: var(--row-gap);
-    padding-top: var(--section-padding-y);
-    padding-bottom: var(--section-padding-y);
-  }
+    gap: var(--space-24);
 
-  .row {
-    display: flex;
-    flex-direction: column;
-    gap: var(--row-gap);
-  }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--row-gap);
+      padding-top: var(--section-padding-y);
+      padding-bottom: var(--section-padding-y);
+    }
 
-  .image {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-    width: 100%;
+    &__row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--row-gap);
+    }
 
-    &:not(&--full) {
-      flex: var(--gallery-aspect-ratio) 1 0;
+    &__image {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      width: 100%;
+
+      &:not(&--full) {
+        flex: var(--gallery-aspect-ratio) 1 0;
+      }
+    }
+
+    &__text {
+      font-size: var(--font-size-s);
+      color: var(--color-gray-20);
     }
   }
 
-  .text {
-    font-size: var(--font-size-s);
-    color: var(--color-gray-20);
+  @include from(mobile) {
+    .gallery {
+      &__row {
+        flex-direction: row;
+        gap: var(--column-gap);
+      }
+    }
   }
 
-  @include from(mobile) {
-    .row {
-      flex-direction: row;
-      gap: var(--column-gap);
+  .credit {
+    display: flex;
+    gap: var(--space-8);
+
+    &__title {
+      font-weight: bold;
+    }
+
+    &__value {
+      &:before {
+        content: '©';
+      }
     }
   }
 </style>

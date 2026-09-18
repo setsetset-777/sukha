@@ -15,6 +15,11 @@ export namespace Project {
     values?: string[]
   }
 
+  export interface Credit {
+    label?: string
+    value: string
+  }
+
   export interface Data {
     title: string
     image?: Media
@@ -34,9 +39,6 @@ export namespace Project {
       label?: string
       list?: Spec[]
     }
-    credit?: {
-      label?: string
-      value: string
-    }
+    credit?: Credit
   }
 }
