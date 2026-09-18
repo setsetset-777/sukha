@@ -36,7 +36,7 @@ export type PageData = {
   | {
       data: Project.Data
       slug: 'projects'
-      parentSlug?: undefined
+      parentSlug?: 'pageProjects'
     }
   | {
       data: Contact.Data

@@ -1,6 +1,7 @@
 ---
 import LogoMain from '@/assets/svgs/logo-main.svg'
 import ArrowDown from '@/assets/svgs/arrow-down.svg'
+import ArrowLeft from '@/assets/svgs/arrow-left.svg'
 import type { General, PageSlug } from '@app/api/types'
 
 interface Props {
@@ -28,16 +29,22 @@ const { navigation, slug, parentSlug } = Astro.props
       <nav class="menu">
         <ul class="menu__list" data-menu>
           {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
-            const isActive = slug === itemSlug || parentSlug === itemSlug
-            const hasParent = !!parentSlug
+            console.log('parentSlug', parentSlug, itemSlug)
+            const isActive = slug === itemSlug
+            const hasParent = !!parentSlug && itemSlug === parentSlug
             return (
               <li class="menu__item">
                 <a
-                  class:list={['menu__link', isActive && 'active']}
+                  class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
                   href={url}
                   data-menu-item
                   data-slug={itemSlug}
                 >
+                  {hasParent && (
+                    <span class="menu__back-icon">
+                      <ArrowLeft />
+                    </span>
+                  )}
                   <span>{title}</span>
                 </a>
               </li>
@@ -104,18 +111,19 @@ const { navigation, slug, parentSlug } = Astro.props
   }
 
   .menu {
+    $menu: &;
+
     align-content: end;
 
     &__list {
       display: flex;
       flex-direction: column;
       gap: var(--space-8);
-    }
-
-    &__item {
+      align-items: start;
     }
 
     &__link {
+      --active-color: var(--body-color);
       display: inline-block;
       color: var(--color-teal-600);
       text-decoration: none;
@@ -123,11 +131,17 @@ const { navigation, slug, parentSlug } = Astro.props
       position: relative;
 
       &:hover {
-        color: var(--body-color);
+        color: var(--active-color);
+
+        #{$menu}__back-icon {
+          transform: translateY(-50%) translateX(calc(-1 * var(--space-4)));
+        }
       }
 
       &.active {
-        color: var(--body-color);
+        color: var(--active-color);
+        pointer-events: none;
+        cursor: default;
 
         &:before {
           content: '';
@@ -141,11 +155,19 @@ const { navigation, slug, parentSlug } = Astro.props
         }
       }
 
-      &:not(.active) {
-        &:hover {
-          // transform: translateX(4px);
-        }
+      &.has-parent {
+        color: var(--active-color);
       }
+    }
+
+    &__back-icon {
+      position: absolute;
+      right: 100%;
+      padding-right: var(--space-8);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      @include transition(transform);
     }
   }
 

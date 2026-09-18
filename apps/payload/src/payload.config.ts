@@ -113,6 +113,7 @@ export default buildConfig({
         try {
           safeParams = await safeProjectsParams(
             {
+              tag: params.getAll('tag'),
               page: params.get('page') ?? undefined,
               limit: params.get('limit') ?? undefined,
             },

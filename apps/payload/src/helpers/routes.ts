@@ -99,6 +99,7 @@ const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
         routes.set(collection.id, {
           id: collection.id,
           slug: children.slug,
+          parent: slug,
           type: 'collection',
           updatedAt: collection.updatedAt ?? undefined,
           locales: localeCodes.reduce<Route['locales']>(
