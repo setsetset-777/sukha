@@ -25,38 +25,40 @@ const { navigation, slug, parentSlug } = Astro.props
       </a>
     </div>
 
-    {navigation?.menu && (
-      <nav class="menu">
-        <ul class="menu__list" data-menu>
-          {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
-            const isActive = slug === itemSlug
-            const hasParent = !!parentSlug && itemSlug === parentSlug
-            return (
-              <li class="menu__item">
-                <a
-                  class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
-                  href={url}
-                  data-menu-item
-                  data-slug={itemSlug}
-                >
-                  {hasParent && (
-                    <span class="menu__back-icon">
-                      <ArrowLeft />
-                    </span>
-                  )}
-                  <span>{title}</span>
-                </a>
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
-    )}
+    <div class="footer">
+      {navigation?.menu && (
+        <nav class="menu">
+          <ul class="menu__list" data-menu>
+            {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
+              const isActive = slug === itemSlug
+              const hasParent = !!parentSlug && itemSlug === parentSlug
+              return (
+                <li class="menu__item">
+                  <a
+                    class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
+                    href={url}
+                    data-menu-item
+                    data-slug={itemSlug}
+                  >
+                    {hasParent && (
+                      <span class="menu__back-icon">
+                        <ArrowLeft />
+                      </span>
+                    )}
+                    <span>{title}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+      )}
 
-    <div class="actions">
-      <button class="action action__scroll">
-        <ArrowDown />
-      </button>
+      <div class="actions">
+        <button class="action action__scroll">
+          <ArrowDown />
+        </button>
+      </div>
     </div>
   </div>
 </aside>
@@ -77,7 +79,6 @@ const { navigation, slug, parentSlug } = Astro.props
     padding-bottom: var(--content-padding-bottom);
     display: flex;
     flex-direction: column;
-    height: 100dvh;
     box-sizing: border-box;
     position: sticky;
     top: 0;
@@ -86,12 +87,12 @@ const { navigation, slug, parentSlug } = Astro.props
   }
 
   .container {
-    flex-grow: 1;
-    display: grid;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
     grid-template-columns: minmax(0, 1fr) max-content;
+    flex-grow: 1;
   }
 
   .header {
@@ -109,10 +110,18 @@ const { navigation, slug, parentSlug } = Astro.props
     }
   }
 
+  .footer {
+    display: flex;
+    gap: var(--space-16);
+    position: sticky;
+    bottom: var(--content-padding-bottom);
+  }
+
   .menu {
     $menu: &;
 
     align-content: end;
+    flex-grow: 1;
 
     &__list {
       display: flex;
