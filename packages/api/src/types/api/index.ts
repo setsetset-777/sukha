@@ -7,6 +7,7 @@ export * from './project'
 export * from './contact'
 export * from './partner'
 export * from './tag'
+export * from './setsetset'
 
 import type { Home } from './home'
 import type { Agency } from './agency'

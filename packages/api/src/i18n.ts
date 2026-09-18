@@ -48,6 +48,7 @@ export const normalizePath = (
     }
   }
   const locale = normalizeLocale(match[2])
+
   let cleanPath = `/${locale.code}`
   if (match[4]) {
     cleanPath += `/${match[4]}`

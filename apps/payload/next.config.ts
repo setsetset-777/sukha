@@ -27,7 +27,6 @@ const nextConfig: NextConfig = {
     root: path.resolve(dirname, '../../'),
   },
   output: 'standalone',
-  cacheComponents: true,
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

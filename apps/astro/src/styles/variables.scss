@@ -71,6 +71,7 @@ $colors: (
   --grid-gap: var(--space-48);
   --body-color: var(--color-teal-800);
   --heading-color: var(--color-teal-950);
+  --link-color-hover: var(--color-teal-600);
   --layout-max-width: #{pxToRem(1600px)};
   --layout-padding-x: var(--space-48);
   --layout-padding-y: var(--space-48);
@@ -86,4 +87,6 @@ $colors: (
   --project-item-padding: var(--section-padding-bottom);
   --project-item-gap: var(--space-48);
   --image-background-color: var(--color-teal-100);
+  --setsetset-color: var(--body-color);
+  --setsetset-color-hover: var(--link-color-hover);
 }

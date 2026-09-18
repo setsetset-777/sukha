@@ -1,5 +1,5 @@
-import { Media } from '../shared'
-import { Tag } from '.'
+import type { Media } from '../shared'
+import type { Tag } from '.'
 
 export namespace Project {
   export type Gallery = GalleryItem[]

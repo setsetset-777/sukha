@@ -11,7 +11,7 @@ const store = new LRUCache<Tag, any>({
 const pending = new Map<Tag, Promise<any>>()
 
 export async function cached<T>(fn: () => Promise<T>, key: Tag): Promise<T> {
-  if (!process.env.DISABLE_CACHE) {
+  if (process.env.DISABLE_CACHE) {
     return fn()
       .then((result) => {
         return result

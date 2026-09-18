@@ -29,7 +29,6 @@ const { navigation, slug, parentSlug } = Astro.props
       <nav class="menu">
         <ul class="menu__list" data-menu>
           {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
-            console.log('parentSlug', parentSlug, itemSlug)
             const isActive = slug === itemSlug
             const hasParent = !!parentSlug && itemSlug === parentSlug
             return (

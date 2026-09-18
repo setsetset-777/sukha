@@ -13,8 +13,6 @@ const getNextElement = (selector?: string) => {
     [...elements]
       .filter((el) => el.getBoundingClientRect().top >= viewportTop)
       .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0] ?? null
-
-  console.log('getNextElement', next)
   return next
 }
 
@@ -58,7 +56,6 @@ export const initScrollButton = (buttonSelector: string) => {
 
   const sentinelObserver = new IntersectionObserver(
     ([entry]) => {
-      console.log(entry)
       if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
         hideButton()
         isHidden = true

@@ -126,6 +126,7 @@ export const customTranslations: Record<Locale['code'], Record<string, any>> = {
     general: {
       logo: 'Sukha',
       homeLink: 'Back to home',
+      setsetset: 'Design & Code by',
     },
     home: {
       adminProjectLinkLabel: 'Go to projects',
@@ -154,6 +155,7 @@ export const customTranslations: Record<Locale['code'], Record<string, any>> = {
     general: {
       logo: 'Sukha',
       homeLink: "Retour à l'accueil",
+      setsetset: 'Design & Code par',
     },
     home: {
       adminProjectLinkLabel: 'Aller aux réalisations',
