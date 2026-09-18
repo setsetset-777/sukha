@@ -165,7 +165,7 @@ export default class ProjectsLoader {
 
   onChange() {
     document.dispatchEvent(new CustomEvent('images:load'))
-    this.pushHistory()
+    // this.pushHistory()
   }
 
   private set state(state: State) {
