@@ -1,9 +1,10 @@
 ---
-import type { Project } from '@app/api/types'
+import type { Partner, Project } from '@app/api/types'
 import Image from '@/components/Image.astro'
 import Action from '@/components/Action.astro'
 import TagList from '@/components/TagList.astro'
 import Gallery from '@/components/Gallery.astro'
+import { imageConfig } from 'astro:assets'
 
 type Props = Project.Data
 
@@ -31,6 +32,7 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
           width={image.width}
           height={image.height}
           fit="contain"
+          credit={image.credit as Partner}
         />
       )}
     </div>
@@ -70,6 +72,7 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
                     fit="contain"
                     width={image.width}
                     height={image.height}
+                    credit={image.credit as Partner}
                   />
                 </div>
               ),

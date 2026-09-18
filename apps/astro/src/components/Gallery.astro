@@ -1,6 +1,6 @@
 ---
 import Image from '@/components/Image.astro'
-import type { Media, Project } from '@app/api/types'
+import type { Partner, Project } from '@app/api/types'
 
 interface Props {
   images: Project.Gallery
@@ -58,6 +58,7 @@ images.forEach((image) => {
                         width={image.width}
                         height={image.height}
                         loading="lazy"
+                        credit={image.credit as Partner}
                       />
                       {description && <p class="text">{description}</p>}
                     </Fragment>
@@ -72,6 +73,7 @@ images.forEach((image) => {
                       width={image.width}
                       height={image.height}
                       loading="lazy"
+                      credit={image.credit as Partner}
                     />
                   )}
                 </div>
