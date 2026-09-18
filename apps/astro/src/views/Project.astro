@@ -7,7 +7,7 @@ import Gallery from '@/components/Gallery.astro'
 
 type Props = Project.Data
 
-const { title, image, place, tags, text, backLink, gallery, existing } = Astro.props
+const { title, image, place, tags, text, backLink, gallery, existing, specs, credit } = Astro.props
 ---
 
 <div class="page">
@@ -48,7 +48,7 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
       </div>
     </section>
 
-    <Gallery images={gallery} />
+    <Gallery images={gallery} credit={credit} />
 
     {existing && existing.images.length > 0 && (
       <section class="existing">
@@ -77,6 +77,24 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
         </div>
       </section>
     )}
+
+    {specs && specs.list && specs.list.length > 0 && (
+      <section class="specs">
+        <h3 class="specs__title">{specs.label}</h3>
+        <dl class="specs__list">
+          {specs.list.map(({ label, values }) => (
+            <div class="specs__part">
+              <dt>{label}</dt>
+              <div>
+                {values?.map((value) => (
+                  <dd>{value}</dd>
+                ))}
+              </div>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
   </div>
 </div>
 
@@ -84,26 +102,27 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
   @use '../styles/utilities' as *;
 
   .page {
-    --section-gap: var(--space-64);
+    --body-gap: var(--space-64);
+    --section-gap: var(--space-24);
 
     padding-top: var(--content-padding-top);
     padding-bottom: var(--content-padding-bottom);
     padding-right: var(--layout-padding-x);
     display: flex;
     flex-direction: column;
-    gap: var(--section-gap);
+    gap: var(--body-gap);
   }
 
   .hero {
     display: flex;
     flex-direction: column;
-    gap: var(--section-gap);
+    gap: var(--body-gap);
   }
 
   .body {
     display: flex;
     flex-direction: column;
-    gap: var(--section-gap);
+    gap: var(--body-gap);
   }
 
   .title {
@@ -123,7 +142,7 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
   .info {
     display: flex;
     flex-direction: column;
-    gap: var(--space-24);
+    gap: var(--section-gap);
     align-items: start;
     max-width: #{pxToRem(600px)};
 
@@ -143,10 +162,10 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
   .existing {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-24);
+    gap: var(--section-gap);
 
     &__title {
-      @include heading(3);
+      @include heading(2);
     }
 
     &__gallery {
@@ -163,6 +182,41 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
       filter: grayscale(1);
       height: pxToRem(360px);
       --image-background-color: var(--color-teal-300);
+    }
+  }
+
+  .specs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap);
+
+    &__title {
+      @include heading(2);
+    }
+
+    &__list {
+      columns: 3;
+      column-gap: var(--grid-gap);
+      row-gap: var(--grid-gap);
+      max-width: pxToRem(900px);
+      column-fill: balance;
+    }
+
+    &__part {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      display: flex;
+      break-inside: avoid-column;
+      margin-block-end: var(--space-24);
+    }
+
+    dt {
+      font-weight: var(--font-weight-bold);
+    }
+
+    dd {
+      margin: 0;
     }
   }
 </style>

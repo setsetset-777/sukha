@@ -68,6 +68,7 @@ $colors: (
 
   // COMPONENTS
   --page-gap: var(--space-64);
+  --grid-gap: var(--space-48);
   --body-color: var(--color-teal-800);
   --heading-color: var(--color-teal-950);
   --layout-max-width: #{pxToRem(1600px)};
