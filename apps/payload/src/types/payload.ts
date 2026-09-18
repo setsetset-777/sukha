@@ -823,6 +823,7 @@ export interface PageContact {
    * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
    */
   urlSlug: string;
+  image?: (string | null) | Media;
   catch?: string | null;
   address?: string | null;
   email?: string | null;
@@ -948,6 +949,7 @@ export interface PageProjectsSelect<T extends boolean = true> {
 export interface PageContactSelect<T extends boolean = true> {
   title?: T;
   urlSlug?: T;
+  image?: T;
   catch?: T;
   address?: T;
   email?: T;

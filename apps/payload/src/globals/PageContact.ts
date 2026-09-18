@@ -15,6 +15,11 @@ export const PageContact: GlobalConfig = {
     titleField(),
     ...urlFields({ source: 'title', slug: 'pageContact' }),
     {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'catch',
       type: 'textarea',
       label: {
