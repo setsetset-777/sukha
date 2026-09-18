@@ -15,7 +15,7 @@ type Props = {
   parentSlug?: PageSlug
 }
 
-const { meta, slug, noGeneral } = Astro.props
+const { meta, slug, parentSlug, noGeneral } = Astro.props
 
 const locale = getLocaleFromPath(Astro.url.pathname)
 const general = !noGeneral ? await getGeneral(locale.code) : null
@@ -31,7 +31,7 @@ const footer = general?.footer ?? undefined
     <div class="container">
       <div class="content">
         <div class="content__inner">
-          <Sidebar navigation={navigation} slug={slug} />
+          <Sidebar navigation={navigation} slug={slug} parentSlug={parentSlug} />
           <main class="main">
             <slot />
           </main>

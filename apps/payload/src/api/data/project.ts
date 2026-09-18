@@ -84,8 +84,9 @@ export const getProjectData = async ({
                   label: specsLabel ?? undefined,
                   list: specs?.map(({ spec, values }) => {
                     return {
-                      label: (spec as ProjectSpec).title,
-                      values: values?.map(({ item }) => item),
+                      label: spec ? (spec as ProjectSpec).title : undefined,
+                      values:
+                        values && values.length > 0 ? values?.map(({ item }) => item) : undefined,
                     }
                   }),
                 }

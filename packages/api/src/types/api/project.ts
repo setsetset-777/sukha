@@ -11,7 +11,7 @@ export namespace Project {
   }
 
   export interface Spec {
-    label: string
+    label?: string
     values?: string[]
   }
 

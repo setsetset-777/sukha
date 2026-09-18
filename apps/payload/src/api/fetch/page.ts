@@ -23,8 +23,6 @@ export const fetchPage = async (
 
     const { slug, id } = route
 
-    console.log('>>>>', slug, id)
-
     let data
 
     switch (slug) {
@@ -52,6 +50,7 @@ export const fetchPage = async (
         data = await getProjectsData({
           locale: locale.code,
           i18n,
+          params,
         })
         return {
           slug,
@@ -65,6 +64,7 @@ export const fetchPage = async (
         })
         return {
           slug,
+          parentSlug: 'pageProjects',
           ...data,
         }
 

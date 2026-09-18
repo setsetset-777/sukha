@@ -23,7 +23,7 @@ export const getGeneralData = async ({ locale, i18n }: Props): Promise<API.Gener
       payload.findGlobal({ slug: 'general', locale, draft: false }),
     ])
 
-    const serviceItems = []
+    const menuItems: API.General.Navigation['menu'] = []
 
     for (const slug of general.navigation.navigationList || []) {
       const page = await payload.findGlobal({
@@ -38,7 +38,7 @@ export const getGeneralData = async ({ locale, i18n }: Props): Promise<API.Gener
 
       const route = await getRouteBySlug(slug)
 
-      serviceItems.push({
+      menuItems.push({
         title: page.title,
         url: getPathOfRoute(route, locale) ?? undefined,
         slug,
@@ -70,7 +70,7 @@ export const getGeneralData = async ({ locale, i18n }: Props): Promise<API.Gener
           linkLabel: t('general:homeLink'),
           logoAlt: t('general:logo'),
         },
-        menu: serviceItems,
+        menu: menuItems,
       },
     }
   }, tags.general(locale))
