@@ -1,5 +1,5 @@
 ---
-import type { Agency } from '@app/api/types'
+import type { Agency, Partner } from '@app/api/types'
 import Image from '@/components/Image.astro'
 
 type Props = Agency.Data
@@ -29,6 +29,7 @@ const { title, image, name, job, text, partners } = Astro.props
               fit="contain"
               width={image.width}
               height={image.height}
+              credit={image.credit as Partner}
             />
           )}
         </div>
