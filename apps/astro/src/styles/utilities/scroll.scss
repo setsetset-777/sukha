@@ -1,5 +1,6 @@
 [data-scroll-view] {
   position: relative;
+  scroll-margin-top: var(--space-48);
 }
 
 .scroll-sentinel {
@@ -8,5 +9,5 @@
   visibility: hidden;
   display: block;
   position: absolute;
-  top: 0;
+  top: calc(-1 * var(--space-48));
 }

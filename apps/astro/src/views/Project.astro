@@ -11,12 +11,12 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
 ---
 
 <div class="page">
-  <div class="header">
-    <h1 class="title">{title}</h1>
-  </div>
+  <section class="hero">
+    <div class="header">
+      <h1 class="title">{title}</h1>
+    </div>
 
-  <div class="body">
-    <section class="image">
+    <div class="image">
       {image && (
         <Image
           src={image.url}
@@ -33,9 +33,10 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
           fit="contain"
         />
       )}
-    </section>
-
-    <section class="info" data-scroll-view>
+    </div>
+  </section>
+  <div class="body" data-scroll-view>
+    <section class="info">
       <div class="info__header">
         {place && <h3 class="place">{place}</h3>}
 
@@ -90,7 +91,13 @@ const { title, image, place, tags, text, backLink, gallery, existing } = Astro.p
     padding-right: var(--layout-padding-x);
     display: flex;
     flex-direction: column;
-    gap: var(--page-gap);
+    gap: var(--section-gap);
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap);
   }
 
   .body {
