@@ -1,7 +1,6 @@
 import { init, request, buildUrl } from './api'
 import { ProjectsSearchParams } from './schemas/projects-search-params'
-import type { General, PageData, Projects } from './types/api'
-import type { Payload } from './types/payload'
+import type { General, PageData, Projects, Locale } from './types/api'
 
 init({
   apiUrl: `${process.env.PAYLOAD_API_URL}`,
@@ -9,7 +8,7 @@ init({
   servicePassword: `${process.env.PAYLOAD_SERVICE_PASSWORD}`,
 })
 
-const general = async (locale?: Payload.Locale): Promise<General.Data | null> => {
+const general = async (locale?: Locale): Promise<General.Data | null> => {
   return request(
     buildUrl({
       slug: 'general',
@@ -18,7 +17,7 @@ const general = async (locale?: Payload.Locale): Promise<General.Data | null> =>
   )
 }
 
-const page = async (path: string, locale?: Payload.Locale): Promise<PageData | null> => {
+const page = async (path: string, locale?: Locale): Promise<PageData | null> => {
   return request(
     buildUrl({
       slug: 'page',
@@ -33,7 +32,7 @@ const projects = async (
     page?: string
     limit?: string
   },
-  locale?: Payload.Locale,
+  locale?: Locale,
 ): Promise<Projects.List | null> => {
   const safeParams = ProjectsSearchParams.safeParse(params)
   if (!safeParams.success) {

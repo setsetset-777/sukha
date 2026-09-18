@@ -1,4 +1,4 @@
-import { Locale, Routes, PageSlug } from '../shared'
+import type { Locale, Routes, PageSlug } from '../shared'
 
 export namespace General {
   export interface Footer {

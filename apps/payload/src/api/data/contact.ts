@@ -1,16 +1,10 @@
 import type * as API from '@app/api/types'
-import type { LocaleCode, Media, PaginatedDocs, ProjectTag } from '@/types'
+import type { LocaleCode, Media } from '@/types'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { cached, tags } from '@/helpers/cache'
-import {
-  getPathOfRoute,
-  getProjectsTagsUrlSync,
-  getRouteByIdSync,
-  getRoutes,
-} from '@/helpers/routes'
-import { type CustomTFunction } from '@/i18n'
 import type { I18n } from '@payloadcms/translations'
+import { CustomTFunction } from '@/i18n'
 
 interface Props {
   locale: LocaleCode
@@ -26,44 +20,19 @@ export const getContactData = async ({
 }> => {
   return cached<{
     meta: API.Meta
-    data: API.Home.Data
+    data: API.Contact.Data
   }>(async () => {
     const payload = await getPayload({
       config,
     })
 
-    const [routes, pageHome, projects] = await Promise.all([
-      getRoutes(),
-      payload.findGlobal({
-        slug: 'pageHome',
-        locale,
-      }),
-      payload.find({
-        collection: 'projects',
-        pagination: false,
-        draft: false,
-        where: {
-          featured: {
-            equals: 'true',
-          },
-        },
-        select: {
-          id: true,
-          title: true,
-          mainImage: true,
-          tags: true,
-        },
-      }) as Promise<
-        PaginatedDocs<{
-          id: string
-          title: string
-          mainImage: Media
-          tags: ProjectTag[]
-        }>
-      >,
-    ])
+    const pageContact = await payload.findGlobal({
+      slug: 'pageContact',
+      locale,
+    })
 
-    const { meta, projectLinkLabel } = pageHome
+    const { meta, title, image, catch: hook, address, email, phone } = pageContact
+
     const t = i18n.t as CustomTFunction
 
     return {
@@ -72,7 +41,19 @@ export const getContactData = async ({
         description: meta?.description ?? undefined,
         image: (meta?.image as API.Media) ?? undefined,
       },
-      data: {},
+      data: {
+        title: title,
+        image: image ? (typeof image === 'string' ? null : (image as Media)) : undefined,
+        hook: hook ?? undefined,
+        address: address ?? undefined,
+        email: email ?? undefined,
+        phone: phone ?? undefined,
+        logoAlt: t('general:logo'),
+        setsetset: {
+          label: t('general:setsetset'),
+          url: 'https://setsetset.net',
+        },
+      },
     }
   }, tags.contact(locale))
 }

@@ -1,0 +1,43 @@
+---
+import Logo777 from '@/assets/svgs/777.svg'
+import type { Setsetset } from '@app/api/types'
+
+type Props = Setsetset
+
+const { label, url } = Astro.props
+---
+
+<p class="setsetset">
+  <span>{label}</span>
+  <a href={url} aria-label="setsetset">
+    <Logo777 />
+  </a>
+</p>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .setsetset {
+    display: flex;
+    column-gap: var(--space-8);
+    row-gap: var(--space-4);
+    align-items: baseline;
+    font-size: var(--font-size-s);
+    flex-wrap: wrap;
+
+    a {
+      position: relative;
+      top: pxToRem(3px);
+      @include transition(color);
+      color: var(--setsetset-color);
+
+      svg {
+        height: 1em;
+      }
+
+      &:hover {
+        color: var(--setsetset-color-hover);
+      }
+    }
+  }
+</style>
