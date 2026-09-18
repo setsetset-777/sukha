@@ -35,8 +35,8 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
       )}
     </div>
   </section>
-  <div class="body" data-scroll-view>
-    <section class="info">
+  <div class="body">
+    <section class="info" data-scroll-view>
       <div class="info__header">
         {place && <h3 class="place">{place}</h3>}
 
@@ -51,7 +51,7 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
     <Gallery images={gallery} credit={credit} />
 
     {existing && existing.images.length > 0 && (
-      <section class="existing">
+      <section class="existing" data-scroll-view>
         <h3 class="existing__title">{existing.label}</h3>
         <div class="existing__gallery">
           {existing.images.map(
@@ -79,7 +79,7 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
     )}
 
     {specs && specs.list && specs.list.length > 0 && (
-      <section class="specs">
+      <section class="specs" data-scroll-view>
         <h3 class="specs__title">{specs.label}</h3>
         <dl class="specs__list">
           {specs.list.map(({ label, values }) => (

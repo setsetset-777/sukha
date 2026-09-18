@@ -1,15 +1,29 @@
-export const scrollToElement = (selector?: string) => {
+export const scrollToElement = (selector?: string | Element) => {
   if (!selector) return
-  const target = document.querySelector(selector)
+  const target = selector instanceof Element ? selector : document.querySelector(selector)
   target?.scrollIntoView({ behavior: 'smooth' })
+}
+
+const getNextElement = (selector?: string) => {
+  if (!selector) return
+  const viewportTop = 49
+  const elements = document.querySelectorAll(selector)
+
+  const next =
+    [...elements]
+      .filter((el) => el.getBoundingClientRect().top >= viewportTop)
+      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0] ?? null
+
+  console.log('getNextElement', next)
+  return next
 }
 
 export const initScrollClicks = () => {
   document.addEventListener('click', ({ target }) => {
     if (!(target instanceof HTMLElement)) return
     if (target.closest('[data-scroll')) {
-      const selector = target.dataset.scroll
-      scrollToElement(selector)
+      const element = getNextElement(target.dataset.scroll)
+      scrollToElement(element)
     }
   })
 }
@@ -26,9 +40,9 @@ export const initScrollHash = () => {
 export const initScrollButton = (buttonSelector: string) => {
   const targetSelector = '[data-scroll-view]'
 
-  const target = document.querySelector(targetSelector)
+  const targets = document.querySelectorAll(targetSelector)
 
-  if (!target) {
+  if (targets.length <= 0) {
     return
   }
 
@@ -37,13 +51,14 @@ export const initScrollButton = (buttonSelector: string) => {
 
   const sentinel = document.createElement('span')
   sentinel.classList.add('scroll-sentinel')
-  target.prepend(sentinel)
+  targets.forEach((el) => el.prepend(sentinel))
 
   const footer = document.querySelector('footer.footer')
   let isHidden = false
 
   const sentinelObserver = new IntersectionObserver(
     ([entry]) => {
+      console.log(entry)
       if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
         hideButton()
         isHidden = true

@@ -12,9 +12,9 @@ const { title, image, name, job, text, partners } = Astro.props
     <h1 class="title">{title}</h1>
   </section>
   <div class="body">
-    <section class="hero">
+    <section class="hero" data-scroll-view>
       <div class="hero__inner">
-        <div class="image" data-scroll-view>
+        <div class="image">
           {image && (
             <Image
               src={image.url}
@@ -38,13 +38,15 @@ const { title, image, name, job, text, partners } = Astro.props
         </div>
       </div>
     </section>
+
     {text && (
-      <section class="text">
+      <section class="text" data-scroll-view>
         <div class="text__inner" set:html={text} />
       </section>
     )}
+
     {partners.list.length > 0 && (
-      <section class="partners">
+      <section class="partners" data-scroll-view>
         <h3 class="partners__title">
           <span>{partners.title}</span>
         </h3>
