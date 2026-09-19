@@ -1,6 +1,7 @@
 ---
 import api from '@app/api'
 import ProjectList from '@/components/ProjectList.astro'
+import { getLocaleFromPath } from '@app/api/i18n'
 
 const params = new URLSearchParams(Astro.url.search)
 const tagName = 'tag'
@@ -8,8 +9,9 @@ const tagName = 'tag'
 const tags = params.getAll(tagName) ?? undefined
 const page = params.get('page') ?? undefined
 const limit = params.get('limit') ?? undefined
+const locale = params.get('locale') ?? undefined
 
-const req = await api.projects({ [tagName]: tags, page, limit })
+const req = await api.projects({ [tagName]: tags, page, limit }, locale)
 
 if (!req) {
   Astro.response.status = 404

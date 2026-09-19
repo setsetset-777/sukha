@@ -7,6 +7,7 @@ import Error from '@/layouts/Error.astro'
 import Page from '@/layouts/Page.astro'
 
 import type { PageData } from '@app/api/types'
+import { getLocaleFromPath } from '@app/api/i18n'
 
 const { path } = Astro.params
 
@@ -14,7 +15,8 @@ let page: PageData | null = null
 let error = false
 
 try {
-  page = await getPage(`/${path ?? ''}?${Astro.url.searchParams.toString()}`)
+  const locale = getLocaleFromPath(Astro.url.pathname)
+  page = await getPage(`/${path ?? ''}?${Astro.url.searchParams.toString()}`, locale)
 } catch (e) {
   console.error(e)
   error = true

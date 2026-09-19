@@ -16,8 +16,8 @@ export const ProjectsSearchParams = z.object({
   limit: z.coerce.number().int().min(1).max(50).optional(),
 })
 
-export const TagList = (services: string[]) => {
-  return z.array(z.enum(services)).max(50).optional()
+export const TagList = (tags: string[]) => {
+  return z.array(z.enum(tags)).max(50).optional()
 }
 
 export type ProjectsSearchParams = z.infer<typeof ProjectsSearchParams>
