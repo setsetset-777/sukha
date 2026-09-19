@@ -1,6 +1,6 @@
 import { init, request, buildUrl } from './api'
 import { ProjectsSearchParams } from './schemas/projects-search-params'
-import type { General, PageData, Projects, Locale } from './types/api'
+import type { General, PageData, Projects, Locale, LocaleCode } from './types/api'
 
 init({
   apiUrl: `${process.env.PAYLOAD_API_URL}`,
@@ -32,12 +32,14 @@ const projects = async (
     page?: string
     limit?: string
   },
-  locale?: Locale,
+  locale?: Locale | LocaleCode,
 ): Promise<Projects.List | null> => {
   const safeParams = ProjectsSearchParams.safeParse(params)
   if (!safeParams.success) {
     throw new Error('Invalid query parameters')
   }
+
+  locale = typeof locale === 'string' ? locale : locale?.code
 
   return request(
     buildUrl({

@@ -58,3 +58,8 @@ export const normalizePath = (
     path: cleanPath,
   }
 }
+
+export const getClientLocale = (path?: string) => {
+  path = path ?? window.location.pathname
+  return getLocaleFromPath(path)
+}

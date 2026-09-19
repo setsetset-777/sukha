@@ -1,4 +1,5 @@
 import apiConfig from '@app/api/config'
+import { getClientLocale } from '@app/api/i18n'
 
 type State = 'idle' | 'loading' | 'empty' | 'loading-more'
 
@@ -116,7 +117,11 @@ export default class ProjectsLoader {
     }, 150)
 
     try {
-      response = await fetch(`/q/projects?${this.searchParams?.toString()}`, {
+      const params = this.searchParams
+      const locale = getClientLocale()
+      params.set('locale', locale.code)
+
+      response = await fetch(`/q/projects?${params?.toString()}`, {
         signal: this.controller.signal,
       })
 
