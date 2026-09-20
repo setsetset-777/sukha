@@ -73,10 +73,11 @@ $colors: (
   --heading-color: var(--color-teal-950);
   --link-color-hover: var(--color-teal-600);
   --layout-max-width: #{pxToRem(1600px)};
-  --layout-padding-x: var(--space-48);
-  --layout-padding-y: var(--space-48);
-  --content-padding-top: var(--space-160);
+  --layout-padding-x: var(--space-24);
+  --layout-padding-y: var(--space-24);
+  --content-padding-top: var(--space-48);
   --content-padding-bottom: var(--space-80);
+  --content-padding-x: var(--space-24);
   --content-gap-row: var(--space-48);
   --content-gap-col: var(--space-48);
   --section-background-color-light: var(--color-teal-200);
@@ -89,4 +90,14 @@ $colors: (
   --image-background-color: var(--color-teal-100);
   --setsetset-color: var(--body-color);
   --setsetset-color-hover: var(--link-color-hover);
+
+  @include from(mobile) {
+    --layout-padding-x: var(--space-48);
+    --layout-padding-y: var(--space-48);
+    --content-padding-x: 0;
+  }
+
+  @include from(desktop) {
+    --content-padding-top: var(--space-160);
+  }
 }

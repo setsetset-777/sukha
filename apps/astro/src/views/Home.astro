@@ -8,7 +8,7 @@ const { projects, slidesArialLabel } = Astro.props
 ---
 
 <div class="page">
-  <div>
+  <div class="body">
     <Slider projects={projects} slidesArialLabel={slidesArialLabel} />
   </div>
 </div>
@@ -24,7 +24,16 @@ const { projects, slidesArialLabel } = Astro.props
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    min-height: 100dvh;
     box-sizing: border-box;
+  }
+
+  .body {
+    height: 100%;
+  }
+
+  @include from(big-mobile) {
+    .page {
+      min-height: 100dvh;
+    }
   }
 </style>

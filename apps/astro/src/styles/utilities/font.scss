@@ -1,15 +1,32 @@
 @use 'sass:map';
+@use './media';
 
 @mixin font($family: body, $size: m, $weight: normal) {
   font-family: var(--font-family-#{$family});
   font-weight: var(--font-weight-#{$weight});
-  font-size: var(--font-size-#{$size});
   color: var(--#{$family}-color);
+
+  @if (type-of($size) == 'map') {
+    @each $media, $value in $size {
+      @if ($media == 'default') {
+        font-size: var(--font-size-#{$value});
+      } @else {
+        @include media.from($media) {
+          font-size: var(--font-size-#{$value});
+        }
+      }
+    }
+  } @else {
+    font-size: var(--font-size-#{$size});
+  }
 }
 
 $heading-size-map: (
   1: (
-    size: xxl,
+    size: (
+      default: xl,
+      big-mobile: xxl,
+    ),
     weight: medium,
   ),
   2: (

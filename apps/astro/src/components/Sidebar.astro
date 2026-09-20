@@ -76,33 +76,28 @@ const { navigation, slug, parentSlug } = Astro.props
 
   .sidebar {
     padding: var(--layout-padding-y) var(--layout-padding-x);
-    padding-bottom: var(--content-padding-bottom);
+    padding-bottom: 0;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    position: sticky;
-    top: 0;
     width: pxToRem(240px);
     flex-shrink: 0;
+    width: 100%;
   }
 
   .container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
     width: 100%;
     grid-template-columns: minmax(0, 1fr) max-content;
     flex-grow: 1;
-  }
-
-  .header {
-    grid-column: span 2;
-    position: sticky;
-    top: var(--layout-padding-y);
+    gap: var(--space-48);
+    align-items: baseline;
   }
 
   .logo {
-    --width: #{pxToRem(180px)};
+    --width: #{pxToRem(120px)};
+    vertical-align: -0.4em;
 
     :global(svg) {
       max-width: var(--width);
@@ -113,8 +108,7 @@ const { navigation, slug, parentSlug } = Astro.props
   .footer {
     display: flex;
     gap: var(--space-16);
-    position: sticky;
-    bottom: var(--content-padding-bottom);
+    flex-direction: column;
   }
 
   .menu {
@@ -208,6 +202,44 @@ const { navigation, slug, parentSlug } = Astro.props
         opacity: 0;
         pointer-events: none;
       }
+    }
+  }
+
+  @include until(desktop) {
+    .actions {
+      display: none;
+    }
+  }
+
+  @include from(desktop) {
+    .sidebar {
+      width: auto;
+      padding-bottom: var(--content-padding-bottom);
+    }
+
+    .container {
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .header {
+      grid-column: span 2;
+      position: sticky;
+      top: var(--layout-padding-y);
+    }
+
+    .menu {
+      position: relative;
+    }
+
+    .logo {
+      --width: #{pxToRem(180px)};
+    }
+
+    .footer {
+      flex-direction: row;
+      position: sticky;
+      bottom: var(--content-padding-bottom);
     }
   }
 </style>

@@ -17,7 +17,7 @@ const { url, image, title } = Astro.props
           '600w': image.sizes?.[1000]?.url!,
           '1200w': image.sizes?.[2000]?.url!,
         }}
-        fit="contain"
+        fit="cover"
       />
     )}
   </div>
