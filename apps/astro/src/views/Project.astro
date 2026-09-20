@@ -98,6 +98,10 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
         </dl>
       </section>
     )}
+
+    <section>
+      {backLink && <Action label={backLink.label} href={backLink.url} type="left" />}
+    </section>
   </div>
 </div>
 

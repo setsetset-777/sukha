@@ -2,7 +2,7 @@
 import type { Partner } from '@app/api/types'
 import { undefined } from 'astro:schema'
 
-type Fit = 'fill' | 'contain'
+type Fit = 'cover' | 'contain' | 'fill'
 
 type Props = {
   src?: string | null | undefined
@@ -30,7 +30,7 @@ const {
   sizes = '100w',
   class: className,
   style = '',
-  fit = 'fill',
+  fit = 'cover',
   fetchpriority,
   decoding,
   width,
@@ -128,6 +128,12 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
 
   .fill {
     .image {
+      object-fit: fill;
+    }
+  }
+
+  .cover {
+    .image {
       object-fit: cover;
     }
   }
@@ -151,6 +157,7 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
     padding: var(--space-4) var(--space-8);
     opacity: 0;
     @include transition(opacity, medium);
+    font-size: var(--font-size-xs);
 
     &:before {
       --blur: 5px;
@@ -172,6 +179,12 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
 
       &:before {
         content: '© ';
+      }
+    }
+
+    @media (hover: none) {
+      & {
+        opacity: 1;
       }
     }
   }

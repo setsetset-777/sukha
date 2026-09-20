@@ -45,6 +45,7 @@ const {
               fetchpriority="high"
               loading="eager"
               decoding="async"
+              fit="cover"
             />
           )}
         </div>
@@ -130,9 +131,11 @@ const {
     flex-direction: column;
     flex-grow: 1;
     @include bleed();
+    height: 100%;
 
     .main {
       display: flex;
+      height: 100%;
     }
 
     .slides {
@@ -140,7 +143,12 @@ const {
       position: relative;
       overflow: hidden;
       flex-grow: 1;
-      height: calc(100dvh - var(--content-padding-top));
+      height: 100%;
+
+      @include from(big-mobile) {
+        height: calc(100dvh - var(--content-padding-top));
+        padding-top: 0;
+      }
     }
 
     .slide {
@@ -291,6 +299,10 @@ const {
             margin-right: var(--gap);
           }
         }
+      }
+
+      @include until(desktop) {
+        display: none;
       }
     }
   }

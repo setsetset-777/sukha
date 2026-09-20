@@ -88,10 +88,14 @@ const footer = general?.footer ?? undefined
 
     &__inner {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       max-width: var(--layout-max-width);
       width: 100%;
       flex-grow: 1;
+
+      .body[data-slug='pageHome'] & {
+        min-height: 100dvh;
+      }
     }
   }
 
@@ -107,6 +111,12 @@ const footer = general?.footer ?? undefined
 
     &:hover {
       color: var(--link-color-hover);
+    }
+  }
+
+  @include from(desktop) {
+    .content__inner {
+      flex-direction: row;
     }
   }
 </style>
