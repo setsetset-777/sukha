@@ -81,7 +81,8 @@ $colors: (
   --content-gap-row: var(--space-48);
   --content-gap-col: var(--space-48);
   --page-padding-left: var(--layout-padding-x);
-  --page-padding: var(--content-padding-top) var(--content-padding-x) var(--content-padding-bottom)
+  --page-padding-top: var(--space-128);
+  --page-padding: var(--page-padding-top) var(--content-padding-x) var(--content-padding-bottom)
     var(--page-padding-left);
   --section-background-color-light: var(--color-teal-200);
   --section-background-color-dark: var(--color-teal-600);
@@ -102,6 +103,7 @@ $colors: (
 
   @include from(desktop) {
     --content-padding-top: var(--space-160);
+    --page-padding-top: 0;
     --page-padding-left: 0;
     --project-item-padding: var(--space-48);
   }
