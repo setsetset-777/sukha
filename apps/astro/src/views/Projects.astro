@@ -223,7 +223,7 @@ const { title, tags, list, moreLabel } = Astro.props
   }
 
   .projects {
-    --gap: var(--space-80);
+    --gap: var(--space-48);
 
     &__list {
       display: flex;
@@ -299,6 +299,10 @@ const { title, tags, list, moreLabel } = Astro.props
       &__label {
         flex-direction: row;
       }
+    }
+
+    .projects {
+      --gap: var(--space-80);
     }
   }
 </style>

@@ -57,7 +57,7 @@ const footer = general?.footer ?? undefined
 
   html,
   body {
-    background-color: var(--color-teal-00);
+    background-color: var(--layout-background-color);
     color: var(--body-color);
     @include font();
     height: 100%;
@@ -104,6 +104,8 @@ const footer = general?.footer ?? undefined
     display: flex;
     flex-direction: column;
     min-width: 0;
+    position: relative;
+    z-index: 1;
   }
 
   a {

@@ -2,6 +2,7 @@
 import LogoMain from '@/assets/svgs/logo-main.svg'
 import ArrowDown from '@/assets/svgs/arrow-down.svg'
 import ArrowLeft from '@/assets/svgs/arrow-left.svg'
+import ArrowUp from '@/assets/svgs/arrow-up.svg'
 import type { General, PageSlug } from '@app/api/types'
 
 interface Props {
@@ -13,61 +14,89 @@ interface Props {
 const { navigation, slug, parentSlug } = Astro.props
 ---
 
-<aside class="sidebar">
-  <div class="container">
-    <div class="header">
-      <a
-        class="logo"
-        href={navigation?.home?.url ?? '/'}
-        aria-label={navigation?.home?.linkLabel ?? 'Accueil'}
-      >
-        <LogoMain />
-      </a>
+<Fragment>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__container">
+      <div class="sidebar__header">
+        <a
+          class="sidebar__logo"
+          href={navigation?.home?.url ?? '/'}
+          aria-label={navigation?.home?.linkLabel ?? 'Accueil'}
+        >
+          <LogoMain />
+        </a>
+      </div>
+
+      <div class="sidebar__footer">
+        {navigation?.menu && (
+          <nav class="menu">
+            <ul class="menu__list" data-menu>
+              {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
+                const isActive = slug === itemSlug
+                const hasParent = !!parentSlug && itemSlug === parentSlug
+                return (
+                  <li class="menu__item">
+                    <a
+                      class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
+                      href={url}
+                      data-menu-item
+                      data-slug={itemSlug}
+                    >
+                      {hasParent && (
+                        <span class="menu__back-icon">
+                          <ArrowLeft />
+                        </span>
+                      )}
+                      <span>{title}</span>
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+        )}
+
+        <div class="actions">
+          <button class="action action__down">
+            <ArrowDown />
+          </button>
+        </div>
+      </div>
     </div>
+  </aside>
 
-    <div class="footer">
-      {navigation?.menu && (
-        <nav class="menu">
-          <ul class="menu__list" data-menu>
-            {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
-              const isActive = slug === itemSlug
-              const hasParent = !!parentSlug && itemSlug === parentSlug
-              return (
-                <li class="menu__item">
-                  <a
-                    class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
-                    href={url}
-                    data-menu-item
-                    data-slug={itemSlug}
-                  >
-                    {hasParent && (
-                      <span class="menu__back-icon">
-                        <ArrowLeft />
-                      </span>
-                    )}
-                    <span>{title}</span>
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
-      )}
-
-      <div class="actions">
-        <button class="action action__scroll">
-          <ArrowDown />
-        </button>
+  <div class="sidebar sidebar--sticky" data-sidebar>
+    <div class="sidebar__container">
+      <div class="sidebar__header">
+        <a
+          class="sidebar__logo"
+          href={navigation?.home?.url ?? '/'}
+          aria-label={navigation?.home?.linkLabel ?? 'Accueil'}
+        >
+          <LogoMain />
+        </a>
+        <div class="actions">
+          <button class="action action__up" data-scroll="#sidebar">
+            <ArrowUp />
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</aside>
+</Fragment>
 
 <script>
-  import { initScrollButton } from '@/lib/scroll'
+  import { initScrollNextButton } from '@/lib/scroll'
+
+  import Sidebar from '@/lib/Sidebar'
+
+  const sidebar = new Sidebar()
+
+  sidebar.initOnce()
 
   document.addEventListener('astro:page-load', () => {
-    initScrollButton('.action__scroll')
+    sidebar.initOnLoad()
+    initScrollNextButton('.action__down')
   })
 </script>
 
@@ -75,42 +104,66 @@ const { navigation, slug, parentSlug } = Astro.props
   @use '../styles/utilities' as *;
 
   .sidebar {
-    --padding-bottom: 0;
+    $sidebar: &;
 
     padding: var(--layout-padding-y) var(--layout-padding-x);
-    padding-bottom: var(--padding-bottom);
+    padding-bottom: var(--sidebar-padding-bottom);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     width: pxToRem(240px);
     flex-shrink: 0;
     width: 100%;
-  }
+    background-color: var(--layout-background-color);
+    z-index: 2;
 
-  .container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    grid-template-columns: minmax(0, 1fr) max-content;
-    flex-grow: 1;
-    gap: var(--space-48);
-    align-items: baseline;
-  }
-
-  .logo {
-    --width: #{pxToRem(120px)};
-    vertical-align: -0.4em;
-
-    :global(svg) {
-      max-width: var(--width);
+    &__container {
+      display: flex;
+      flex-direction: row;
       width: 100%;
+      grid-template-columns: minmax(0, 1fr) max-content;
+      flex-grow: 1;
+      gap: var(--space-48);
+      align-items: baseline;
     }
-  }
+    &__logo {
+      --width: #{pxToRem(120px)};
+      vertical-align: -0.4em;
 
-  .footer {
-    display: flex;
-    gap: var(--space-16);
-    flex-direction: column;
+      :global(svg) {
+        max-width: var(--width);
+        width: 100%;
+      }
+    }
+
+    &__footer {
+      display: flex;
+      gap: var(--space-16);
+      flex-direction: column;
+    }
+
+    &--sticky {
+      display: none;
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+      position: fixed;
+      top: -100%;
+      @include transition(top, long);
+      box-shadow: 0px 0px 3px var(--color-teal-400);
+
+      #{$sidebar} {
+        &__container {
+          flex-grow: 1;
+        }
+
+        &__header {
+          flex-grow: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
   }
 
   .menu {
@@ -118,6 +171,7 @@ const { navigation, slug, parentSlug } = Astro.props
 
     align-content: end;
     flex-grow: 1;
+    @include transition('height, opacity');
 
     &__list {
       display: flex;
@@ -184,23 +238,23 @@ const { navigation, slug, parentSlug } = Astro.props
     @include transition('color, opacity');
     cursor: pointer;
 
+    :global(svg) {
+      pointer-events: none;
+      @include transition(transform);
+    }
+
     &:hover {
       color: var(--body-color);
     }
 
-    &__scroll {
-      :global(svg) {
-        pointer-events: none;
-        @include transition(transform);
-      }
-
+    &__down {
       &:hover {
         :global(svg) {
           transform: translateY(#{pxToRem(4px)});
         }
       }
 
-      &:not([data-scroll]) {
+      &:not([data-scroll-next]) {
         opacity: 0;
         pointer-events: none;
       }
@@ -208,6 +262,26 @@ const { navigation, slug, parentSlug } = Astro.props
   }
 
   @include until(desktop) {
+    .sidebar {
+      $sidebar: &;
+
+      &--sticky {
+        display: block;
+
+        &[data-slide-ready='true'] {
+          top: 0;
+        }
+
+        &[data-slide-out='true'] {
+          top: -100%;
+        }
+
+        .actions {
+          display: block;
+        }
+      }
+    }
+
     .actions {
       display: none;
     }
@@ -215,32 +289,34 @@ const { navigation, slug, parentSlug } = Astro.props
 
   @include from(desktop) {
     .sidebar {
-      --padding-bottom: var(--content-padding-bottom) width: auto;
-    }
+      width: auto;
+      z-index: 0;
 
-    .container {
-      flex-direction: column;
-      justify-content: space-between;
-    }
+      &__container {
+        flex-direction: column;
+        justify-content: space-between;
+      }
 
-    .header {
-      grid-column: span 2;
-      position: sticky;
-      top: var(--layout-padding-y);
+      &__header {
+        grid-column: span 2;
+        position: sticky;
+        top: var(--layout-padding-y);
+      }
+
+      &__logo {
+        --width: #{pxToRem(180px)};
+      }
+
+      &__footer {
+        flex-direction: row;
+        position: sticky;
+        bottom: var(--content-padding-bottom);
+        width: 100%;
+      }
     }
 
     .menu {
       position: relative;
-    }
-
-    .logo {
-      --width: #{pxToRem(180px)};
-    }
-
-    .footer {
-      flex-direction: row;
-      position: sticky;
-      bottom: var(--content-padding-bottom);
     }
   }
 </style>

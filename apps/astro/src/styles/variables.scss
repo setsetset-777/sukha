@@ -69,6 +69,7 @@ $colors: (
   // COMPONENTS
   --page-gap: var(--space-48);
   --grid-gap: var(--space-48);
+  --layout-background-color: var(--color-teal-50);
   --body-color: var(--color-teal-800);
   --heading-color: var(--color-teal-950);
   --link-color-hover: var(--color-teal-600);
@@ -80,8 +81,9 @@ $colors: (
   --content-padding-x: var(--layout-padding-x);
   --content-gap-row: var(--space-48);
   --content-gap-col: var(--space-48);
+  --sidebar-padding-bottom: var(--layout-padding-y);
   --page-padding-left: var(--layout-padding-x);
-  --page-padding-top: var(--space-128);
+  --page-padding-top: calc(var(--space-128) - var(--sidebar-padding-bottom));
   --page-padding: var(--page-padding-top) var(--content-padding-x) var(--content-padding-bottom)
     var(--page-padding-left);
   --section-background-color-light: var(--color-teal-200);
@@ -103,7 +105,8 @@ $colors: (
 
   @include from(desktop) {
     --content-padding-top: var(--space-160);
-    --page-padding-top: 0;
+    --sidebar-padding-bottom: var(--content-padding-bottom);
+    --page-padding-top: var(--content-padding-top);
     --page-padding-left: 0;
     --project-item-padding: var(--space-48);
   }
