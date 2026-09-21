@@ -33,6 +33,7 @@ const { url, image, title } = Astro.props
     $root: &;
 
     --info-padding-left: var(--space-24);
+    --item-gap: @include bleed();
 
     @include bleed();
     display: flex;
@@ -86,6 +87,8 @@ const { url, image, title } = Astro.props
 
   @include from(desktop) {
     .project-list-item {
+      --project-item-padding: var(--space-48);
+
       flex-direction: row;
       align-items: end;
     }
