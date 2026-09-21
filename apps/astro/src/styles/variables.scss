@@ -67,7 +67,7 @@ $colors: (
   --blur: 3px;
 
   // COMPONENTS
-  --page-gap: var(--space-64);
+  --page-gap: var(--space-48);
   --grid-gap: var(--space-48);
   --body-color: var(--color-teal-800);
   --heading-color: var(--color-teal-950);
@@ -91,10 +91,10 @@ $colors: (
   --setsetset-color: var(--body-color);
   --setsetset-color-hover: var(--link-color-hover);
 
-  @include from(mobile) {
+  @include from(big-mobile) {
     --layout-padding-x: var(--space-48);
     --layout-padding-y: var(--space-48);
-    --content-padding-x: 0;
+    --page-gap: var(--space-64);
   }
 
   @include from(desktop) {
