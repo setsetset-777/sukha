@@ -179,14 +179,18 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
       flex-wrap: wrap;
       gap: var(--space-24);
       padding-bottom: var(--section-padding-bottom);
+      width: 100%;
     }
 
     &__image {
+      --image-background-color: var(--color-teal-300);
+      --image-height: auto;
+
       position: relative;
       mix-blend-mode: luminosity;
       filter: grayscale(1);
-      height: pxToRem(360px);
-      --image-background-color: var(--color-teal-300);
+      width: 100%;
+      height: var(--image-height);
     }
   }
 
@@ -229,6 +233,10 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
   @include from(big-mobile) {
     .specs {
       --columns: 2;
+    }
+
+    .existing {
+      --image-height: #{pxToRem(360px)};
     }
   }
 
