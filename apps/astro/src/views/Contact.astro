@@ -91,15 +91,17 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
   }
 
   .hero {
+    --body-left-padding: var(--content-padding-x);
+
     position: relative;
     padding-bottom: var(--section-padding-bottom);
     @include bleed(dark);
     display: flex;
     gap: var(--grid-gap);
-    align-items: end;
+    flex-direction: column;
 
     &__image {
-      height: pxToRem(480px);
+      height: var(--image-height);
       --image-background-color: var(--color-teal-700);
     }
 
@@ -108,6 +110,7 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
       flex-direction: column;
       gap: var(--space-24);
       color: var(--color-teal-50);
+      padding-left: var(--body-left-padding);
     }
 
     &__header {
@@ -137,6 +140,16 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
       &:hover {
         color: var(--color-teal-300);
       }
+    }
+  }
+
+  @include from(desktop) {
+    .hero {
+      --image-height: #{pxToRem(480px)};
+      --body-left-padding: 0;
+
+      flex-direction: row;
+      align-items: end;
     }
   }
 </style>
