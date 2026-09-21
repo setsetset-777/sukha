@@ -1,3 +1,6 @@
+const nextTargetSelector = '[data-scroll-view="next"]'
+const scrollNextDataAttribute = 'data-scroll-next'
+
 export const scrollToElement = (selector?: string | Element) => {
   if (!selector) return
   const target = selector instanceof Element ? selector : document.querySelector(selector)
@@ -18,11 +21,18 @@ const getNextElement = (selector?: string) => {
 
 export const initScrollClicks = () => {
   document.addEventListener('click', ({ target }) => {
-    if (!(target instanceof HTMLElement)) return
-    if (target.closest('[data-scroll')) {
-      const element = getNextElement(target.dataset.scroll)
-      scrollToElement(element)
+    if (
+      !(target instanceof HTMLElement) ||
+      !target.dataset.scroll ||
+      !target.closest('[data-scroll]')
+    )
+      return
+    const element = document.querySelector(target.dataset.scroll)
+
+    if (!element) {
+      return
     }
+    scrollToElement(element)
   })
 }
 
@@ -35,19 +45,19 @@ export const initScrollHash = () => {
   }
 }
 
-export const initScrollButton = (buttonSelector: string) => {
-  const targetSelector = '[data-scroll-view]'
-
-  const targets = document.querySelectorAll(targetSelector)
+export const initScrollNextButton = (buttonSelector: string) => {
+  const targets = document.querySelectorAll(nextTargetSelector)
 
   if (targets.length <= 0) {
     return
   }
 
+  const button = document.querySelector<HTMLButtonElement>(buttonSelector)
+
   const showButton = () => {
-    button?.setAttribute('data-scroll', targetSelector)
+    button?.setAttribute(scrollNextDataAttribute, nextTargetSelector)
   }
-  const hideButton = () => button?.removeAttribute('data-scroll')
+  const hideButton = () => button?.removeAttribute(scrollNextDataAttribute)
 
   const sentinel = document.createElement('span')
   sentinel.classList.add('scroll-sentinel')
@@ -82,5 +92,15 @@ export const initScrollButton = (buttonSelector: string) => {
     sentinelObserver.observe(footer)
   }
 
-  const button = document.querySelector<HTMLButtonElement>(buttonSelector)
+  initScrollNextClicks()
+}
+
+export const initScrollNextClicks = () => {
+  document.addEventListener('click', ({ target }) => {
+    if (!(target instanceof HTMLElement)) return
+    const closest = target.closest(`[${scrollNextDataAttribute}]`)
+    if (!closest) return
+    const element = getNextElement(nextTargetSelector)
+    scrollToElement(element)
+  })
 }

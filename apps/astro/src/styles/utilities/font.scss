@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:meta';
 @use './media';
 
 @mixin font($family: body, $size: m, $weight: normal) {
@@ -6,7 +7,7 @@
   font-weight: var(--font-weight-#{$weight});
   color: var(--#{$family}-color);
 
-  @if (type-of($size) == 'map') {
+  @if (meta.type-of($size) == 'map') {
     @each $media, $value in $size {
       @if ($media == 'default') {
         font-size: var(--font-size-#{$value});

@@ -16,7 +16,7 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
 
   <div class="body">
     {image && (
-      <section class="hero" data-scroll-view>
+      <section class="hero" data-scroll-view="next">
         <div class="hero__image">
           <Image
             src={image.url}
@@ -60,7 +60,7 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
         </div>
       </section>
     )}
-    <section data-scroll-view>
+    <section data-scroll-view="next">
       <Setsetset {...setsetset} />
     </section>
   </div>
