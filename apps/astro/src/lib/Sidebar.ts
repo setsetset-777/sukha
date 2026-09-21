@@ -2,7 +2,6 @@ export default class Sidebar {
   menuItemSelector = '[data-menu-item]'
   sidebarSelector = '[data-sidebar]'
   switchSelector = '[data-sidebar-switch]'
-  tresholdSelector = '.page'
   activeItemClass = 'active'
   body: HTMLBodyElement | null = null
   element: HTMLElement | null = null
@@ -31,7 +30,8 @@ export default class Sidebar {
   }
 
   initScroll() {
-    this.scrollHeroTreshold = this.body?.getBoundingClientRect().height ?? 0
+    const height = document.querySelector('#sidebar')?.getBoundingClientRect().height ?? 0
+    this.scrollHeroTreshold = height + 64
 
     document.addEventListener('scroll', () => {
       if (!this.scrollTicking) {
