@@ -87,7 +87,7 @@ const { title, image, name, job, text, partners } = Astro.props
     --partner-gap: var(--space-48);
     --partner-list-gap: var(--space-48);
 
-    padding: var(--content-padding-top) var(--content-padding-x) var(--content-padding-bottom);
+    padding: var(--page-padding);
     display: flex;
     flex-direction: column;
     gap: var(--page-gap);
@@ -232,7 +232,6 @@ const { title, image, name, job, text, partners } = Astro.props
       --hero-info-padding-left: 0em;
       --partner-gap: var(--space-48);
       --partner-list-gap: var(--space-48);
-      padding-left: 0;
 
       .hero {
         &__inner {
