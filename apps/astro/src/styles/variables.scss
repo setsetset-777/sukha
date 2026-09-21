@@ -77,9 +77,12 @@ $colors: (
   --layout-padding-y: var(--space-24);
   --content-padding-top: var(--space-48);
   --content-padding-bottom: var(--space-80);
-  --content-padding-x: var(--space-24);
+  --content-padding-x: var(--layout-padding-x);
   --content-gap-row: var(--space-48);
   --content-gap-col: var(--space-48);
+  --page-padding-left: var(--layout-padding-x);
+  --page-padding: var(--content-padding-top) var(--content-padding-x) var(--content-padding-bottom)
+    var(--page-padding-left);
   --section-background-color-light: var(--color-teal-200);
   --section-background-color-dark: var(--color-teal-600);
   --section-background-color-gray: var(--color-teal-50);
@@ -90,9 +93,6 @@ $colors: (
   --image-background-color: var(--color-teal-100);
   --setsetset-color: var(--body-color);
   --setsetset-color-hover: var(--link-color-hover);
-  --page-padding-left: var(--content-padding-x);
-  --page-padding: var(--content-padding-top) var(--content-padding-x) var(--content-padding-bottom)
-    var(--page-padding-left);
 
   @include from(big-mobile) {
     --layout-padding-x: var(--space-48);

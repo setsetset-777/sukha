@@ -191,6 +191,7 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
   }
 
   .specs {
+    --columns: unset;
     display: flex;
     flex-direction: column;
     gap: var(--section-gap);
@@ -200,7 +201,7 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
     }
 
     &__list {
-      columns: 3;
+      columns: var(--columns);
       column-gap: var(--grid-gap);
       row-gap: var(--grid-gap);
       max-width: pxToRem(900px);
@@ -222,6 +223,18 @@ const { title, image, place, tags, text, backLink, gallery, existing, specs, cre
 
     dd {
       margin: 0;
+    }
+  }
+
+  @include from(big-mobile) {
+    .specs {
+      --columns: 2;
+    }
+  }
+
+  @include from(desktop) {
+    .specs {
+      --columns: 3;
     }
   }
 </style>

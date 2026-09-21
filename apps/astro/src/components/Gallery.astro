@@ -95,7 +95,7 @@ images.forEach((image) => {
   @use '../styles/utilities' as *;
 
   .gallery {
-    --row-gap: var(--space-48);
+    --row-gap: var(--space-24);
     --column-gap: var(--space-48);
     display: flex;
     flex-direction: column;
@@ -132,15 +132,6 @@ images.forEach((image) => {
     }
   }
 
-  @include from(mobile) {
-    .gallery {
-      &__row {
-        flex-direction: row;
-        gap: var(--column-gap);
-      }
-    }
-  }
-
   .credit {
     display: flex;
     gap: var(--space-8);
@@ -152,6 +143,16 @@ images.forEach((image) => {
     &__value {
       &:before {
         content: '©';
+      }
+    }
+  }
+
+  @include from(big-mobile) {
+    .gallery {
+      --row-gap: var(--space-48);
+
+      &__row {
+        flex-direction: row;
       }
     }
   }
