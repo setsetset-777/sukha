@@ -75,8 +75,10 @@ const { navigation, slug, parentSlug } = Astro.props
   @use '../styles/utilities' as *;
 
   .sidebar {
+    --padding-bottom: 0;
+
     padding: var(--layout-padding-y) var(--layout-padding-x);
-    padding-bottom: 0;
+    padding-bottom: var(--padding-bottom);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -213,8 +215,7 @@ const { navigation, slug, parentSlug } = Astro.props
 
   @include from(desktop) {
     .sidebar {
-      width: auto;
-      padding-bottom: var(--content-padding-bottom);
+      --padding-bottom: var(--content-padding-bottom) width: auto;
     }
 
     .container {
