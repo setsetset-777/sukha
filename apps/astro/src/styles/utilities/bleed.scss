@@ -1,7 +1,8 @@
 @use './transition' as *;
 
-@mixin bleed($color: light) {
+@mixin bleed($color: light, $hover: false) {
   position: relative;
+  --bleed-background-color: var(--section-background-color-#{$color});
 
   & > * {
     position: relative;
@@ -10,7 +11,7 @@
   &:before {
     content: '';
     display: block;
-    background-color: var(--section-background-color-#{$color});
+    background-color: var(--bleed-background-color);
     position: absolute;
     width: 100dvw;
     top: 0;
@@ -18,5 +19,15 @@
     bottom: 0;
     @include transition(background-color);
     border-radius: var(--radius-1);
+  }
+
+  @if ($hover != false) {
+    $hover-color: dark;
+    @if ($color == dark) {
+      $hover-color: light;
+    }
+    &:hover {
+      --bleed-background-color: var(--section-background-color-#{$hover-color});
+    }
   }
 }

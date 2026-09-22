@@ -23,7 +23,7 @@ import { PageProjects } from '@/globals/PageProjects'
 import { PageContact } from '@/globals/PageContact'
 
 import { customTranslations } from '@/i18n'
-import { localization } from '@app/api/i18n'
+import { getLocaleFromPath, localization } from '@app/api/i18n'
 import regenerateMedia from '@/helpers/regenerateMedia'
 
 import { fetchPage } from '@/api/fetch/page'
@@ -105,8 +105,9 @@ export default buildConfig({
       path: '/page',
       method: 'get',
       handler: async (req) => {
-        req.payload.logger.info('Hiiting endpoint /page')
+        req.payload.logger.info(req.query, 'Hiiting endpoint /page')
         const [path, search] = (req.query.path as string).split('?')
+        const locale = getLocaleFromPath(path)
         let params = new URLSearchParams(search)
         let safeParams
 
@@ -118,7 +119,7 @@ export default buildConfig({
               limit: params.get('limit') ?? undefined,
             },
             req.payload,
-            req.locale as LocaleCode,
+            locale.code,
           )
         } catch (e) {
           return Response.json(

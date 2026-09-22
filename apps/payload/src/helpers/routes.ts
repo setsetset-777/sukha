@@ -178,6 +178,19 @@ export const getPathBySlugSync = (
   return getPathOfRoute(route, locale)
 }
 
+export const getPathById = async (id: string, locale: LocaleCode): Promise<string | null> => {
+  const routes = await getRoutes()
+  return getPathByIdSync(id, locale, routes)
+}
+
+export const getPathByIdSync = (id: string, locale: LocaleCode, routes: Routes): string | null => {
+  const route = getRouteByIdSync(id, routes)
+  if (!route) {
+    return null
+  }
+  return getPathOfRoute(route, locale)
+}
+
 export const getPathOfRoute = (route: Route | null, locale: LocaleCode): string | null => {
   if (!route) {
     return null

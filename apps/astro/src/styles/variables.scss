@@ -67,7 +67,6 @@ $colors: (
   --blur: 3px;
 
   // COMPONENTS
-  --page-gap: var(--space-48);
   --grid-gap: var(--space-48);
   --layout-background-color: var(--color-teal-50);
   --body-color: var(--color-teal-800);
@@ -82,10 +81,12 @@ $colors: (
   --content-gap-row: var(--space-48);
   --content-gap-col: var(--space-48);
   --sidebar-padding-bottom: var(--layout-padding-y);
+  --page-gap: var(--space-48);
   --page-padding-left: var(--layout-padding-x);
   --page-padding-top: calc(var(--space-128) - var(--sidebar-padding-bottom));
   --page-padding: var(--page-padding-top) var(--content-padding-x) var(--content-padding-bottom)
     var(--page-padding-left);
+  --page-content-gap: var(--space-48);
   --section-background-color-light: var(--color-teal-200);
   --section-background-color-dark: var(--color-teal-600);
   --section-background-color-gray: var(--color-teal-50);
@@ -101,6 +102,7 @@ $colors: (
     --layout-padding-x: var(--space-48);
     --layout-padding-y: var(--space-48);
     --page-gap: var(--space-64);
+    --page-content-gap: var(--space-64);
   }
 
   @include from(desktop) {

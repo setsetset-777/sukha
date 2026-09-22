@@ -52,22 +52,23 @@ export const getProjectsData = async ({
       const t = i18n.t as CustomTFunction
 
       // filter down tags for which no projects exists
-      const tagsWithProjectslength = await Promise.all(
-        projectTags.docs.map(async (project) => {
-          const projects = await listPublishedCollection({
-            slug: 'projects',
-            payload,
-            locale,
-            where: {
-              tags: {
-                in: [project.id],
+      const tags = (
+        await Promise.all(
+          projectTags.docs.map(async (project) => {
+            const projects = await listPublishedCollection({
+              slug: 'projects',
+              payload,
+              locale,
+              where: {
+                tags: {
+                  in: [project.id],
+                },
               },
-            },
-          })
-          return { ...project, length: projects.docs.length }
-        }),
-      )
-      const tags = tagsWithProjectslength.filter(({ length }) => length > 0)
+            })
+            return { ...project, length: projects.docs.length }
+          }),
+        )
+      ).filter(({ length }) => length > 0)
 
       const { moreLabel } = general.misc ?? {}
 

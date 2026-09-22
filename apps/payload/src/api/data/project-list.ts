@@ -3,6 +3,7 @@ import type { LocaleCode } from '@/types'
 import { getPayload } from 'payload'
 import apiConfig from '@app/api/config'
 import listPublishedCollection from '@/helpers/listPublishedCollection'
+import getTagIdsFromSlugs from '@/helpers/getTagIdsFromSlugs'
 import { cached, tags } from '@/helpers/cache'
 import config from '@payload-config'
 import { getPathOfRoute, getRouteByIdSync, getRoutes } from '@/helpers/routes'
@@ -25,21 +26,14 @@ export const getProjectListData = async ({
 
       const { tag: selectedTagsSlugs, page, limit } = params
 
-      const [routes, tags] = await Promise.all([
+      const [routes, tagIds] = await Promise.all([
         getRoutes(),
-        payload.find({
-          collection: 'projectTags',
+        getTagIdsFromSlugs({
+          slugs: selectedTagsSlugs,
+          payload,
           locale,
-          draft: false,
-          where: {
-            urlSlug: {
-              in: selectedTagsSlugs,
-            },
-          },
         }),
       ])
-
-      const selectedTagssIds = tags.docs.map(({ id }) => id)
 
       const projects = await listPublishedCollection({
         slug: 'projects',
@@ -50,10 +44,10 @@ export const getProjectListData = async ({
           limit: limit ?? apiConfig.projectsLimit,
         },
         where:
-          selectedTagssIds.length > 0
+          tagIds.length > 0
             ? {
                 tags: {
-                  in: selectedTagssIds,
+                  in: tagIds,
                 },
               }
             : {},

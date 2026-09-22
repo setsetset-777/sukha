@@ -1,5 +1,5 @@
 import type { Media } from '../shared'
-import type { Tag } from '.'
+import type { Projects, Tag } from '.'
 
 export namespace Project {
   export type Gallery = GalleryItem[]
@@ -19,6 +19,8 @@ export namespace Project {
     label?: string
     value: string
   }
+
+  export type Next = Projects.Project
 
   export interface Data {
     title: string
@@ -40,5 +42,6 @@ export namespace Project {
       list?: Spec[]
     }
     credit?: Credit
+    next?: Next | null
   }
 }
