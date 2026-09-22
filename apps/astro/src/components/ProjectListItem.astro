@@ -5,9 +5,12 @@ import type { Projects } from '@app/api/types'
 type Props = Projects.Project
 
 const { url, image, title } = Astro.props
+
+const { search } = Astro.url
+let taggedUrl = search ? url + search : url
 ---
 
-<a href={url} class="project-list-item" data-project-list-item>
+<a href={taggedUrl} class="project-list-item" data-project-list-item>
   <div class="project-list-item__image">
     {image && (
       <Image
@@ -35,7 +38,7 @@ const { url, image, title } = Astro.props
     --info-padding-left: var(--space-24);
     --item-gap: @include bleed();
 
-    @include bleed();
+    @include bleed($hover: true);
     display: flex;
     gap: var(--space-24);
     padding-bottom: var(--project-item-padding);
@@ -67,8 +70,6 @@ const { url, image, title } = Astro.props
     }
 
     &:hover {
-      @include bleed(dark);
-
       #{$root} {
         &__title {
           color: var(--color-teal-200);

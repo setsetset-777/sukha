@@ -61,6 +61,7 @@ export const fetchPage = async (
         data = await getProjectData({
           locale: locale.code,
           id,
+          params,
         })
         return {
           slug,

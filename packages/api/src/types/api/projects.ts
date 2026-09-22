@@ -7,6 +7,8 @@ export namespace Projects {
     url?: string
   }
 
+  export type List = PaginatedDocs<Project>
+
   export interface SearchParams {
     tag?: string[]
     limit?: number
@@ -28,6 +30,4 @@ export namespace Projects {
     tags: Tag[]
     list: List
   }
-
-  export type List = PaginatedDocs<Project>
 }

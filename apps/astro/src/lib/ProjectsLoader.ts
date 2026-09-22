@@ -164,13 +164,16 @@ export default class ProjectsLoader {
 
   pushHistory() {
     const url = new URL(window.location.href)
-    url.search = this.searchParams.toString()
+    const params = new URLSearchParams()
+    this.activeTags.forEach((item) => params.append(this.paramName, item))
+    url.search = params.toString()
+
     window.history.pushState({ url: url.toString() }, '', url.toString())
   }
 
   onChange() {
     document.dispatchEvent(new CustomEvent('images:load'))
-    // this.pushHistory()
+    this.pushHistory()
   }
 
   private set state(state: State) {

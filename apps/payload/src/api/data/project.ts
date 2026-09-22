@@ -1,19 +1,28 @@
 import type * as API from '@app/api/types'
 import type { LocaleCode, Media, Partner, ProjectSpec, ProjectTag } from '@/types'
-import { getPathBySlugSync, getProjectsTagsUrlSync, getRoutes } from '@/helpers/routes'
+import {
+  getPathByIdSync,
+  getPathBySlugSync,
+  getProjectsTagsUrlSync,
+  getRoutes,
+} from '@/helpers/routes'
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { cached, tags } from '@/helpers/cache'
+import getTagIdsFromSlugs from '@/helpers/getTagIdsFromSlugs'
+import getNextProject from '@/helpers/getNextProject'
 
 interface Props {
   id: string
   locale: LocaleCode
+  params: API.Projects.SearchParams
 }
 
 export const getProjectData = async ({
   id,
   locale,
+  params,
 }: Props): Promise<{
   meta: API.Meta
   data: API.Project.Data
@@ -27,7 +36,7 @@ export const getProjectData = async ({
         config,
       })
 
-      const [routes, general, project] = await Promise.all([
+      const [routes, general, project, tagIds] = await Promise.all([
         getRoutes(),
         payload.findGlobal({ slug: 'general', locale }),
         payload.findByID({
@@ -36,13 +45,38 @@ export const getProjectData = async ({
           id,
           draft: false,
         }),
+        getTagIdsFromSlugs({
+          slugs: params.tag,
+          payload,
+          locale,
+        }),
       ])
+
+      const nextProject = await getNextProject<'projects'>({
+        collection: 'projects',
+        id,
+        payload,
+        locale,
+        where:
+          tagIds.length > 0
+            ? {
+                tags: {
+                  in: tagIds,
+                },
+              }
+            : {},
+        select: {
+          mainImage: true,
+          title: true,
+          id: true,
+        },
+      })
 
       const { meta, title, mainImage, place, tags, text, gallery, existing, specs, credit } =
         project
       const { backLinkLabel, existingLabel, specsLabel, creditsLabel } = general.misc ?? {}
 
-      const backLinkUrl = getPathBySlugSync('pageProjects', locale, routes)
+      let backLinkUrl = getPathBySlugSync('pageProjects', locale, routes)
 
       return {
         meta: {
@@ -95,6 +129,13 @@ export const getProjectData = async ({
             ? {
                 label: creditsLabel ?? undefined,
                 value: (credit as Partner).name,
+              }
+            : undefined,
+          next: nextProject
+            ? {
+                title: nextProject.title ?? undefined,
+                image: nextProject.mainImage as Media,
+                url: getPathByIdSync(nextProject.id, locale, routes) ?? undefined,
               }
             : undefined,
         },

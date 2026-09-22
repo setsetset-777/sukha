@@ -1,0 +1,90 @@
+---
+import type { Project } from '@app/api/types'
+import Image from '@/components/Image.astro'
+import ArrowRight from '@/assets/svgs/arrow-right.svg'
+
+type Props = Project.Next
+
+const { title, image, url } = Astro.props
+
+const { search } = Astro.url
+let taggedUrl = search ? url + search : url
+---
+
+<a href={taggedUrl} class="project-next">
+  {image && (
+    <div class="project-next__image">
+      <Image
+        src={image.url}
+        alt={image.alt}
+        srcset={{
+          '150w': image.sizes?.[200]?.url!,
+          '300w': image.sizes?.[500]?.url!,
+        }}
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
+        width={image.width}
+        height={image.height}
+        fit="contain"
+      />
+    </div>
+  )}
+  <div class="project-next__info">
+    <h5 class="project-next__title">{title}</h5>
+    <span class="project-next__arrow">
+      <ArrowRight />
+    </span>
+  </div>
+</a>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .project-next {
+    $root: &;
+
+    @include bleed($hover: true);
+
+    --image-height: #{pxToRem(96px)};
+    --padding-bottom: var(--space-16);
+
+    display: flex;
+    align-items: end;
+    gap: var(--space-16);
+    text-decoration: none;
+    padding-bottom: var(--padding-bottom);
+    color: var(--color-teal-600);
+    @include transition(color);
+    align-self: flex-end;
+
+    &__image {
+      height: var(--image-height);
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    &__title {
+      @include heading(4);
+      color: inherit;
+    }
+
+    &__arrow {
+      @include transition('color, transform');
+    }
+
+    &:hover {
+      color: var(--color-teal-100);
+
+      #{$root} {
+        &__arrow {
+          transform: translateX(var(--space-4));
+        }
+      }
+    }
+  }
+</style>

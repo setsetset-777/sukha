@@ -72,7 +72,6 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
   .page {
     --grid-column-left-width: #{pxToRem(240px)};
     --base-gap: var(--space-48);
-    --section-gap: var(--space-64);
 
     padding: var(--page-padding);
     display: flex;
@@ -82,7 +81,7 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
     .body {
       display: flex;
       flex-direction: column;
-      gap: var(--section-gap);
+      gap: var(--page-content-gap);
     }
 
     .title {
