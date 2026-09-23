@@ -5,6 +5,7 @@
 @mixin font($family: body, $size: m, $weight: normal) {
   font-family: var(--font-family-#{$family});
   font-weight: var(--font-weight-#{$weight});
+  line-height: var(--font-height-#{$family});
   color: var(--#{$family}-color);
 
   @if (meta.type-of($size) == 'map') {
