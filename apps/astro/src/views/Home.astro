@@ -4,12 +4,16 @@ import type { Home } from '@app/api/types'
 
 type Props = Home.Data
 
-const { projects, slidesArialLabel } = Astro.props
+const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
 ---
 
 <div class="page">
   <div class="body">
-    <Slider projects={projects} slidesArialLabel={slidesArialLabel} />
+    <Slider
+      projects={projects}
+      slidesArialLabel={slidesArialLabel}
+      projectLinkLabel={projectLinkLabel}
+    />
   </div>
 </div>
 

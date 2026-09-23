@@ -51,11 +51,8 @@ let taggedUrl = search ? url + search : url
       position: relative;
       border-radius: var(--radius-1);
       overflow: hidden;
-
-      :global(img) {
-        background-blend-mode: luminosity;
-        @include transition(filter);
-      }
+      background-blend-mode: luminosity;
+      @include transition('filter, transform');
     }
 
     &__info {
@@ -76,11 +73,8 @@ let taggedUrl = search ? url + search : url
         }
 
         &__image {
-          :global(img) {
-            mix-blend-mode: luminosity;
-            filter: grayscale(1);
-            --image-background-color: transparent;
-          }
+          transform: scale(1.03);
+          --image-background-color: transparent;
         }
       }
     }
