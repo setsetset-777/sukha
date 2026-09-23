@@ -17,7 +17,7 @@ export default class ProjectsLoader {
   listSelector = '[data-projects-loader-list]'
   moreSelector = '[data-projects-loader-more]'
   paramName = 'tag'
-  loadDelay = 200
+  loadDelay = 150
 
   constructor({ element, paramName }: { element: HTMLElement; paramName?: string }) {
     if (!element) {
@@ -32,11 +32,12 @@ export default class ProjectsLoader {
   }
 
   init() {
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', async (e) => {
       if (!(e.target instanceof HTMLElement)) return
       if (e.target.closest(this.moreSelector)) {
         this.page += 1
-        this.fetch({ append: true, isMore: true })
+        await this.fetch({ append: true, isMore: true })
+        window.scrollTo({ behavior: 'smooth', top: window.scrollY + window.innerHeight / 2 })
       }
     })
   }

@@ -91,6 +91,8 @@ const { title, tags, list, moreLabel } = Astro.props
         e.currentTarget.querySelectorAll<HTMLInputElement>(`input[name="${checkName}"]:checked`),
       ).map((item) => item.value)
 
+      window.scrollTo({ behavior: 'smooth', top: 0 })
+
       await loader.fetch({ tags })
     })
   }

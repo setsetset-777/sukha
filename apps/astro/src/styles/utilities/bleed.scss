@@ -1,15 +1,14 @@
 @use './transition' as *;
 
 @mixin bleed($color: light, $hover: false) {
-  --bleed-background-color: var(--section-background-color-#{$color});
   --bleed-hint: 50%;
 
   @if ($color == dark) {
-    --color-1: var(--section-background-color-dark);
-    --color-2: var(--section-background-color-light);
+    --bleed-color-background-1: var(--section-background-color-dark);
+    --bleed-color-background-2: var(--section-background-color-light);
   } @else {
-    --color-1: var(--section-background-color-light);
-    --color-2: var(--section-background-color-dark);
+    --bleed-color-background-1: var(--section-background-color-light);
+    --bleed-color-background-2: var(--section-background-color-dark);
   }
 
   position: relative;
@@ -35,11 +34,19 @@
   }
 
   &:before {
-    background: linear-gradient(60deg, var(--color-1) var(--bleed-hint), var(--color-2));
+    background: linear-gradient(
+      60deg,
+      var(--bleed-color-background-1) var(--bleed-hint),
+      var(--bleed-color-background-2)
+    );
   }
 
   &:after {
-    background: linear-gradient(60deg, var(--color-2) var(--bleed-hint), var(--color-1));
+    background: linear-gradient(
+      60deg,
+      var(--bleed-color-background-2) var(--bleed-hint),
+      var(--bleed-color-background-1)
+    );
     opacity: 0;
   }
 
