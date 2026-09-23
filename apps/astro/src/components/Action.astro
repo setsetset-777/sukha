@@ -61,6 +61,7 @@ const Tag = href ? 'a' : 'button'
       @include transition('transform, background-color');
       transform: scaleX(var(--background-scale-x));
       background-color: var(--background-color);
+      transform-origin: left;
     }
 
     & > * {

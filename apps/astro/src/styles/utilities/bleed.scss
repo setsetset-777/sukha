@@ -1,24 +1,46 @@
 @use './transition' as *;
 
 @mixin bleed($color: light, $hover: false) {
-  position: relative;
   --bleed-background-color: var(--section-background-color-#{$color});
+  --bleed-hint: 50%;
+
+  @if ($color == dark) {
+    --color-1: var(--section-background-color-dark);
+    --color-2: var(--section-background-color-light);
+  } @else {
+    --color-1: var(--section-background-color-light);
+    --color-2: var(--section-background-color-dark);
+  }
+
+  position: relative;
 
   & > * {
     position: relative;
+    z-index: 1;
   }
 
-  &:before {
+  &:before,
+  &:after {
     content: '';
     display: block;
-    background-color: var(--bleed-background-color);
     position: absolute;
     width: 100dvw;
+    min-width: 150%;
     top: 0;
     left: 0;
     bottom: 0;
-    @include transition(background-color);
+    @include transition(opacity, long);
     border-radius: var(--radius-1);
+    z-index: 0;
+  }
+
+  &:before {
+    background: linear-gradient(60deg, var(--color-1) var(--bleed-hint), var(--color-2));
+  }
+
+  &:after {
+    background: linear-gradient(60deg, var(--color-2) var(--bleed-hint), var(--color-1));
+    opacity: 0;
   }
 
   @if ($hover != false) {
@@ -27,7 +49,13 @@
       $hover-color: light;
     }
     &:hover {
-      --bleed-background-color: var(--section-background-color-#{$hover-color});
+      &:before {
+        opacity: 0;
+      }
+
+      &:after {
+        opacity: 1;
+      }
     }
   }
 }
