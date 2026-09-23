@@ -138,10 +138,6 @@ const { title, tags, list, moreLabel } = Astro.props
     gap: var(--space-16);
     min-width: pxToRem(240px);
 
-    &__icon {
-      // display: none;
-    }
-
     &__list {
       display: flex;
       flex-direction: row;
@@ -174,13 +170,14 @@ const { title, tags, list, moreLabel } = Astro.props
       border-radius: var(--radius-1);
       flex-direction: row-reverse;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         background-color: var(--color-teal-200);
       }
     }
 
     &__input {
-      display: none;
+      opacity: 0;
 
       &:checked + #{$filter}__label {
         background-color: var(--color-teal-200);
@@ -195,6 +192,10 @@ const { title, tags, list, moreLabel } = Astro.props
         #{$filter}__unselect {
           opacity: 0;
         }
+      }
+
+      &:focus-visible + #{$filter}__label {
+        @include focus-ring-raw;
       }
     }
 

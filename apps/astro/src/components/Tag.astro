@@ -23,6 +23,7 @@ const { label, url } = Astro.props
     padding: var(--space-2) var(--space-4);
     text-decoration: none;
     font-size: var(--font-size-xs);
+    @include focus-ring;
 
     &:hover {
       background-color: var(--color-teal-300);

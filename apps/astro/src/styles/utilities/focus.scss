@@ -1,0 +1,16 @@
+@mixin focus-ring-raw {
+  box-shadow: var(--focus-ring);
+  outline: 0;
+  border-radius: var(--radius-2);
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    @include focus-ring-raw;
+  }
+}
+
+a,
+button {
+  @include focus-ring;
+}

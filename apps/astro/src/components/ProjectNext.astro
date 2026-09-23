@@ -57,6 +57,7 @@ let taggedUrl = search ? url + search : url
     color: var(--color-teal-600);
     @include transition(color);
     align-self: flex-end;
+    @include focus-ring;
 
     &__image {
       height: var(--image-height);
@@ -77,7 +78,8 @@ let taggedUrl = search ? url + search : url
       @include transition('color, transform');
     }
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: var(--color-teal-100);
 
       #{$root} {

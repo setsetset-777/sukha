@@ -48,7 +48,9 @@
     @if ($color == dark) {
       $hover-color: light;
     }
-    &:hover {
+
+    &:hover,
+    &:focus-visible {
       &:before {
         opacity: 0;
       }
