@@ -1,8 +1,8 @@
 ---
 import Image from '@/components/Image.astro'
 import TagList from '@/components/TagList.astro'
-import ChevronLeft from '@/assets/svgs/chevron-left.svg'
-import ChevronRight from '@/assets/svgs/chevron-right.svg'
+import ArrowRight from '@/assets/svgs/arrow-right.svg'
+import Cross from '@/assets/svgs/close.svg'
 import type { Home } from '@app/api/types'
 
 export type Props = {
@@ -13,19 +13,13 @@ export type Props = {
   controlAriaLabel?: string
 }
 
-const {
-  projects,
-  slidesArialLabel,
-  prevAriaLabel = "Afficher l'image suivante",
-  nextAriaLabel = "Afficher l'image précédente",
-  controlAriaLabel = "Afficher l'image",
-} = Astro.props
+const { projects, slidesArialLabel } = Astro.props
 ---
 
 <div class="slider" aria-label={slidesArialLabel} data-slider>
   <div class="main">
     <div class="slides" aria-live="polite">
-      {projects.map(({ image }, index) => (
+      {projects.map(({ image, url, title, tags }) => (
         <div
           class="slide"
           data-slider-item
@@ -34,85 +28,107 @@ const {
           data-slider-ariable
           inert
         >
-          {image && (
-            <Image
-              src={image.url}
-              alt={image.alt}
-              srcset={{
-                '800w': image.sizes?.[2000]?.url!,
-                '1200w': image.sizes?.[3000]?.url!,
-              }}
-              fetchpriority="high"
-              loading="eager"
-              decoding="async"
-              fit="cover"
-            />
-          )}
+          <div class="image">
+            {image && (
+              <Image
+                src={image.url}
+                alt={image.alt}
+                srcset={{
+                  '800w': image.sizes?.[2000]?.url!,
+                  '1200w': image.sizes?.[3000]?.url!,
+                }}
+                fetchpriority="high"
+                loading="eager"
+                decoding="async"
+                fit="cover"
+              />
+            )}
+          </div>
+          <article class="card" data-slider-card aria-hidden="true">
+            <div class="card__inner">
+              <div class="card__header">
+                <h3>{title}</h3>
+                <TagList tags={tags} />
+              </div>
+              <div class="card__footer">
+                <a class="card__link" href={url}>
+                  <ArrowRight />
+                  <span>Discover project</span>
+                </a>
+              </div>
+            </div>
+          </article>
         </div>
       ))}
     </div>
     <div class="remote">
-      <div class="controls">
-        <button class="control control__prev" data-slider-prev aria-label={prevAriaLabel}>
-          <ChevronLeft />
-        </button>
-        <ul class="control-list">
-          {Array.from(Array(projects.length)).map((_, index) => (
-            <button
-              class="control-list__item"
-              aria-label={`${controlAriaLabel} ${index + 1}`}
-              data-slider-goto={index}
-              data-slider-active="false"
-            />
-          ))}
-        </ul>
-        <button class="control control__next" data-slider-next aria-label={nextAriaLabel}>
-          <ChevronRight />
+      <div class="counter" aria-hidden>
+        <span data-slider-counter>{'1'.padStart(2, '0')}</span>
+        <span>{`${projects.length}`.padStart(2, '0')}</span>
+      </div>
+      <div class="actions">
+        <button class="actions__item actions__item--info" data-slider-action-info>
+          <Cross />
         </button>
       </div>
     </div>
   </div>
-  <div class="footer" data-scroll-view="next">
-    <div class="counter" aria-hidden>
-      <span data-slider-counter>{'1'.padStart(2, '0')}</span>
-      <span>{`${projects.length}`.padStart(2, '0')}</span>
-    </div>
-    <div class="cards" aria-live="polite">
-      {projects.map(({ title, url, tags }, index) => (
-        <article
-          class="card"
-          data-slider-card
-          data-slider-active="false"
-          aria-hidden="true"
-          data-slider-ariable
-          inert
-          data-slider-pause
-        >
-          <h3>
-            <a href={url} class="title">
-              {title}
-            </a>
-          </h3>
-          <TagList tags={tags} />
-        </article>
-      ))}
-    </div>
-  </div>
+  <div class="footer" data-scroll-view="next"></div>
 </div>
 
 <script>
   import Slider, { type SliderChangeDetail } from '@/lib/Slider'
+
   const slider = new Slider()
 
-  document.addEventListener('astro:page-load', () => {
+  const initCounter = () => {
     const counter = document.querySelector('[data-slider-counter')
+
     if (counter) {
       slider.addEventListener('change', (event) => {
         const { current } = (event as CustomEvent<SliderChangeDetail>).detail
         counter.innerHTML = `${current + 1}`.padStart(2, '0')
       })
     }
+  }
+
+  const toggleInfo = (state?: boolean) => {
+    const sliderElement = slider.element
+    if (!sliderElement) return
+    state =
+      typeof state === 'undefined' ? !(sliderElement.dataset.sliderInfoActive === 'true') : state
+
+    sliderElement.dataset.sliderInfoActive = `${state}`
+
+    if (state) {
+      slider.stop()
+    } else {
+      slider.start()
+    }
+  }
+
+  const initInfo = () => {
+    document.addEventListener('click', (e) => {
+      if (!(e.target instanceof HTMLElement)) return
+      if (e.target?.closest('[data-slider-card') && !e.target?.closest('.card__inner')) {
+        toggleInfo()
+      }
+    })
+
+    const infoButton = document.querySelector('[data-slider-action-info]')
+
+    if (infoButton) {
+      infoButton.addEventListener('click', () => {
+        toggleInfo()
+      })
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
     slider.launch()
+
+    initInfo()
+    initCounter()
   })
 </script>
 
@@ -121,12 +137,17 @@ const {
 
   .slider {
     --padding-right: var(--space-48);
-    --control-color: var(--color-teal-500);
-    --control-color-hover: var(--color-teal-800);
+    --footer-padding-y: var(--space-16);
+    --font-size: var(--font-size-m);
+    --remote-color: var(--color-teal-500);
+    --remote-color-active: var(--color-teal-800);
+    --action-info-rotate: 45deg;
+    --slide-info-opacity: 0;
+    --slide-image-blur: 0;
 
-    $transition-time: medium;
-
+    $transition-time: long;
     $slider: &;
+
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -145,7 +166,7 @@ const {
       flex-grow: 1;
       height: 100%;
 
-      @include from(big-mobile) {
+      @include from(desktop) {
         height: calc(100dvh - var(--content-padding-top));
         padding-top: 0;
       }
@@ -159,20 +180,96 @@ const {
       height: 100%;
       overflow: hidden;
       display: block;
-      pointer-events: none;
       opacity: 0;
       @include transition(opacity, $transition-time);
-
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+      // z-index: 0;
 
       &[data-slider-active='true'] {
         opacity: 1;
-        pointer-events: auto;
+        z-index: 2;
+      }
+    }
+
+    .image {
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      @include transition(filter);
+      filter: blur(var(--slide-image-blur));
+    }
+
+    .card {
+      --min-width: #{pxToRem(180px)};
+      @include transition(opacity, $transition-time);
+      opacity: var(--slide-info-opacity);
+      z-index: 3;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      &__inner {
+        position: absolute;
+        bottom: var(--space-16);
+        right: var(--space-16);
+        background-color: var(--section-background-color-light);
+        padding: var(--space-16) var(--space-24) var(--space-16) var(--space-48);
+        border-radius: var(--radius-2);
+        min-width: var(--min-width);
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: var(--space-16);
+        z-index: 1;
+      }
+
+      &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: var(--space-4);
+      }
+
+      &__link {
+        text-decoration: none;
+        color: var(--color-teal-500);
+        @include transition(color);
+        display: flex;
+        gap: var(--space-8);
+        align-items: center;
+
+        &:hover {
+          color: var(--color-teal-800);
+        }
+      }
+
+      &:after {
+        content: '';
+        display: block;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: var(--color-teal-800);
+        opacity: 0.5;
+        position: absolute;
+        z-index: 0;
+      }
+
+      @include from(big-mobile) {
+        --min-width: #{pxToRem(240px)};
+      }
+    }
+
+    .title {
+      @include heading(4);
+      text-decoration: none;
+      color: var(--color-teal-500);
+      @include transition(color);
+
+      &:hover {
+        color: var(--body-color);
       }
     }
 
@@ -181,57 +278,48 @@ const {
       display: flex;
       flex-direction: column;
       justify-content: end;
-      padding-bottom: var(--layout-padding-y);
-    }
-
-    .controls {
-      display: flex;
-      flex-direction: column;
-      color: var(--control-color);
       align-items: center;
-      gap: var(--space-8);
-      @include transition(color);
+      padding-bottom: var(--space-24);
+      gap: var(--space-16);
+      color: var(--remote-color);
     }
 
-    .control {
+    .counter {
+      --gap: var(--space-2);
       display: flex;
       flex-direction: column;
-      gap: var(--space-16);
-      cursor: pointer;
+      gap: var(--gap);
+      font-size: var(--font-size-xs);
+      color: var(--remote-color-active);
 
-      &:hover {
-        color: var(--control-color-hover);
+      span {
+        &:last-child {
+          color: var(--remote-color);
+          border-top: currentColor solid 1px;
+        }
       }
     }
 
-    .control-list {
+    .actions {
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: var(--space-8);
+      color: var(--remote-color);
 
       &__item {
-        padding: var(--space-4) 0;
+        @include transition('color, transform');
         cursor: pointer;
 
-        &:before {
-          content: '';
-          display: block;
-          width: pxToRem(12px);
-          height: pxToRem(1px);
-          background-color: currentColor;
-          @include transition(width);
-        }
-
         &:hover {
-          &:before {
-            color: var(--control-color-hover);
-          }
+          color: var(--remote-color-active);
         }
 
-        &[data-slider-active='true'] {
-          &:before {
-            width: pxToRem(16px);
-            color: var(--control-color-hover);
+        &--info {
+          transform: rotate(var(--action-info-rotate));
+
+          &:hover {
+            color: var(--remote-color-active);
           }
         }
       }
@@ -241,69 +329,20 @@ const {
       display: flex;
       flex-direction: row;
       justify-content: end;
-      padding: var(--space-16) var(--padding-right) var(--layout-padding-y) var(--space-16);
-    }
+      padding: var(--footer-padding-y) var(--padding-right) var(--layout-padding-y)
+        var(--footer-padding-y);
+      font-size: var(--font-size);
+      box-sizing: border-box;
 
-    .cards {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      justify-content: end;
-      flex-grow: 1;
-    }
-
-    .card {
-      top: 0;
-      right: 0;
-      pointer-events: none;
-      opacity: 0;
-      @include transition(opacity, $transition-time);
-      display: flex;
-      flex-direction: column;
-      align-items: end;
-      gap: var(--space-4);
-
-      &[data-slider-active='true'] {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      &:not(:first-child) {
-        position: absolute;
+      @include from(desktop) {
+        height: var(--sidebar-padding-bottom);
       }
     }
 
-    .title {
-      @include heading(4);
-      text-decoration: none;
-      color: var(--color-teal-600);
-      @include transition(color);
-
-      &:hover {
-        color: var(--body-color);
-      }
-    }
-
-    .counter {
-      --gap: var(--space-2);
-      display: flex;
-      gap: var(--gap);
-      font-size: var(--font-size-xs);
-      color: var(--color-teal-500);
-
-      span {
-        &:last-child {
-          color: var(--color-teal-400);
-          &:before {
-            content: '/';
-            margin-right: var(--gap);
-          }
-        }
-      }
-
-      @include until(desktop) {
-        display: none;
-      }
+    &[data-slider-info-active='true'] {
+      --action-info-rotate: 0;
+      --slide-info-opacity: 1;
+      --slide-image-blur: 3px;
     }
   }
 </style>
