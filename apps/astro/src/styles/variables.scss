@@ -98,6 +98,8 @@ $colors: (
   --image-background-color: var(--color-teal-100);
   --setsetset-color: var(--body-color);
   --setsetset-color-hover: var(--link-color-hover);
+  --focus-ring-color: var(--color-teal-400);
+  --focus-ring: 0 0 1px 1px var(--focus-ring-color);
 
   @include from(big-mobile) {
     --layout-padding-x: var(--space-48);

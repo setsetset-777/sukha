@@ -14,7 +14,7 @@ const { label, className, href, type } = Astro.props
 const Tag = href ? 'a' : 'button'
 ---
 
-<Tag href={href} class:list={['anchor', type && `anchor--${type}`, className]}>
+<Tag href={href} class:list={['anchor', type && `anchor--${type}`, className]} tabindex="0">
   {type && (
     <span class="icon">
       {type === 'right' && <ArrowRightSvg />}
@@ -48,6 +48,7 @@ const Tag = href ? 'a' : 'button'
     text-decoration: none;
     color: var(--color);
     position: relative;
+    @include focus-ring;
 
     &:before {
       content: '';
@@ -69,7 +70,8 @@ const Tag = href ? 'a' : 'button'
       z-index: 1;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       --color: var(--color-light);
       --background-color: var(--color-dark);
       --background-scale-x: 1;
@@ -89,7 +91,8 @@ const Tag = href ? 'a' : 'button'
         transform-origin: right;
       }
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         .icon {
           transform: translateX(calc(-1 * var(--translate-active)));
         }

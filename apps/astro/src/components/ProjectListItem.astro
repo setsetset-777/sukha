@@ -45,6 +45,7 @@ let taggedUrl = search ? url + search : url
     text-decoration: none;
     animation: load-in var(--ease-time-medium) var(--ease-function);
     flex-direction: column;
+    @include focus-ring;
 
     &__image {
       height: var(--project-item-height);
@@ -66,7 +67,8 @@ let taggedUrl = search ? url + search : url
       @include transition(color);
     }
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       #{$root} {
         &__title {
           color: var(--color-teal-200);
