@@ -8,12 +8,10 @@ import type { Home } from '@app/api/types'
 export type Props = {
   projects: Home.Data['projects']
   slidesArialLabel: Home.Data['slidesArialLabel']
-  prevAriaLabel?: string
-  nextAriaLabel?: string
-  controlAriaLabel?: string
+  projectLinkLabel?: string
 }
 
-const { projects, slidesArialLabel } = Astro.props
+const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
 ---
 
 <div class="slider" aria-label={slidesArialLabel} data-slider>
@@ -53,7 +51,7 @@ const { projects, slidesArialLabel } = Astro.props
               <div class="card__footer">
                 <a class="card__link" href={url}>
                   <ArrowRight />
-                  <span>Discover project</span>
+                  <span>{projectLinkLabel}</span>
                 </a>
               </div>
             </div>
@@ -143,7 +141,10 @@ const { projects, slidesArialLabel } = Astro.props
     --remote-color-active: var(--color-teal-800);
     --action-info-rotate: 45deg;
     --slide-info-opacity: 0;
+    --slide-info-blur: 2px;
+    --slide-info-scale: 0.99;
     --slide-image-blur: 0;
+    --slide-image-scale: 1.02;
 
     $transition-time: long;
     $slider: &;
@@ -194,8 +195,9 @@ const { projects, slidesArialLabel } = Astro.props
       height: 100%;
       position: relative;
       z-index: 1;
-      @include transition(filter);
+      @include transition('filter, transform');
       filter: blur(var(--slide-image-blur));
+      transform: scale(var(--slide-image-scale));
     }
 
     .card {
@@ -222,6 +224,9 @@ const { projects, slidesArialLabel } = Astro.props
         align-items: end;
         gap: var(--space-16);
         z-index: 1;
+        filter: blur(var(--slide-info-blur));
+        transform: scale(var(--slide-info-scale));
+        @include transition('filter, transform');
       }
 
       &__header {
@@ -343,6 +348,9 @@ const { projects, slidesArialLabel } = Astro.props
       --action-info-rotate: 0;
       --slide-info-opacity: 1;
       --slide-image-blur: 3px;
+      --slide-image-scale: 1;
+      --slide-info-blur: 0;
+      --slide-info-scale: 1;
     }
   }
 </style>

@@ -13,7 +13,7 @@
     clearTimeout(timeout)
     timeout = setTimeout(() => {
       loader.dataset.active = 'true'
-    }, 150)
+    }, 300)
   })
 
   document.addEventListener('astro:after-preparation', () => {
@@ -33,7 +33,7 @@
     left: 0;
     background-color: var(--color-teal-50);
     opacity: 0.5;
-    z-index: 1;
+    z-index: 2;
 
     display: none;
 

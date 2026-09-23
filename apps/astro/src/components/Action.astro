@@ -14,19 +14,27 @@ const { label, className, href, type } = Astro.props
 const Tag = href ? 'a' : 'button'
 ---
 
-<Tag href={href} class:list={[className]}>
-  {type === 'right' && <ArrowRightSvg />}
-  {type === 'left' && <ArrowLeftSvg />}
+<Tag href={href} class:list={['anchor', type && `anchor--${type}`, className]}>
+  {type && (
+    <span class="icon">
+      {type === 'right' && <ArrowRightSvg />}
+      {type === 'left' && <ArrowLeftSvg />}
+    </span>
+  )}
   <span>{label}</span>
 </Tag>
 
 <style lang="scss">
   @use '../styles/utilities' as *;
 
-  a,
-  button {
+  .anchor {
+    $anchor: &;
     --color-dark: var(--color-teal-600);
     --color-light: var(--color-teal-200);
+    --color: var(--color-dark);
+    --background-color: var(--color-light);
+    --translate-active: var(--space-4);
+    --background-scale-x: 0;
 
     display: inline-flex;
     border: var(--color-dark) solid 1px;
@@ -38,10 +46,53 @@ const Tag = href ? 'a' : 'button'
     @include transition('color, background-color');
     cursor: pointer;
     text-decoration: none;
+    color: var(--color);
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      @include transition('transform, background-color');
+      transform: scaleX(var(--background-scale-x));
+      background-color: var(--background-color);
+    }
+
+    & > * {
+      position: relative;
+      z-index: 1;
+    }
 
     &:hover {
-      color: var(--color-light);
-      background-color: var(--color-dark);
+      --color: var(--color-light);
+      --background-color: var(--color-dark);
+      --background-scale-x: 1;
+
+      &:before {
+        --background-color: var(--color-dark);
+      }
+    }
+
+    .icon {
+      @include transition('transform');
+      display: inline-flex;
+    }
+
+    &--left {
+      &:before {
+        transform-origin: right;
+      }
+
+      &:hover {
+        .icon {
+          transform: translateX(calc(-1 * var(--translate-active)));
+        }
+      }
     }
   }
 </style>
