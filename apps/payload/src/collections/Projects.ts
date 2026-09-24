@@ -48,6 +48,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'place',
       type: 'text',
+      label: localizedLabels.fields.place,
       localized: true,
     },
     {
