@@ -3,6 +3,7 @@ import LogoMain from '@/assets/svgs/logo-main.svg'
 import ArrowDown from '@/assets/svgs/arrow-down.svg'
 import ArrowLeft from '@/assets/svgs/arrow-left.svg'
 import ArrowUp from '@/assets/svgs/arrow-up.svg'
+import { appendTagSearch } from '@/lib/tagSearch'
 import type { General, PageSlug } from '@app/api/types'
 
 interface Props {
@@ -39,7 +40,11 @@ const { search } = Astro.url
                   <li class="menu__item">
                     <a
                       class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
-                      href={search && itemSlug === 'pageProjects' && hasParent ? url + search : url}
+                      href={
+                        itemSlug === 'pageProjects' && hasParent
+                          ? appendTagSearch(url, search)
+                          : url
+                      }
                       data-menu-item
                       data-slug={itemSlug}
                     >
