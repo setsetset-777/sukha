@@ -1,5 +1,5 @@
 class Slider extends EventTarget {
-  duration = 3000
+  duration = 5000
   #current = 0
   timeout: NodeJS.Timeout | undefined
   element: HTMLElement | null = null
