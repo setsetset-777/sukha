@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { navigation, slug, parentSlug } = Astro.props
+const { search } = Astro.url
 ---
 
 <Fragment>
@@ -38,7 +39,7 @@ const { navigation, slug, parentSlug } = Astro.props
                   <li class="menu__item">
                     <a
                       class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
-                      href={url}
+                      href={search && itemSlug === 'pageProjects' && hasParent ? url + search : url}
                       data-menu-item
                       data-slug={itemSlug}
                     >
