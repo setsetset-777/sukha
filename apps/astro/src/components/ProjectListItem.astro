@@ -38,6 +38,7 @@ let taggedUrl = appendTagSearch(url, search)
 
     --info-padding-left: var(--space-24);
     --item-gap: @include bleed();
+    --info-max-width: #{pxToRem(400px)};
 
     @include bleed($hover: true);
     display: flex;
@@ -58,7 +59,7 @@ let taggedUrl = appendTagSearch(url, search)
     }
 
     &__info {
-      max-width: pxToRem(240px);
+      max-width: var(--info-max-width);
       padding-left: var(--info-padding-left);
     }
 
