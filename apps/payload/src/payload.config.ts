@@ -81,7 +81,9 @@ export default buildConfig({
       collections: ['projects'],
       globals: ['pageHome', 'pageAgency', 'pageContact', 'pageProjects'],
       uploadsCollection: 'media',
-      generateTitle: ({ doc }) => `[BRand]. — ${doc.title}`,
+      generateTitle: ({ doc, locale }) => {
+        return `${customTranslations[locale || localization.defaultLocale].admin.seo.defaultTitle} — ${doc.title}`
+      },
       generateDescription: () => '',
       tabbedUI: true,
     }),
