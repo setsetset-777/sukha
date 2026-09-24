@@ -119,8 +119,10 @@ const { title, image, name, job, text, partners } = Astro.props
     }
 
     .image {
-      max-width: var(--image-width);
       --image-background-color: var(--color-teal-700);
+      max-width: var(--image-width);
+      border-radius: var(--radius-1);
+      overflow: hidden;
     }
 
     .info {

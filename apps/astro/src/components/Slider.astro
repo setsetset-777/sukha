@@ -183,6 +183,7 @@ const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
       display: block;
       opacity: 0;
       @include transition(opacity, $transition-time);
+      border-radius: var(--radius-1);
 
       &[data-slider-active='true'] {
         opacity: 1;

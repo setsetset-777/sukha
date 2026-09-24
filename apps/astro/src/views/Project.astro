@@ -142,6 +142,8 @@ let backUrl = search && backLink?.url ? backLink?.url + search : backLink?.url
     @include bleed;
     padding-bottom: var(--section-padding-bottom);
     max-height: 100dvh;
+    border-radius: var(--radius-1);
+    overflow: hidden;
 
     :global(img) {
       position: relative;
