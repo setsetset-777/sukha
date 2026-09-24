@@ -1,12 +1,15 @@
 ---
-import type { Contact } from '@app/api/types'
+import type { Contact, Partner } from '@app/api/types'
 import Image from '@/components/Image.astro'
 import Setsetset from '@/components/Setsetset.astro'
 import LogoFooter from '@/assets/svgs/logo-footer.svg'
+import Credit from '@/components/Credit.astro'
 
 type Props = Contact.Data
 
 const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.props
+
+const imageCredit = image && image.credit && (image.credit as Partner)
 ---
 
 <div class="page">
@@ -32,6 +35,7 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
             width={image.width}
             height={image.height}
           />
+          {imageCredit && <Credit {...imageCredit} />}
         </div>
         <div class="hero__body">
           <div class="hero__header">
@@ -102,8 +106,11 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
     &__image {
       --image-background-color: var(--color-teal-700);
       height: var(--image-height);
-      border-radius: var(--radius-1);
-      overflow: hidden;
+
+      :global(img) {
+        border-radius: var(--radius-1);
+        overflow: hidden;
+      }
     }
 
     &__body {

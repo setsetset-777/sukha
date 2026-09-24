@@ -1,10 +1,13 @@
 ---
 import type { Agency, Partner } from '@app/api/types'
 import Image from '@/components/Image.astro'
+import Credit from '@/components/Credit.astro'
 
 type Props = Agency.Data
 
 const { title, image, name, job, text, partners } = Astro.props
+
+const imageCredit = image && image.credit && (image.credit as Partner)
 ---
 
 <div class="page">
@@ -29,9 +32,9 @@ const { title, image, name, job, text, partners } = Astro.props
               fit="contain"
               width={image.width}
               height={image.height}
-              credit={image.credit as Partner}
             />
           )}
+          {imageCredit && <Credit {...imageCredit} />}
         </div>
         <div class="info">
           {name && <h3 class="name">{name}</h3>}
@@ -102,9 +105,7 @@ const { title, image, name, job, text, partners } = Astro.props
     }
 
     .hero {
-      position: relative;
       @include bleed(dark);
-
       &__inner {
         position: relative;
         display: flex;
@@ -121,8 +122,12 @@ const { title, image, name, job, text, partners } = Astro.props
     .image {
       --image-background-color: var(--color-teal-700);
       max-width: var(--image-width);
-      border-radius: var(--radius-1);
-      overflow: hidden;
+      position: relative;
+
+      :global(img) {
+        border-radius: var(--radius-1);
+        overflow: hidden;
+      }
     }
 
     .info {

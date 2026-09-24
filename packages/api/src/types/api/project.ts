@@ -15,9 +15,12 @@ export namespace Project {
     values?: string[]
   }
 
-  export interface Credit {
+  export interface Credits {
     label?: string
-    value: string
+    values: Array<{
+      name: string
+      url?: string
+    }>
   }
 
   export type Next = Projects.Project
@@ -41,7 +44,7 @@ export namespace Project {
       label?: string
       list?: Spec[]
     }
-    credit?: Credit
+    credits?: Credits
     next?: Next | null
   }
 }

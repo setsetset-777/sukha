@@ -216,9 +216,10 @@ export const Projects: CollectionConfig = {
       hasMany: true,
     },
     {
-      name: 'credit',
+      name: 'credits',
       type: 'relationship',
       relationTo: 'partners',
+      hasMany: true,
     },
   ],
   hooks: {

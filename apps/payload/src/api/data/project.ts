@@ -72,7 +72,7 @@ export const getProjectData = async ({
         },
       })
 
-      const { meta, title, mainImage, place, tags, text, gallery, existing, specs, credit } =
+      const { meta, title, mainImage, place, tags, text, gallery, existing, specs, credits } =
         project
       const { backLinkLabel, existingLabel, specsLabel, creditsLabel } = general.misc ?? {}
 
@@ -125,10 +125,13 @@ export const getProjectData = async ({
                   }),
                 }
               : undefined,
-          credit: credit
+          credits: credits
             ? {
                 label: creditsLabel ?? undefined,
-                value: (credit as Partner).name,
+                values: (credits as Partner[]).map(({ name, url }) => ({
+                  name: name,
+                  url: url ?? undefined,
+                })),
               }
             : undefined,
           next: nextProject

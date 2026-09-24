@@ -1,0 +1,15 @@
+@use './transition' as *;
+@use './focus' as *;
+
+.link {
+  color: var(--link-color);
+  @include transition(color);
+  @include focus-ring;
+  text-underline-offset: var(--link-underline-offset);
+  text-decoration-color: var(--link-underline-color, var(--link-color-hover));
+
+  &:hover,
+  &:focus-visible {
+    color: var(--link-color-hover);
+  }
+}

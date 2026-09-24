@@ -107,7 +107,8 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
     background-color: var(--image-background-color);
     position: relative;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       .image-credit {
         opacity: 1;
       }
@@ -179,12 +180,6 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
 
       &:before {
         content: '© ';
-      }
-    }
-
-    @media (hover: none) {
-      & {
-        opacity: 1;
       }
     }
   }

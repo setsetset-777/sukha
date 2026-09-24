@@ -72,7 +72,9 @@ $colors: (
   --layout-background-color: var(--color-teal-50);
   --body-color: var(--color-teal-800);
   --heading-color: var(--color-teal-950);
+  --link-color: var(--body-color);
   --link-color-hover: var(--color-teal-600);
+  --link-underline-offset: 0.2em;
   --layout-max-width: #{pxToRem(1600px)};
   --layout-padding-x: var(--space-24);
   --layout-padding-y: var(--space-24);
