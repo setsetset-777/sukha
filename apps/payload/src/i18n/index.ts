@@ -47,6 +47,10 @@ export const localizedLabels: {
       en: 'Job',
       fr: 'Métier',
     },
+    place: {
+      en: 'Place',
+      fr: 'Lieu',
+    },
   },
   collections: {
     users: {
