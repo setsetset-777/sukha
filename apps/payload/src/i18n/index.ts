@@ -122,6 +122,9 @@ export const customTranslations: Record<Locale['code'], Record<string, any>> = {
       cache: {
         invalidate: 'Empty cache',
       },
+      seo: {
+        defaultTitle: 'Sukha - Architecture & Interior Design',
+      },
     },
     general: {
       logo: 'Sukha',
@@ -150,6 +153,9 @@ export const customTranslations: Record<Locale['code'], Record<string, any>> = {
       },
       cache: {
         invalidate: 'Vider le cache',
+      },
+      seo: {
+        defaultTitle: "Sukha - Architecture & Design d'Intérieur",
       },
     },
     general: {
