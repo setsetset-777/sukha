@@ -1,6 +1,6 @@
 import { enTranslations } from '@payloadcms/translations/languages/en'
 import { frTranslations } from '@payloadcms/translations/languages/fr'
-import type { LocalizationConfigWithNoLabels, Locale, CollectionSlug, TypedLocale } from 'payload'
+import type { Locale, CollectionSlug } from 'payload'
 import type { TFunction } from '@payloadcms/translations'
 import type { NestedKeysStripped } from '@payloadcms/translations'
 
@@ -65,7 +65,7 @@ export const localizedLabels: {
         fr: 'Projet',
       },
       plural: {
-        en: 'Procjets',
+        en: 'Projects',
         fr: 'Projets',
       },
     },

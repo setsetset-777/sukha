@@ -320,7 +320,7 @@ export interface Project {
       }[]
     | null;
   existing?: (string | Media)[] | null;
-  credit?: (string | null) | Partner;
+  credits?: (string | Partner)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -591,7 +591,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         id?: T;
       };
   existing?: T;
-  credit?: T;
+  credits?: T;
   meta?:
     | T
     | {

@@ -8,7 +8,7 @@ import ProjectNext from '@/components/ProjectNext.astro'
 
 type Props = Project.Data
 
-const { title, image, place, tags, text, backLink, gallery, existing, specs, credit, next } =
+const { title, image, place, tags, text, backLink, gallery, existing, specs, credits, next } =
   Astro.props
 
 const { search } = Astro.url
@@ -54,7 +54,7 @@ let backUrl = search && backLink?.url ? backLink?.url + search : backLink?.url
       </div>
     </section>
 
-    <Gallery images={gallery} credit={credit} />
+    <Gallery images={gallery} credits={credits} />
 
     {existing && existing.images.length > 0 && (
       <section class="existing" data-scroll-view="next">

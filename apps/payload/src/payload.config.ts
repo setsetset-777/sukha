@@ -93,7 +93,8 @@ export default buildConfig({
       handler: async (req) => {
         req.payload.logger.info('Hitting endpoint /general')
         const data = await fetchGeneral(req.query.locale as LocaleCode, req.i18n)
-        req.payload.logger.info(data, `Fetched data for general`)
+        process.env.NODE_ENV === 'development' &&
+          req.payload.logger.info(data, `Fetched data for general`)
 
         return Response.json({
           ok: true,
@@ -135,7 +136,8 @@ export default buildConfig({
 
         try {
           const data = await fetchPage(path, safeParams, req.i18n)
-          req.payload.logger.info(data, `Fetched data for ${req.query.path}`)
+          process.env.NODE_ENV === 'development' &&
+            req.payload.logger.info(data, `Fetched data for ${req.query.path}`)
 
           if (!data) {
             return Response.json(null, { status: 404 })

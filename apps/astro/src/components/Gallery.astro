@@ -4,10 +4,10 @@ import type { Partner, Project } from '@app/api/types'
 
 interface Props {
   images: Project.Gallery
-  credit?: Project.Credit
+  credits?: Project.Credits
 }
 
-const { images, credit } = Astro.props
+const { images, credits } = Astro.props
 const gallery: Array<Project.GalleryItem[]> = []
 
 images.forEach((image) => {
@@ -83,10 +83,14 @@ images.forEach((image) => {
       )
     })}
   </div>
-  {credit && (
-    <div class="credit">
-      <h4 class="credit__title">{credit.label}</h4>
-      <span class="credit__value">{credit.value}</span>
+  {credits && credits.values.length > 0 && (
+    <div class="credits">
+      <h4 class="credits__title">{credits.label}</h4>
+      <ul class="credits__list">
+        {credits.values.map(({ name, url }) => (
+          <li class="credits__item">{url ? <a href={url}>{name}</a> : <span>{name}</span>}</li>
+        ))}
+      </ul>
     </div>
   )}
 </div>
@@ -99,7 +103,7 @@ images.forEach((image) => {
     --column-gap: var(--space-48);
     display: flex;
     flex-direction: column;
-    gap: var(--space-24);
+    gap: var(--space-48);
 
     &__list {
       display: flex;
@@ -134,17 +138,28 @@ images.forEach((image) => {
     }
   }
 
-  .credit {
+  .credits {
     display: flex;
-    gap: var(--space-8);
+    gap: var(--space-16);
 
     &__title {
       font-weight: bold;
     }
 
-    &__value {
-      &:before {
-        content: '©';
+    &__list {
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    &__item {
+      a {
+        @extend .link;
+      }
+
+      &:not(:last-child) {
+        &:after {
+          content: ',';
+        }
       }
     }
   }

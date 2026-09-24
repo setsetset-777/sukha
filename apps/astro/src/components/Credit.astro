@@ -1,0 +1,38 @@
+---
+interface Props {
+  label?: string
+  name: string
+  url?: string
+}
+
+const { name, url } = Astro.props
+---
+
+<div class="credits">{url ? <a href={url}>{name}</a> : <span>{name}</span>}</div>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .credits {
+    --color: var(--color-teal-200);
+    position: absolute;
+    top: 100%;
+    padding-top: var(--space-8);
+    left: var(--space-16);
+    color: var(--color);
+    font-size: var(--font-size-xs);
+    z-index: 2;
+    display: flex;
+
+    &:before {
+      content: '©';
+    }
+
+    a {
+      --link-color: var(--color);
+      --link-color-hover: var(--color-teal-00);
+      --link-undeline-color: var(--color);
+      @extend .link;
+    }
+  }
+</style>
