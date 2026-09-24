@@ -100,8 +100,10 @@ const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.
     flex-direction: column;
 
     &__image {
-      height: var(--image-height);
       --image-background-color: var(--color-teal-700);
+      height: var(--image-height);
+      border-radius: var(--radius-1);
+      overflow: hidden;
     }
 
     &__body {
