@@ -152,7 +152,7 @@ export default class ProjectsLoader {
         this.page = totalPages
       }
 
-      this.onChange()
+      this.onChange(isMore)
     } catch (err) {
       this.state = 'idle'
       if (err instanceof DOMException && err.name === 'AbortError') return null
@@ -172,9 +172,11 @@ export default class ProjectsLoader {
     window.history.pushState({ url: url.toString() }, '', url.toString())
   }
 
-  onChange() {
+  onChange(isMore?: boolean) {
     document.dispatchEvent(new CustomEvent('images:load'))
-    this.pushHistory()
+    if (!isMore) {
+      this.pushHistory()
+    }
   }
 
   private set state(state: State) {

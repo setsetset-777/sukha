@@ -2,13 +2,14 @@
 import type { Project } from '@app/api/types'
 import Image from '@/components/Image.astro'
 import ArrowRight from '@/assets/svgs/arrow-right.svg'
+import { appendTagSearch } from '@/lib/tagSearch'
 
 type Props = Project.Next
 
 const { title, image, url } = Astro.props
 
 const { search } = Astro.url
-let taggedUrl = search ? url + search : url
+let taggedUrl = appendTagSearch(url, search)
 ---
 
 <a href={taggedUrl} class="project-next">
