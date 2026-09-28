@@ -8,11 +8,18 @@ export namespace Agency {
   }
 
   export interface Data {
-    title: string
-    image?: Media
-    name?: string
-    job?: string
-    text?: string
+    title?: string
+    sukha: {
+      title?: string
+      text?: string
+      callout?: string
+    }
+    founder: {
+      name?: string
+      job?: string
+      text?: string
+      image?: Media
+    }
     partners: Partners
   }
 }
