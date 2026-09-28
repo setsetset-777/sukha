@@ -751,24 +751,45 @@ export interface PageAgency {
    * URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.
    */
   urlSlug: string;
-  name?: string | null;
-  job?: string | null;
-  image?: (string | null) | Media;
-  text?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
+  sukha?: {
+    title?: string | null;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
         version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+      };
+      [k: string]: unknown;
+    } | null;
+    callout?: string | null;
+  };
+  founder?: {
+    name?: string | null;
+    job?: string | null;
+    image?: (string | null) | Media;
+    text?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   partners: {
     title: string;
     collectionLink?: {
@@ -893,10 +914,21 @@ export interface PageHomeSelect<T extends boolean = true> {
 export interface PageAgencySelect<T extends boolean = true> {
   title?: T;
   urlSlug?: T;
-  name?: T;
-  job?: T;
-  image?: T;
-  text?: T;
+  sukha?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        callout?: T;
+      };
+  founder?:
+    | T
+    | {
+        name?: T;
+        job?: T;
+        image?: T;
+        text?: T;
+      };
   partners?:
     | T
     | {

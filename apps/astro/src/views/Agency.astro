@@ -5,9 +5,9 @@ import Credit from '@/components/Credit.astro'
 
 type Props = Agency.Data
 
-const { title, image, name, job, text, partners } = Astro.props
+const { title, sukha, founder, partners } = Astro.props
 
-const imageCredit = image && image.credit && (image.credit as Partner)
+const imageCredit = founder.image && founder.image.credit && (founder.image.credit as Partner)
 ---
 
 <div class="page">
@@ -15,39 +15,46 @@ const imageCredit = image && image.credit && (image.credit as Partner)
     <h1 class="title">{title}</h1>
   </section>
   <div class="body">
-    <section class="hero" data-scroll-view="next">
-      <div class="hero__inner">
-        <div class="image">
-          {image && (
+    <section class="sukha" data-scroll-view="next">
+      <div class="sukha__content">
+        {sukha.title && <h3 class="sukha__title">{sukha.title}</h3>}
+        {sukha.text && <div class="sukha__text" set:html={sukha.text} />}
+      </div>
+      <div class="sukha__callout">
+        {sukha.callout && <div class="sukha__callout">{sukha.callout}</div>}
+      </div>
+    </section>
+
+    <section class="founder" data-scroll-view="next">
+      <div class="founder__inner">
+        <div class="founder__image">
+          {founder.image && (
             <Image
-              src={image.url}
-              alt={image.alt}
+              src={founder.image.url}
+              alt={founder.image.alt}
               srcset={{
-                '600w': image.sizes?.[1000]?.url!,
-                '1200w': image.sizes?.[2000]?.url!,
+                '600w': founder.image.sizes?.[1000]?.url!,
+                '1200w': founder.image.sizes?.[2000]?.url!,
               }}
               fetchpriority="high"
               loading="eager"
               decoding="async"
               fit="contain"
-              width={image.width}
-              height={image.height}
+              width={founder.image.width}
+              height={founder.image.height}
             />
           )}
           {imageCredit && <Credit {...imageCredit} />}
         </div>
-        <div class="info">
-          {name && <h3 class="name">{name}</h3>}
-          {job && <h4 class="job">{job}</h4>}
+        <div class="founder__content">
+          <div class="founder__info">
+            {founder.name && <h3 class="founder__name">{founder.name}</h3>}
+            {founder.job && <h4 class="founder__job">{founder.job}</h4>}
+          </div>
+          {founder.text && <div class="founder__text" set:html={founder.text} />}
         </div>
       </div>
     </section>
-
-    {text && (
-      <section class="text" data-scroll-view="next">
-        <div class="text__inner" set:html={text} />
-      </section>
-    )}
 
     {partners.list.length > 0 && (
       <section class="partners" data-scroll-view="next">
@@ -84,10 +91,19 @@ const imageCredit = image && image.credit && (image.credit as Partner)
     --grid-column-left-width: #{pxToRem(240px)};
     --base-gap: var(--space-48);
     --image-width: #{pxToRem(420px)};
-    --hero-padding-right: 0;
-    --hero-info-padding-left: var(--content-padding-x);
     --partner-gap: var(--space-48);
     --partner-list-gap: var(--space-48);
+    --columns: 1;
+    --sukha-body-grid-col: span 1;
+    --sukha-callout-grid-col: span 1;
+    --founder-image-grid-col: span 1;
+    --founder-content-grid-col: span 1;
+    --partner-header-grid-col: span 1;
+    --partner-body-grid-col: span 1;
+    --founder-content-padding-left: var(--space-24);
+    --max-width-text: #{pxToRem(600px)};
+    --max-width-callout: #{pxToRem(400px)};
+    --partner-header-align: start;
 
     padding: var(--page-padding);
     display: flex;
@@ -104,62 +120,80 @@ const imageCredit = image && image.credit && (image.credit as Partner)
       @include heading(1);
     }
 
-    .hero {
-      @include bleed(dark);
-      &__inner {
-        position: relative;
+    .sukha {
+      @include grid(#{var(--columns)});
+      row-gap: var(--page-content-gap);
+
+      &__content {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        column-gap: calc(var(--base-gap) - var(--hero-info-padding-left));
-        row-gap: var(--space-24);
-        align-items: end;
-        padding-bottom: var(--space-48);
-        padding-right: var(--hero-padding-right);
+        flex-direction: column;
+        gap: var(--space-24);
+        grid-column: var(--sukha-body-grid-col);
+        max-width: var(--max-width-text);
+      }
+
+      &__title {
+        @include heading(2);
+      }
+
+      &__callout {
+        @include heading(3);
+        grid-column: var(--sukha-callout-grid-col);
+        max-width: var(--max-width-callout);
       }
     }
 
-    .image {
-      --image-background-color: var(--color-teal-700);
-      max-width: var(--image-width);
-      position: relative;
-
-      :global(img) {
-        border-radius: var(--radius-1);
-        overflow: hidden;
-      }
-    }
-
-    .info {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-      padding-left: var(--hero-info-padding-left);
-    }
-
-    .name {
-      @include heading(2);
-      color: var(--color-teal-50);
-    }
-
-    .job {
-      color: var(--color-teal-200);
-    }
-
-    .grid {
-      display: flex;
-      flex-direction: column;
-      column-gap: var(--base-gap);
-      row-gap: var(--space-24);
-    }
-
-    .text {
-      @extend .grid;
-      padding-right: var(--layout-padding-x);
+    .founder {
+      @include bleed(dark);
 
       &__inner {
-        grid-column-start: 2;
-        max-width: pxToRem(640px);
+        @include grid(#{var(--columns)});
+        row-gap: var(--space-24);
+        position: relative;
+        padding-bottom: var(--space-48);
+      }
+
+      &__image {
+        --image-background-color: var(--color-teal-700);
+        max-width: var(--image-width);
+        position: relative;
+        grid-column: var(--founder-image-grid-col);
+        align-self: start;
+
+        :global(img) {
+          border-radius: var(--radius-1);
+          overflow: hidden;
+        }
+      }
+
+      &__content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-24);
+        grid-column: var(--founder-content-grid-col);
+        padding-left: var(--founder-content-padding-left);
+        padding-top: var(--space-48);
+        max-width: var(--max-width-text);
+        justify-content: end;
+      }
+
+      &__info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+
+      &__name {
+        @include heading(2);
+        color: var(--color-teal-50);
+      }
+
+      &__job {
+        color: var(--color-teal-200);
+      }
+
+      &__text {
+        color: var(--color-teal-50);
       }
     }
 
@@ -169,11 +203,11 @@ const imageCredit = image && image.credit && (image.credit as Partner)
       gap: var(--partner-gap);
 
       &__title {
-        @extend .grid;
+        @include grid(#{var(--columns)});
         @include heading(2);
 
         span {
-          grid-column-start: 2;
+          grid-column: var(--partner-body-grid-col);
         }
       }
 
@@ -185,13 +219,15 @@ const imageCredit = image && image.credit && (image.credit as Partner)
     }
 
     .partner {
-      @extend .grid;
+      @include grid(#{var(--columns)});
+      row-gap: var(--space-24);
 
       &__header {
         display: flex;
         flex-direction: column;
-        align-items: start;
+        align-items: var(--partner-header-align);
         gap: var(--space-4);
+        grid-column: var(--partner-header-grid-col);
       }
 
       &__name {
@@ -203,10 +239,11 @@ const imageCredit = image && image.credit && (image.credit as Partner)
       }
 
       &__body {
-        max-width: pxToRem(400px);
         display: flex;
         flex-direction: column;
         gap: var(--space-8);
+        grid-column: var(--partner-body-grid-col);
+        max-width: var(--max-width-text);
       }
 
       &__link {
@@ -220,31 +257,32 @@ const imageCredit = image && image.credit && (image.credit as Partner)
     }
 
     @include from(big-mobile) {
-      .grid {
-        display: grid;
-        grid-template-columns: var(--grid-column-left-width) 1fr;
-      }
-
-      .partner {
-        &__header {
-          align-items: end;
-        }
-      }
+      --columns: 12;
+      --sukha-body-grid-col: 3 / span 7;
+      --sukha-callout-grid-col: 2 / span 6;
+      --founder-image-grid-col: span 5;
+      --founder-content-grid-col: 6 / span 6;
+      --partner-header-grid-col: span 3;
+      --partner-body-grid-col: 4 / span 6;
+      --partner-header-align: end;
+      --founder-content-padding-left: 0;
     }
 
     @include from(desktop) {
-      --image-width: #{pxToRem(420px)};
-      --hero-padding-right: var(--layout-padding-x);
-      --hero-info-padding-left: 0em;
+      --sukha-callout-grid-col: 2 / span 6;
+      --sukha-body-grid-col: 3 / span 7;
+      --founder-image-grid-col: span 4;
+      --founder-content-grid-col: 5 / span 5;
+      --partner-body-grid-col: 4 / span 5;
       --partner-gap: var(--space-48);
       --partner-list-gap: var(--space-48);
+      --max-width-text: auto;
+      --max-width-callout: auto;
+    }
 
-      .hero {
-        &__inner {
-          flex-direction: row;
-          align-items: end;
-        }
-      }
+    @include from(big-desktop) {
+      --sukha-body-grid-col: 3 / span 6;
+      --sukha-callout-grid-col: 2 / span 5;
     }
   }
 </style>

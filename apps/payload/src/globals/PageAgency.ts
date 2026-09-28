@@ -16,26 +16,58 @@ export const PageAgency: GlobalConfig = {
     titleField(),
     ...urlFields({ source: 'title', slug: 'pageAgency' }),
     {
-      name: 'name',
-      type: 'text',
-      label: localizedLabels.fields.name,
+      name: 'sukha',
+      type: 'group',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: localizedLabels.fields.title,
+        },
+        {
+          name: 'text',
+          type: 'richText',
+          label: localizedLabels.fields.text,
+          localized: true,
+        },
+        {
+          name: 'callout',
+          type: 'textarea',
+          label: {
+            en: 'Callout',
+            fr: 'Encadré',
+          },
+          localized: true,
+        },
+      ],
     },
     {
-      name: 'job',
-      type: 'text',
-      label: localizedLabels.fields.job,
-      localized: true,
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'text',
-      type: 'richText',
-      label: localizedLabels.fields.text,
-      localized: true,
+      name: 'founder',
+      type: 'group',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          label: localizedLabels.fields.name,
+        },
+        {
+          name: 'job',
+          type: 'text',
+          label: localizedLabels.fields.job,
+          localized: true,
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'text',
+          type: 'richText',
+          label: localizedLabels.fields.text,
+          localized: true,
+        },
+      ],
     },
     {
       name: 'partners',

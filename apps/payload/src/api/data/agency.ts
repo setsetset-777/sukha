@@ -46,7 +46,7 @@ export const getAgencyData = async ({
       }),
     ])
 
-    const { meta, title, urlSlug, name, job, image, text, partners: partnersGroup } = pageAgency
+    const { meta, title, urlSlug, sukha, founder, partners: partnersGroup } = pageAgency
     const t = i18n.t as CustomTFunction
 
     return {
@@ -58,10 +58,17 @@ export const getAgencyData = async ({
       data: {
         title,
         urlSlug,
-        name: name ?? undefined,
-        job: job ?? undefined,
-        image: (image as Media) ?? undefined,
-        text: text ? convertLexicalToHTML({ data: text }) : undefined,
+        sukha: {
+          title: sukha?.title ?? undefined,
+          text: sukha?.text ? convertLexicalToHTML({ data: sukha.text }) : undefined,
+          callout: sukha?.callout ?? undefined,
+        },
+        founder: {
+          name: founder?.name ?? undefined,
+          job: founder?.job ?? undefined,
+          image: (founder?.image as Media) ?? undefined,
+          text: founder?.text ? convertLexicalToHTML({ data: founder.text }) : undefined,
+        },
         partners: {
           title: partnersGroup?.title,
           list: partners.docs.map(({ name, job, url, text }) => ({

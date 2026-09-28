@@ -1,4 +1,4 @@
-@mixin grid($columns: 12, $gap: #{var(--grid-gap)}) {
+@mixin grid($columns: #{var(--grid-columns)}, $gap: #{var(--grid-gap)}) {
   display: grid;
   grid-template-columns: repeat($columns, 1fr);
   column-gap: $gap;

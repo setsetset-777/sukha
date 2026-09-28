@@ -1,6 +1,5 @@
 ---
 import type { Partner } from '@app/api/types'
-import { undefined } from 'astro:schema'
 
 type Fit = 'cover' | 'contain' | 'fill'
 
@@ -117,8 +116,8 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
 
   .image {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
     opacity: 0;
     @include transition(opacity);
 
@@ -129,20 +128,24 @@ const formatSrc = (src: string) => `${mediaUrl}${src}`
 
   .fill {
     .image {
+      width: 100%;
+      height: 100%;
       object-fit: fill;
     }
   }
 
   .cover {
     .image {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
   }
 
   .contain {
-    width: auto;
-
     .image {
+      width: 100%;
+      height: 100%;
       object-fit: contain;
     }
   }
