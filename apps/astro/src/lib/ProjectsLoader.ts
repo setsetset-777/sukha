@@ -17,7 +17,7 @@ export default class ProjectsLoader {
   listSelector = '[data-projects-loader-list]'
   moreSelector = '[data-projects-loader-more]'
   paramName = 'tag'
-  loadDelay = 150
+  loadDelay = 0
 
   constructor({ element, paramName }: { element: HTMLElement; paramName?: string }) {
     if (!element) {
