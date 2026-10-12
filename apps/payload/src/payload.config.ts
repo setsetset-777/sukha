@@ -6,9 +6,6 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 
-import { en } from '@payloadcms/translations/languages/en'
-import { fr } from '@payloadcms/translations/languages/fr'
-
 import { Users } from '@/collections/Users'
 import { Media } from '@/collections/Media'
 import { Projects } from '@/collections/Projects'
@@ -23,7 +20,7 @@ import { PageAgency } from '@/globals/PageAgency'
 import { PageProjects } from '@/globals/PageProjects'
 import { PageContact } from '@/globals/PageContact'
 
-import { customTranslations } from '@/i18n'
+import { customTranslations, supportedLanguages } from '@/i18n'
 import { getLocaleFromPath, localization } from '@app/api/i18n'
 import regenerateMedia from '@/helpers/regenerateMedia'
 
@@ -56,7 +53,7 @@ export default buildConfig({
     },
   },
   i18n: {
-    supportedLanguages: { en, fr },
+    supportedLanguages,
     translations: customTranslations,
   },
   localization: {

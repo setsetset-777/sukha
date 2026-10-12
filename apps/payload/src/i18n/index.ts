@@ -1,10 +1,12 @@
-import { enTranslations } from '@payloadcms/translations/languages/en'
-import { frTranslations } from '@payloadcms/translations/languages/fr'
+import { en, enTranslations } from '@payloadcms/translations/languages/en'
+import { fr, frTranslations } from '@payloadcms/translations/languages/fr'
 import type { Locale, CollectionSlug } from 'payload'
 import type { TFunction } from '@payloadcms/translations'
 import type { NestedKeysStripped } from '@payloadcms/translations'
 
 type LocalizedLabel = Record<Locale['code'], string>
+
+export const supportedLanguages = { en, fr }
 
 export const localizedLabels: {
   groups: Record<string, LocalizedLabel>
