@@ -50,6 +50,7 @@ export const getHomeData = async ({
         select: {
           id: true,
           title: true,
+          client: true,
           mainImage: true,
           tags: true,
         },
@@ -57,6 +58,7 @@ export const getHomeData = async ({
         PaginatedDocs<{
           id: string
           title: string
+          client: string
           mainImage: Media
           tags: ProjectTag[]
         }>
@@ -73,9 +75,10 @@ export const getHomeData = async ({
         image: (meta?.image as API.Media) ?? undefined,
       },
       data: {
-        projects: projects.docs.map(({ id, title, mainImage, tags }) => ({
+        projects: projects.docs.map(({ id, title, client, mainImage, tags }) => ({
           id,
           title,
+          client,
           image: mainImage,
           url: getPathOfRoute(getRouteByIdSync(id, routes), locale)!,
           tags: tags?.map(({ title, urlSlug }: ProjectTag) => ({

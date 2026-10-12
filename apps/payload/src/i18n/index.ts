@@ -103,6 +103,16 @@ export const localizedLabels: {
         fr: 'Spécifications de projet',
       },
     },
+    imageTags: {
+      singular: {
+        en: 'Image tag',
+        fr: "Tag d'image",
+      },
+      plural: {
+        en: 'Image tags',
+        fr: "Tags d'image",
+      },
+    },
   },
   descriptions: {
     urlSlug: {

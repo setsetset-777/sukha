@@ -55,8 +55,8 @@ images.forEach((image) => {
                           '800w': image.sizes?.[1000]?.url!,
                           '1600w': image.sizes?.[2000]?.url!,
                         }}
-                        width={image.width}
-                        height={image.height}
+                        width={image.sizes?.[2000]?.width}
+                        height={image.sizes?.[2000]?.height}
                         loading="lazy"
                         credit={image.credit as Partner}
                       />
@@ -70,8 +70,8 @@ images.forEach((image) => {
                         '400w': image.sizes?.[500]?.url!,
                         '800w': image.sizes?.[1000]?.url!,
                       }}
-                      width={image.width}
-                      height={image.height}
+                      width={image.sizes?.[2000]?.width}
+                      height={image.sizes?.[2000]?.height}
                       loading="lazy"
                       credit={image.credit as Partner}
                     />

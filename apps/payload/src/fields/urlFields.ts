@@ -104,9 +104,11 @@ export const urlFields = ({
             const wasSlugBasedOnSource =
               previousValue === slugifyWithAccents(previousSiblingDoc[source] ?? '')
             if (isSlugEmpty || (!hasSlugChange && wasSlugBasedOnSource)) {
-              nextValue = slugifyWithAccents(siblingData.title ?? '')
+              nextValue = siblingData.title ?? ''
             }
-            return nextValue
+
+            console.log('>>>>>>', nextValue)
+            return slugifyWithAccents(nextValue)
           },
           trimWhitespace,
         ],

@@ -5,7 +5,7 @@ import type { Projects } from '@app/api/types'
 
 type Props = Projects.Project
 
-const { url, image, title } = Astro.props
+const { url, image, title, client } = Astro.props
 
 const { search } = Astro.url
 let taggedUrl = appendTagSearch(url, search)
@@ -27,6 +27,7 @@ let taggedUrl = appendTagSearch(url, search)
   </div>
   <div class="project-list-item__info">
     <span class="project-list-item__title">{title}</span>
+    <span class="project-list-item__client">{client}</span>
   </div>
 </a>
 
@@ -39,6 +40,8 @@ let taggedUrl = appendTagSearch(url, search)
     --info-padding-left: var(--space-24);
     --item-gap: @include bleed();
     --info-max-width: #{pxToRem(400px)};
+    --info-color: var(--color-teal-700);
+    --image-scale: 1;
 
     @include bleed($hover: true);
     display: flex;
@@ -56,28 +59,34 @@ let taggedUrl = appendTagSearch(url, search)
       overflow: hidden;
       background-blend-mode: luminosity;
       @include transition('filter, transform');
+      transform: scale(var(--image-scale));
     }
 
     &__info {
       max-width: var(--info-max-width);
       padding-left: var(--info-padding-left);
+      color: var(--info-color);
+      @include transition(color);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
     }
 
     &__title {
       @include heading(3);
-      color: var(--color-teal-700);
-      @include transition(color);
+      color: inherit;
+    }
+
+    &__client {
     }
 
     &:hover,
     &:focus-visible {
-      #{$root} {
-        &__title {
-          color: var(--color-teal-200);
-        }
+      --info-color: var(--color-teal-200);
+      --image-scale: 1.03;
 
+      #{$root} {
         &__image {
-          transform: scale(1.03);
           --image-background-color: transparent;
         }
       }

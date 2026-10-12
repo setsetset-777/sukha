@@ -9,8 +9,20 @@ import { appendTagSearch } from '@/lib/tagSearch'
 
 type Props = Project.Data
 
-const { title, image, place, tags, text, backLink, gallery, existing, specs, credits, next } =
-  Astro.props
+const {
+  title,
+  client,
+  image,
+  place,
+  tags,
+  text,
+  backLink,
+  gallery,
+  existing,
+  specs,
+  credits,
+  next,
+} = Astro.props
 
 const { search } = Astro.url
 let backUrl = backLink?.url && appendTagSearch(backLink?.url, search)
@@ -18,11 +30,12 @@ let backUrl = backLink?.url && appendTagSearch(backLink?.url, search)
 
 <div class="page">
   <section class="hero">
-    <div class="header">
-      <h1 class="title">{title}</h1>
+    <div class="hero__header">
+      <h1 class="hero__title">{title}</h1>
+      <h2 class="hero__client">{client}</h2>
     </div>
 
-    <div class="image">
+    <div class="hero__image">
       {image && (
         <Image
           src={image.url}
@@ -34,9 +47,9 @@ let backUrl = backLink?.url && appendTagSearch(backLink?.url, search)
           fetchpriority="high"
           loading="eager"
           decoding="async"
-          width={image.width}
-          height={image.height}
-          fit="contain"
+          width={image.sizes?.[2000]?.width}
+          height={image.sizes?.[2000]?.height}
+          fit="height"
           credit={image.credit as Partner}
         />
       )}
@@ -75,8 +88,8 @@ let backUrl = backLink?.url && appendTagSearch(backLink?.url, search)
                     loading="lazy"
                     decoding="async"
                     fit="contain"
-                    width={image.width}
-                    height={image.height}
+                    width={image.sizes?.[2000]?.width}
+                    height={image.sizes?.[2000]?.height}
                     credit={image.credit as Partner}
                   />
                 </div>
@@ -127,28 +140,32 @@ let backUrl = backLink?.url && appendTagSearch(backLink?.url, search)
     display: flex;
     flex-direction: column;
     gap: var(--page-content-gap);
+
+    &__title {
+      @include heading(1);
+    }
+
+    &__client {
+      font-size: var(--font-size-xl);
+    }
+
+    &__image {
+      @include bleed;
+      padding-bottom: var(--section-padding-bottom);
+      max-height: 100dvh;
+
+      :global(img) {
+        position: relative;
+        border-radius: var(--radius-1);
+        overflow: hidden;
+      }
+    }
   }
 
   .body {
     display: flex;
     flex-direction: column;
     gap: var(--page-content-gap);
-  }
-
-  .title {
-    @include heading(1);
-  }
-
-  .image {
-    @include bleed;
-    padding-bottom: var(--section-padding-bottom);
-    max-height: 100dvh;
-
-    :global(img) {
-      position: relative;
-      border-radius: var(--radius-1);
-      overflow: hidden;
-    }
   }
 
   .info {
@@ -235,6 +252,10 @@ let backUrl = backLink?.url && appendTagSearch(backLink?.url, search)
 
     dd {
       margin: 0;
+
+      &:first-letter {
+        text-transform: uppercase;
+      }
     }
   }
 

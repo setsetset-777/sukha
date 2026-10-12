@@ -55,9 +55,10 @@ export const getProjectListData = async ({
 
       return {
         ...projects,
-        docs: projects.docs.map(({ id, mainImage, title }) => ({
+        docs: projects.docs.map(({ id, mainImage, title, client }) => ({
           image: mainImage as API.Media,
           title,
+          client: client ?? undefined,
           url: getPathOfRoute(getRouteByIdSync(id, routes), locale) ?? undefined,
         })),
       }

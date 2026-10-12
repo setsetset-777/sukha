@@ -73,6 +73,7 @@ export interface Config {
     partners: Partner;
     projectTags: ProjectTag;
     projectSpecs: ProjectSpec;
+    imageTags: ImageTag;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     partners: PartnersSelect<false> | PartnersSelect<true>;
     projectTags: ProjectTagsSelect<false> | ProjectTagsSelect<true>;
     projectSpecs: ProjectSpecsSelect<false> | ProjectSpecsSelect<true>;
+    imageTags: ImageTagsSelect<false> | ImageTagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -171,6 +173,7 @@ export interface Media {
   id: string;
   alt: string;
   credit?: (string | null) | Partner;
+  tags?: (string | ImageTag)[] | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -264,6 +267,17 @@ export interface Partner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "imageTags".
+ */
+export interface ImageTag {
+  id: string;
+  _order?: string | null;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
@@ -278,6 +292,8 @@ export interface Project {
    * check to display project on home page
    */
   featured?: boolean | null;
+  client?: string | null;
+  place?: string | null;
   text?: {
     root: {
       type: string;
@@ -293,7 +309,6 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
-  place?: string | null;
   /**
    * The image used to represent the project, eg. on the project list or the project hero.
    */
@@ -408,6 +423,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projectSpecs';
         value: string | ProjectSpec;
+      } | null)
+    | ({
+        relationTo: 'imageTags';
+        value: string | ImageTag;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -481,6 +500,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   credit?: T;
+  tags?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -566,8 +586,9 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   urlSlug?: T;
   featured?: T;
-  text?: T;
+  client?: T;
   place?: T;
+  text?: T;
   mainImage?: T;
   tags?: T;
   specs?:
@@ -639,6 +660,16 @@ export interface ProjectSpecsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "imageTags_select".
+ */
+export interface ImageTagsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

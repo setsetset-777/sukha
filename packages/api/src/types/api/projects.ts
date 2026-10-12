@@ -3,6 +3,7 @@ import type { Media, PaginatedDocs } from '../shared'
 export namespace Projects {
   export interface Project {
     title: string
+    client?: string
     image?: Media
     url?: string
   }

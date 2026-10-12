@@ -16,10 +16,15 @@ export const Media: CollectionConfig = {
       type: 'relationship',
       relationTo: 'partners',
     },
+    {
+      name: 'tags',
+      type: 'relationship',
+      relationTo: 'imageTags',
+      hasMany: true,
+    },
   ],
   upload: {
     staticDir: 'media',
-    adminThumbnail: 'big',
     imageSizes: [
       {
         name: '3000',
@@ -75,5 +80,6 @@ export const Media: CollectionConfig = {
     components: {
       afterList: ['/components/MediaAdminZone'],
     },
+    defaultColumns: ['filename', 'tags'],
   },
 }

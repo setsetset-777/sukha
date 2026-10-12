@@ -17,7 +17,7 @@ const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
 <div class="slider" aria-label={slidesArialLabel} data-slider>
   <div class="main">
     <div class="slides" aria-live="polite">
-      {projects.map(({ image, url, title, tags }) => (
+      {projects.map(({ image, url, title, client, tags }) => (
         <div
           class="slide"
           data-slider-item
@@ -45,7 +45,8 @@ const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
           <article class="card" data-slider-card aria-hidden="true">
             <div class="card__inner">
               <div class="card__header">
-                <h3>{title}</h3>
+                <h3 class="card__title">{title}</h3>
+                <h4 class="card__client">{client}</h4>
                 <TagList tags={tags} />
               </div>
               <div class="card__footer">
@@ -236,6 +237,12 @@ const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
         align-items: end;
         gap: var(--space-4);
         text-align: right;
+        color: var(--color-teal-700);
+      }
+
+      &__title {
+        @include heading(3);
+        color: inherit;
       }
 
       &__link {

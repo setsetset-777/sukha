@@ -15,7 +15,7 @@ export const Projects: CollectionConfig = {
   orderable: true,
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'mainImage', '_status', 'featured'],
+    defaultColumns: ['title', 'client', 'mainImage', 'tags', '_status', 'featured'],
   },
   labels: localizedLabels.collections.projects,
   fields: [
@@ -40,15 +40,20 @@ export const Projects: CollectionConfig = {
       },
     },
     {
-      name: 'text',
-      type: 'richText',
-      label: localizedLabels.fields.text,
+      name: 'client',
+      type: 'text',
       localized: true,
     },
     {
       name: 'place',
       type: 'text',
       label: localizedLabels.fields.place,
+      localized: true,
+    },
+    {
+      name: 'text',
+      type: 'richText',
+      label: localizedLabels.fields.text,
       localized: true,
     },
     {
@@ -63,6 +68,9 @@ export const Projects: CollectionConfig = {
         description: {
           en: 'The image used to represent the project, eg. on the project list or the project hero.',
           fr: "L'image utilisée pour représenter le projet, par exemple sur la liste de projets ou l'entête de la page du projet.",
+        },
+        components: {
+          Cell: '/components/ImageCell',
         },
       },
     },

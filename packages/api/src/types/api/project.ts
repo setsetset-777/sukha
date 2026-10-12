@@ -27,6 +27,7 @@ export namespace Project {
 
   export interface Data {
     title: string
+    client?: string
     image?: Media
     place?: string
     tags: Tag[]

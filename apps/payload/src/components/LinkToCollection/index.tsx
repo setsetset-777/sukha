@@ -15,7 +15,7 @@ export default function LinkToCollection({ i18n, siblingData, req }: ServerCompo
         className="btn btn--style-secondary btn--size-medium"
         href={`/collections/${collectionSlug}`}
       >
-        {t('linkToCollection:label', { collection: labels?.plural[locale] })}
+        {t('admin:linkToCollection:label', { collection: labels?.plural[locale] })}
       </Link>
     </div>
   )

@@ -1,3 +1,3 @@
 export default {
-  projectsLimit: 2,
+  projectsLimit: 12,
 }

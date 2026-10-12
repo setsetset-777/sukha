@@ -6,6 +6,7 @@ export namespace Home {
     id: string
     image: Media
     title: string
+    client?: string
     url: string
     tags: Array<Tag>
   }

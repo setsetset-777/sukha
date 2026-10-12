@@ -15,6 +15,7 @@ import { Projects } from '@/collections/Projects'
 import { Partners } from '@/collections/Partners'
 import { ProjectTags } from '@/collections/ProjectTags'
 import { ProjectSpecs } from '@/collections/ProjectSpecs'
+import { ImageTags } from '@/collections/ImageTags'
 
 import { General } from '@/globals/General'
 import { PageHome } from '@/globals/PageHome'
@@ -63,7 +64,7 @@ export default buildConfig({
     fallback: true,
   },
   globals: [General, PageHome, PageAgency, PageProjects, PageContact],
-  collections: [Users, Media, Projects, Partners, ProjectTags, ProjectSpecs],
+  collections: [Users, Media, Projects, Partners, ProjectTags, ProjectSpecs, ImageTags],
   routes: {
     admin: '/',
   },

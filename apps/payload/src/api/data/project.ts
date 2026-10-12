@@ -72,8 +72,19 @@ export const getProjectData = async ({
         },
       })
 
-      const { meta, title, mainImage, place, tags, text, gallery, existing, specs, credits } =
-        project
+      const {
+        meta,
+        title,
+        client,
+        mainImage,
+        place,
+        tags,
+        text,
+        gallery,
+        existing,
+        specs,
+        credits,
+      } = project
       const { backLinkLabel, existingLabel, specsLabel, creditsLabel } = general.misc ?? {}
 
       let backLinkUrl = getPathBySlugSync('pageProjects', locale, routes)
@@ -86,6 +97,7 @@ export const getProjectData = async ({
         },
         data: {
           title,
+          client: client ?? undefined,
           image: mainImage as API.Media,
           place: place ?? undefined,
           tags: (tags as ProjectTag[])?.map(({ title, urlSlug }) => ({
