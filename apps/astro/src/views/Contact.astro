@@ -18,8 +18,8 @@ const imageCredit = image && image.credit && (image.credit as Partner)
   </section>
 
   <div class="body">
-    {image && (
-      <section class="hero" data-scroll-view="next">
+    <section class="hero" data-scroll-view="next">
+      {image && (
         <div class="hero__image">
           <Image
             src={image.url}
@@ -37,33 +37,34 @@ const imageCredit = image && image.credit && (image.credit as Partner)
           />
           {imageCredit && <Credit {...imageCredit} />}
         </div>
-        <div class="hero__body">
-          <div class="hero__header">
-            <div class="hero__logo" aria-label={logoAlt}>
-              <LogoFooter />
-            </div>
-            {hook && <p class="hero__hook">{hook}</p>}
+      )}
+      <div class="hero__body">
+        <div class="hero__header">
+          <div class="hero__logo" aria-label={logoAlt}>
+            <LogoFooter />
           </div>
-          <dl class="hero__details">
-            {address && <dd class="hero__detail" set:html={address} />}
-            {email && (
-              <dd class="hero__detail">
-                <a href={`mailto:${email}`} class="hero__link">
-                  {email}
-                </a>
-              </dd>
-            )}
-            {phone && (
-              <dd class="hero__detail">
-                <a href={`tel:${phone}`} class="hero__link">
-                  {phone}
-                </a>
-              </dd>
-            )}
-          </dl>
+          {hook && <p class="hero__hook">{hook}</p>}
         </div>
-      </section>
-    )}
+        <dl class="hero__details">
+          {address && <dd class="hero__detail" set:html={address} />}
+          {email && (
+            <dd class="hero__detail">
+              <a href={`mailto:${email}`} class="hero__link">
+                {email}
+              </a>
+            </dd>
+          )}
+          {phone && (
+            <dd class="hero__detail">
+              <a href={`tel:${phone}`} class="hero__link">
+                {phone}
+              </a>
+            </dd>
+          )}
+        </dl>
+      </div>
+    </section>
+
     <section data-scroll-view="next">
       <Setsetset {...setsetset} />
     </section>
@@ -100,7 +101,6 @@ const imageCredit = image && image.credit && (image.credit as Partner)
     padding-bottom: var(--section-padding-bottom);
     @include bleed(dark);
     display: flex;
-    gap: var(--grid-gap);
     flex-direction: column;
 
     &__image {
@@ -116,9 +116,10 @@ const imageCredit = image && image.credit && (image.credit as Partner)
     &__body {
       display: flex;
       flex-direction: column;
-      gap: var(--space-24);
       color: var(--color-teal-50);
-      padding-left: var(--body-left-padding);
+      gap: var(--space-24);
+      margin-block-start: var(--section-padding-bottom);
+      margin-inline-start: var(--body-left-padding);
     }
 
     &__header {
@@ -154,7 +155,7 @@ const imageCredit = image && image.credit && (image.credit as Partner)
   @include from(desktop) {
     .hero {
       --image-height: #{pxToRem(480px)};
-      --body-left-padding: 0;
+      --body-left-padding: var(--content-gap-col);
 
       flex-direction: row;
       align-items: end;
