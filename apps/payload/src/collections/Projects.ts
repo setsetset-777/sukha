@@ -15,7 +15,7 @@ export const Projects: CollectionConfig = {
   orderable: true,
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'client', 'mainImage', 'tags', '_status', 'featured'],
+    defaultColumns: ['title', 'client', 'code', 'mainImage', 'tags', '_status', 'featured'],
   },
   labels: localizedLabels.collections.projects,
   fields: [
@@ -38,6 +38,10 @@ export const Projects: CollectionConfig = {
           Cell: '@/components/CollectionListCheck',
         },
       },
+    },
+    {
+      name: 'code',
+      type: 'text',
     },
     {
       name: 'client',

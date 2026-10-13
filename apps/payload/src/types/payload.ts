@@ -292,6 +292,7 @@ export interface Project {
    * check to display project on home page
    */
   featured?: boolean | null;
+  code?: string | null;
   client?: string | null;
   place?: string | null;
   text?: {
@@ -586,6 +587,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   urlSlug?: T;
   featured?: T;
+  code?: T;
   client?: T;
   place?: T;
   text?: T;
