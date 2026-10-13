@@ -158,6 +158,11 @@ const { title, tags, list, moreLabel } = Astro.props
     --svg-size: #{pxToRem(16px)};
     --gap: var(--space-8);
     --left-position: calc(-1 * var(--padding-left));
+    --color-background: var(--color-teal-100);
+    --color-background-hover: var(--color-teal-200);
+    --color-background-active: var(--color-teal-500);
+    --color: inherit;
+    --color-active: var(--color-teal-100);
 
     position: relative;
 
@@ -171,10 +176,12 @@ const { title, tags, list, moreLabel } = Astro.props
       @include transition(background-color);
       border-radius: var(--radius-1);
       flex-direction: row-reverse;
+      background-color: var(--color-background);
+      color: var(--color);
 
       &:hover,
       &:focus-visible {
-        background-color: var(--color-teal-200);
+        background-color: var(--color-background-hover);
       }
     }
 
@@ -183,7 +190,8 @@ const { title, tags, list, moreLabel } = Astro.props
       position: absolute;
 
       &:checked + #{$filter}__label {
-        background-color: var(--color-teal-200);
+        background-color: var(--color-background-active);
+        color: var(--color-active);
         cursor: pointer;
 
         #{$filter}__unselect {
@@ -300,6 +308,11 @@ const { title, tags, list, moreLabel } = Astro.props
 
     .filter {
       --left-position: calc(-1 * (var(--padding-left) + var(--svg-size) + var(--gap)));
+      --color-background: transparent;
+      --color-background-hover: var(--color-teal-200);
+      --color-background-active: var(--color-teal-200);
+      --color-active: inherit;
+
       &__label {
         flex-direction: row;
       }
