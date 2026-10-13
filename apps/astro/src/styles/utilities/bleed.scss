@@ -1,0 +1,70 @@
+@use './transition' as *;
+
+@mixin bleed($color: light, $hover: false) {
+  --bleed-hint: 50%;
+
+  @if ($color == dark) {
+    --bleed-color-background-1: var(--section-background-color-dark);
+    --bleed-color-background-2: var(--section-background-color-light);
+  } @else {
+    --bleed-color-background-1: var(--section-background-color-light);
+    --bleed-color-background-2: var(--section-background-color-dark);
+  }
+
+  position: relative;
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100dvw;
+    min-width: 150%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    @include transition(opacity, long);
+    border-radius: var(--radius-1);
+    z-index: 0;
+  }
+
+  &:before {
+    background: linear-gradient(
+      60deg,
+      var(--bleed-color-background-1) var(--bleed-hint),
+      var(--bleed-color-background-2)
+    );
+  }
+
+  &:after {
+    background: linear-gradient(
+      60deg,
+      var(--bleed-color-background-2) var(--bleed-hint),
+      var(--bleed-color-background-1)
+    );
+    opacity: 0;
+  }
+
+  @if ($hover != false) {
+    $hover-color: dark;
+    @if ($color == dark) {
+      $hover-color: light;
+    }
+
+    &:hover,
+    &:focus-visible {
+      &:before {
+        opacity: 0;
+      }
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+}

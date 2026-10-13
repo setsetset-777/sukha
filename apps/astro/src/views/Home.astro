@@ -1,0 +1,43 @@
+---
+import Slider from '@/components/Slider.astro'
+import type { Home } from '@app/api/types'
+
+type Props = Home.Data
+
+const { projects, slidesArialLabel, projectLinkLabel } = Astro.props
+---
+
+<div class="page">
+  <div class="body">
+    <Slider
+      projects={projects}
+      slidesArialLabel={slidesArialLabel}
+      projectLinkLabel={projectLinkLabel}
+    />
+  </div>
+</div>
+
+<script></script>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .page {
+    flex-grow: 1;
+    padding-top: var(--content-padding-top);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+  }
+
+  .body {
+    height: 100%;
+  }
+
+  @include from(desktop) {
+    .page {
+      min-height: 100dvh;
+    }
+  }
+</style>

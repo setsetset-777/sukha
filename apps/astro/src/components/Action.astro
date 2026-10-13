@@ -1,0 +1,102 @@
+---
+import ArrowRightSvg from '@/assets/svgs/arrow-right.svg'
+import ArrowLeftSvg from '@/assets/svgs/arrow-left.svg'
+
+type Props = {
+  label?: string
+  href?: string
+  type?: 'right' | 'left' | null
+  className?: string
+}
+
+const { label, className, href, type } = Astro.props
+
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag href={href} class:list={['anchor', type && `anchor--${type}`, className]} tabindex="0">
+  {type && (
+    <span class="icon">
+      {type === 'right' && <ArrowRightSvg />}
+      {type === 'left' && <ArrowLeftSvg />}
+    </span>
+  )}
+  <span>{label}</span>
+</Tag>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .anchor {
+    $anchor: &;
+    --color-dark: var(--color-teal-600);
+    --color-light: var(--color-teal-200);
+    --color: var(--color-dark);
+    --background-color: var(--color-light);
+    --translate-active: var(--space-4);
+    --background-scale-x: 0;
+
+    display: inline-flex;
+    border: var(--color-dark) solid 1px;
+    border-radius: var(--radius-1);
+    padding: var(--space-8) var(--space-16);
+    gap: var(--space-8);
+    align-items: center;
+    color: var(--color-dark);
+    @include transition('color, background-color');
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--color);
+    position: relative;
+    @include focus-ring;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      @include transition('transform, background-color');
+      transform: scaleX(var(--background-scale-x));
+      background-color: var(--background-color);
+      transform-origin: left;
+    }
+
+    & > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    &:hover,
+    &:focus-visible {
+      --color: var(--color-light);
+      --background-color: var(--color-dark);
+      --background-scale-x: 1;
+
+      &:before {
+        --background-color: var(--color-dark);
+      }
+    }
+
+    .icon {
+      @include transition('transform');
+      display: inline-flex;
+    }
+
+    &--left {
+      &:before {
+        transform-origin: right;
+      }
+
+      &:hover,
+      &:focus-visible {
+        .icon {
+          transform: translateX(calc(-1 * var(--translate-active)));
+        }
+      }
+    }
+  }
+</style>

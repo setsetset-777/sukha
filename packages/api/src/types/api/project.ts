@@ -1,0 +1,51 @@
+import type { Media } from '../shared'
+import type { Projects, Tag } from '.'
+
+export namespace Project {
+  export type Gallery = GalleryItem[]
+
+  export interface GalleryItem {
+    image: Media
+    fullWidth?: boolean
+    description?: string
+  }
+
+  export interface Spec {
+    label?: string
+    values?: string[]
+  }
+
+  export interface Credits {
+    label?: string
+    values: Array<{
+      name: string
+      url?: string
+    }>
+  }
+
+  export type Next = Projects.Project
+
+  export interface Data {
+    title: string
+    client?: string
+    image?: Media
+    place?: string
+    tags: Tag[]
+    text?: string
+    backLink?: {
+      label?: string
+      url: string
+    }
+    gallery: Gallery
+    existing?: {
+      label?: string
+      images: Media[]
+    }
+    specs?: {
+      label?: string
+      list?: Spec[]
+    }
+    credits?: Credits
+    next?: Next | null
+  }
+}

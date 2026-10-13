@@ -1,0 +1,127 @@
+---
+import Footer from '@/components/Footer.astro'
+import Head from '@/components/Head.astro'
+import PageLoader from '@/components/PageLoader.astro'
+import Sidebar from '@/components/Sidebar.astro'
+import { getLocaleFromPath } from '@app/api/i18n'
+
+import type { Meta, PageSlug } from '@app/api/types'
+import { getGeneral } from '@/lib/page'
+
+type Props = {
+  meta: Meta
+  noGeneral?: boolean
+  slug?: PageSlug
+  parentSlug?: PageSlug
+}
+
+const { meta, slug, parentSlug, noGeneral } = Astro.props
+
+const locale = getLocaleFromPath(Astro.url.pathname)
+const general = !noGeneral ? await getGeneral(locale.code) : null
+
+const navigation = general?.navigation ?? undefined
+const footer = general?.footer ?? undefined
+---
+
+<!doctype html>
+<html lang="en">
+  <Head meta={meta} />
+  <body data-theme="light" class="body" data-slug={slug}>
+    <div class="container">
+      <div class="content">
+        <div class="content__inner">
+          <Sidebar navigation={navigation} slug={slug} parentSlug={parentSlug} />
+          <main class="main">
+            <slot />
+          </main>
+        </div>
+      </div>
+      <Footer {...footer} routes={general?.routes} />
+    </div>
+    <PageLoader />
+  </body>
+</html>
+
+<script>
+  import { initScrollHash, initScrollClicks } from '@/lib/scroll'
+  initScrollClicks()
+
+  document.addEventListener('astro:page-load', () => {
+    initScrollHash()
+  })
+</script>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  html,
+  body {
+    background-color: var(--layout-background-color);
+    color: var(--body-color);
+    @include font();
+    height: 100%;
+    font-size: var(--font-size-m);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: stretch;
+    overflow-x: clip;
+    font-size: var(--font-size-m);
+    position: relative;
+    z-index: 1;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      max-width: var(--layout-max-width);
+      width: 100%;
+      flex-grow: 1;
+
+      .body[data-slug='pageHome'] &,
+      .body[data-slug='pageProjects'] & {
+        min-height: 100dvh;
+      }
+    }
+  }
+
+  .main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  a {
+    color: inherit;
+
+    &:hover {
+      color: var(--link-color-hover);
+    }
+  }
+
+  @include from(desktop) {
+    .content__inner {
+      flex-direction: row;
+    }
+  }
+</style>

@@ -1,0 +1,113 @@
+---
+import Image from '@/components/Image.astro'
+import { appendTagSearch } from '@/lib/tagSearch'
+import type { Projects } from '@app/api/types'
+
+type Props = Projects.Project
+
+const { url, image, title, client } = Astro.props
+
+const { search } = Astro.url
+let taggedUrl = appendTagSearch(url, search)
+---
+
+<a href={taggedUrl} class="project-list-item" data-project-list-item>
+  <div class="project-list-item__image">
+    {image && (
+      <Image
+        src={image.url}
+        alt={image.alt}
+        srcset={{
+          '600w': image.sizes?.[1000]?.url!,
+          '1200w': image.sizes?.[2000]?.url!,
+        }}
+        fit="cover"
+      />
+    )}
+  </div>
+  <div class="project-list-item__info">
+    <span class="project-list-item__title">{title}</span>
+    <span class="project-list-item__client">{client}</span>
+  </div>
+</a>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .project-list-item {
+    $root: &;
+
+    --info-padding-left: var(--space-24);
+    --item-gap: @include bleed();
+    --info-max-width: #{pxToRem(400px)};
+    --info-color: var(--color-teal-700);
+    --image-scale: 1;
+
+    @include bleed($hover: true);
+    display: flex;
+    gap: var(--space-24);
+    padding-bottom: var(--project-item-padding);
+    text-decoration: none;
+    animation: load-in var(--ease-time-medium) var(--ease-function);
+    flex-direction: column;
+    @include focus-ring;
+
+    &__image {
+      height: var(--project-item-height);
+      position: relative;
+      border-radius: var(--radius-1);
+      overflow: hidden;
+      background-blend-mode: luminosity;
+      @include transition('filter, transform');
+      transform: scale(var(--image-scale));
+    }
+
+    &__info {
+      max-width: var(--info-max-width);
+      padding-left: var(--info-padding-left);
+      color: var(--info-color);
+      @include transition(color);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    &__title {
+      @include heading(3);
+      color: inherit;
+    }
+
+    &__client {
+    }
+
+    &:hover,
+    &:focus-visible {
+      --info-color: var(--color-teal-200);
+      --image-scale: 1.03;
+
+      #{$root} {
+        &__image {
+          --image-background-color: transparent;
+        }
+      }
+    }
+  }
+
+  @include from(desktop) {
+    .project-list-item {
+      --project-item-padding: var(--space-48);
+
+      flex-direction: row;
+      align-items: end;
+    }
+  }
+
+  @keyframes load-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,0 +1,195 @@
+import { en, enTranslations } from '@payloadcms/translations/languages/en'
+import { fr, frTranslations } from '@payloadcms/translations/languages/fr'
+import type { Locale, CollectionSlug } from 'payload'
+import type { TFunction } from '@payloadcms/translations'
+import type { NestedKeysStripped } from '@payloadcms/translations'
+
+type LocalizedLabel = Record<Locale['code'], string>
+
+export const supportedLanguages = { en, fr }
+
+export const localizedLabels: {
+  groups: Record<string, LocalizedLabel>
+  fields: Record<string, LocalizedLabel>
+  descriptions: Record<string, LocalizedLabel>
+  collections: Partial<
+    Record<
+      CollectionSlug,
+      {
+        singular: LocalizedLabel
+        plural: LocalizedLabel
+      }
+    >
+  >
+} = {
+  groups: {
+    pages: {
+      fr: 'Pages',
+      en: 'Pages',
+    },
+  },
+  fields: {
+    name: {
+      en: 'Name',
+      fr: 'Nom',
+    },
+    title: {
+      en: 'Title',
+      fr: 'Titre',
+    },
+    text: {
+      en: 'Text',
+      fr: 'Texte',
+    },
+    url: {
+      en: 'Web address',
+      fr: 'Adresse internet',
+    },
+    job: {
+      en: 'Job',
+      fr: 'Métier',
+    },
+    place: {
+      en: 'Place',
+      fr: 'Lieu',
+    },
+  },
+  collections: {
+    users: {
+      singular: {
+        en: 'User',
+        fr: 'Utilisateur',
+      },
+      plural: {
+        en: 'Users',
+        fr: 'Utilisateurs',
+      },
+    },
+    projects: {
+      singular: {
+        en: 'Project',
+        fr: 'Projet',
+      },
+      plural: {
+        en: 'Projects',
+        fr: 'Projets',
+      },
+    },
+    partners: {
+      singular: {
+        en: 'Partner',
+        fr: 'Partenaire',
+      },
+      plural: {
+        en: 'Partners',
+        fr: 'Partenaires',
+      },
+    },
+    projectTags: {
+      singular: {
+        en: 'Project tag',
+        fr: 'Tag de projet',
+      },
+      plural: {
+        en: 'Project tags',
+        fr: 'Tags de projet',
+      },
+    },
+    projectSpecs: {
+      singular: {
+        en: 'Project specification',
+        fr: 'Spécification de projet',
+      },
+      plural: {
+        en: 'Project specifications',
+        fr: 'Spécifications de projet',
+      },
+    },
+    imageTags: {
+      singular: {
+        en: 'Image tag',
+        fr: "Tag d'image",
+      },
+      plural: {
+        en: 'Image tags',
+        fr: "Tags d'image",
+      },
+    },
+  },
+  descriptions: {
+    urlSlug: {
+      en: 'URL slugs must be unique and match the title when possible. Avoid spaces and special characters. Leave empty for the field to automatically fill.',
+      fr: "Les segments d'URL doivent être uniques et correspondre au titre si possible. Éviter les espaces et les caractères spéciaux. Laisser vide pour que le champ se remplisse automatiquement.",
+    },
+  },
+} as const
+
+export const customTranslations: Record<Locale['code'], Record<string, any>> = {
+  en: {
+    admin: {
+      validation: {
+        uniqueUrlSlug: 'The URL segment already exists.',
+      },
+      linkToCollection: {
+        description:
+          'Edit the visible {{items}} on the frontend directly from the collection page by editing their published status',
+        label: 'Go to {{collection}}',
+      },
+      cache: {
+        invalidate: 'Empty cache',
+      },
+      seo: {
+        defaultTitle: 'Sukha - Architecture & Interior Design',
+      },
+    },
+    general: {
+      logo: 'Sukha',
+      homeLink: 'Back to home',
+      setsetset: 'Design & Code by',
+    },
+    home: {
+      adminProjectLinkLabel: 'Go to projects',
+      slidesArialLabel: 'Images of featured projects',
+    },
+  },
+  fr: {
+    admin: {
+      general: {
+        globals: 'Globales',
+        createNew: 'Ajouter',
+        createNewLabel: 'Ajouter',
+      },
+      validation: {
+        uniqueUrlSlug: "Le segment d'URL existe déjà",
+      },
+      linkToCollection: {
+        description:
+          'Éditez les {{items}} visibles sur le site directement à partir de leur page de collection en gérant leur statut de publication.',
+        label: 'Aller aux {{collection}}',
+      },
+      cache: {
+        invalidate: 'Vider le cache',
+      },
+      seo: {
+        defaultTitle: "Sukha - Architecture & Design d'Intérieur",
+      },
+    },
+    general: {
+      logo: 'Sukha',
+      homeLink: "Retour à l'accueil",
+      setsetset: 'Design & Code par',
+    },
+    home: {
+      adminProjectLinkLabel: 'Aller aux réalisations',
+      slidesArialLabel: 'Images des projects mis en avant',
+    },
+  },
+}
+
+export type CustomTranslationsObject = typeof customTranslations.en &
+  typeof frTranslations &
+  typeof enTranslations
+
+export type CustomTranslationsKeys = NestedKeysStripped<CustomTranslationsObject>
+
+export type CustomTFunction = TFunction<CustomTranslationsKeys>

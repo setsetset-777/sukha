@@ -1,0 +1,176 @@
+---
+import Image from '@/components/Image.astro'
+import type { Partner, Project } from '@app/api/types'
+
+interface Props {
+  images: Project.Gallery
+  credits?: Project.Credits
+}
+
+const { images, credits } = Astro.props
+const gallery: Array<Project.GalleryItem[]> = []
+
+images.forEach((image) => {
+  // Full images get new row
+  if (image?.fullWidth) {
+    gallery.push([image])
+    return
+  }
+
+  const lastRow = gallery.at(-1)
+
+  // Start a new row if there is no row,
+  // or the previous row already contains 2 images,
+  // or the previous row contains a full-width image.
+  if (!lastRow || lastRow.length >= 2 || lastRow[0].fullWidth) {
+    gallery.push([image])
+  } else {
+    lastRow.push(image)
+  }
+})
+---
+
+<div class="gallery" data-scroll-view="next">
+  <div class="gallery__list">
+    {gallery.map((images) => {
+      return (
+        <div class="gallery__row">
+          {images.map(
+            ({ fullWidth, image, description }) =>
+              image && (
+                <div
+                  class:list={['gallery__image', fullWidth && 'gallery__image--full']}
+                  style={
+                    images.length > 1 && image.width && image.height
+                      ? `--gallery-aspect-ratio: ${image.width / image.height}`
+                      : undefined
+                  }
+                >
+                  {fullWidth ? (
+                    <Fragment>
+                      <Image
+                        src={image.url}
+                        alt={image.alt}
+                        srcset={{
+                          '800w': image.sizes?.[1000]?.url!,
+                          '1600w': image.sizes?.[2000]?.url!,
+                        }}
+                        width={image.sizes?.[2000]?.width}
+                        height={image.sizes?.[2000]?.height}
+                        loading="lazy"
+                        credit={image.credit as Partner}
+                      />
+                      {description && <p class="text">{description}</p>}
+                    </Fragment>
+                  ) : (
+                    <Image
+                      src={image.url}
+                      alt={image.alt}
+                      srcset={{
+                        '400w': image.sizes?.[500]?.url!,
+                        '800w': image.sizes?.[1000]?.url!,
+                      }}
+                      width={image.sizes?.[2000]?.width}
+                      height={image.sizes?.[2000]?.height}
+                      loading="lazy"
+                      credit={image.credit as Partner}
+                    />
+                  )}
+                </div>
+              ),
+          )}
+        </div>
+      )
+    })}
+  </div>
+  {credits && credits.values.length > 0 && (
+    <div class="credits">
+      <h4 class="credits__title">{credits.label}</h4>
+      <ul class="credits__list">
+        {credits.values.map(({ name, url }) => (
+          <li class="credits__item">{url ? <a href={url}>{name}</a> : <span>{name}</span>}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .gallery {
+    --row-gap: var(--space-24);
+    --column-gap: var(--space-48);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-48);
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--row-gap);
+      padding-top: var(--section-padding-y);
+      padding-bottom: var(--section-padding-y);
+    }
+
+    &__row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--row-gap);
+    }
+
+    &__image {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      width: 100%;
+      border-radius: var(--radius-1);
+      overflow: hidden;
+
+      &:not(&--full) {
+        flex: var(--gallery-aspect-ratio) 1 0;
+      }
+    }
+
+    &__text {
+      font-size: var(--font-size-s);
+      color: var(--color-gray-20);
+    }
+  }
+
+  .credits {
+    display: flex;
+    gap: var(--space-16);
+
+    &__title {
+      font-weight: bold;
+    }
+
+    &__list {
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    &__item {
+      a {
+        @extend .link;
+      }
+
+      &:not(:last-child) {
+        &:after {
+          content: ',';
+        }
+      }
+    }
+  }
+
+  @include from(big-mobile) {
+    .gallery {
+      --row-gap: var(--space-48);
+
+      &__row {
+        flex-direction: row;
+      }
+    }
+  }
+</style>

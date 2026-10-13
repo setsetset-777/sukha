@@ -1,0 +1,101 @@
+import type { GlobalConfig } from 'payload'
+import { localizedLabels } from '@/i18n'
+import { titleField } from '@/fields/titleField'
+import { urlFields } from '@/fields/urlFields'
+import { linkToCollectionField } from '@/fields/linkToCollectionField'
+import { invalidate, tags } from '@/helpers/cache'
+import { LocaleCode } from '@/types'
+
+export const PageAgency: GlobalConfig = {
+  slug: 'pageAgency',
+  label: {
+    en: 'Agency',
+    fr: 'Agence',
+  },
+  fields: [
+    titleField(),
+    ...urlFields({ source: 'title', slug: 'pageAgency' }),
+    {
+      name: 'sukha',
+      type: 'group',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: localizedLabels.fields.title,
+        },
+        {
+          name: 'text',
+          type: 'richText',
+          label: localizedLabels.fields.text,
+          localized: true,
+        },
+        {
+          name: 'callout',
+          type: 'textarea',
+          label: {
+            en: 'Callout',
+            fr: 'Encadré',
+          },
+          localized: true,
+        },
+      ],
+    },
+    {
+      name: 'founder',
+      type: 'group',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          label: localizedLabels.fields.name,
+        },
+        {
+          name: 'job',
+          type: 'text',
+          label: localizedLabels.fields.job,
+          localized: true,
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+        {
+          name: 'text',
+          type: 'richText',
+          label: localizedLabels.fields.text,
+          localized: true,
+        },
+      ],
+    },
+    {
+      name: 'partners',
+      type: 'group',
+      label: localizedLabels.collections.partners?.plural,
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: localizedLabels.fields.title,
+          localized: true,
+          required: true,
+        },
+        linkToCollectionField({ slug: 'partners', label: '' }),
+      ],
+    },
+  ],
+  versions: {
+    drafts: true,
+  },
+  admin: {
+    group: localizedLabels.groups.pages,
+  },
+  hooks: {
+    afterChange: [
+      async ({ req }) => {
+        invalidate(tags.agency(req.locale as LocaleCode))
+      },
+    ],
+  },
+}

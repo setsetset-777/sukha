@@ -1,0 +1,79 @@
+---
+import type { Routes, LocaleCode } from '@app/api/types'
+import { localization, getLocaleFromPath } from '@app/api/i18n'
+
+interface Props {
+  routes?: Routes
+}
+
+const { routes } = Astro.props
+
+const { locales } = localization
+
+if (locales.length <= 1) return
+
+const { pathname } = Astro.url
+const currentLocale: LocaleCode = getLocaleFromPath(pathname).code
+
+const route =
+  routes &&
+  Object.values(routes).find((route) => {
+    return route.locales[currentLocale].path === pathname
+  })
+---
+
+<ul class="locales-menu">
+  {locales.map(({ code, label }) => (
+    <li class="locales-menu__item">
+      {code === currentLocale ? (
+        <span>{label}</span>
+      ) : (
+        <a href={route ? route.locales[code as LocaleCode].path : `/${code}`}>{label}</a>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .locales-menu {
+    --gap: var(--space-4);
+    --color: var(--color-teal-500);
+    --color-active: var(--color-teal-300);
+
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+    color: var(--color);
+    font-size: var(--font-size-s);
+
+    &__item {
+      text-transform: uppercase;
+
+      span {
+        font-weight: var(--font-weight-bold);
+        color: var(--color-active);
+      }
+
+      a {
+        font-weight: var(--font-weight-normal);
+        @include transition(font-weight);
+        text-decoration: none;
+        @include focus-ring;
+
+        &:hover {
+          font-weight: var(--font-weight-bold);
+          color: var(--color-active);
+        }
+      }
+
+      &:not(:last-child) {
+        &:after {
+          content: '/';
+          margin-left: var(--gap);
+        }
+      }
+    }
+  }
+</style>

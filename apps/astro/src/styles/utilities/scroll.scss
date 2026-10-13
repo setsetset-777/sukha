@@ -1,0 +1,13 @@
+[data-scroll-view] {
+  position: relative;
+  scroll-margin-top: var(--space-48);
+}
+
+.scroll-sentinel {
+  width: 0px;
+  height: 0px;
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  top: calc(-1 * var(--space-48));
+}

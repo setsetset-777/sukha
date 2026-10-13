@@ -1,0 +1,332 @@
+---
+import LogoMain from '@/assets/svgs/logo-main.svg'
+import ArrowDown from '@/assets/svgs/arrow-down.svg'
+import ArrowLeft from '@/assets/svgs/arrow-left.svg'
+import ArrowUp from '@/assets/svgs/arrow-up.svg'
+import { appendTagSearch } from '@/lib/tagSearch'
+import type { General, PageSlug } from '@app/api/types'
+
+interface Props {
+  navigation?: General.Navigation
+  slug?: PageSlug
+  parentSlug?: PageSlug
+}
+
+const { navigation, slug, parentSlug } = Astro.props
+const { search } = Astro.url
+---
+
+<Fragment>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__container">
+      <div class="sidebar__header">
+        <a
+          class="sidebar__logo"
+          href={navigation?.home?.url ?? '/'}
+          aria-label={navigation?.home?.linkLabel ?? 'Accueil'}
+        >
+          <LogoMain />
+        </a>
+      </div>
+
+      <div class="sidebar__footer">
+        {navigation?.menu && (
+          <nav class="menu">
+            <ul class="menu__list" data-menu>
+              {navigation?.menu.map(({ title, url, slug: itemSlug }) => {
+                const isActive = slug === itemSlug
+                const hasParent = !!parentSlug && itemSlug === parentSlug
+                return (
+                  <li class="menu__item">
+                    <a
+                      class:list={['menu__link', isActive && 'active', hasParent && 'has-parent']}
+                      href={
+                        itemSlug === 'pageProjects' && hasParent
+                          ? appendTagSearch(url, search)
+                          : url
+                      }
+                      data-menu-item
+                      data-slug={itemSlug}
+                    >
+                      {hasParent && (
+                        <span class="menu__back-icon">
+                          <ArrowLeft />
+                        </span>
+                      )}
+                      <span>{title}</span>
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+        )}
+
+        <div class="actions">
+          <button class="action action__down">
+            <ArrowDown />
+          </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar sidebar--sticky" data-sidebar>
+    <div class="sidebar__container">
+      <div class="sidebar__header">
+        <a
+          class="sidebar__logo"
+          href={navigation?.home?.url ?? '/'}
+          aria-label={navigation?.home?.linkLabel ?? 'Accueil'}
+        >
+          <LogoMain />
+        </a>
+        <div class="actions">
+          <button class="action action__up" data-scroll="#sidebar">
+            <ArrowUp />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Fragment>
+
+<script>
+  import { initScrollNextButton } from '@/lib/scroll'
+
+  import Sidebar from '@/lib/Sidebar'
+
+  const sidebar = new Sidebar()
+
+  sidebar.initOnce()
+
+  document.addEventListener('astro:page-load', () => {
+    sidebar.initOnLoad()
+    initScrollNextButton('.action__down')
+  })
+</script>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .sidebar {
+    $sidebar: &;
+
+    --logo-width: #{pxToRem(90px)};
+
+    padding: var(--layout-padding-y) var(--layout-padding-x);
+    padding-bottom: var(--sidebar-padding-bottom);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: pxToRem(240px);
+    flex-shrink: 0;
+    width: 100%;
+    background-color: var(--layout-background-color);
+    z-index: 2;
+
+    &__container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      grid-template-columns: minmax(0, 1fr) max-content;
+      flex-grow: 1;
+      gap: var(--space-48);
+      align-items: baseline;
+    }
+
+    &__logo {
+      display: block;
+      vertical-align: -0.4em;
+      @include focus-ring;
+
+      :global(svg) {
+        max-width: var(--logo-width);
+        width: 100%;
+      }
+    }
+
+    &__footer {
+      display: flex;
+      gap: var(--space-16);
+      flex-direction: column;
+    }
+
+    &--sticky {
+      display: none;
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+      position: fixed;
+      top: -100%;
+      @include transition(top, long);
+      box-shadow: 0px 0px 3px var(--color-teal-400);
+
+      #{$sidebar} {
+        &__container {
+          flex-grow: 1;
+        }
+
+        &__header {
+          flex-grow: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  .menu {
+    $menu: &;
+
+    align-content: end;
+    flex-grow: 1;
+    @include transition('height, opacity');
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    &__link {
+      --active-color: var(--body-color);
+      display: inline-block;
+      color: var(--color-teal-600);
+      text-decoration: none;
+      @include transition('color, transform');
+      position: relative;
+      @include focus-ring;
+
+      &:hover {
+        color: var(--active-color);
+
+        #{$menu}__back-icon {
+          transform: translateY(-50%) translateX(calc(-1 * var(--space-4)));
+        }
+      }
+
+      &.active {
+        color: var(--active-color);
+        pointer-events: none;
+        cursor: default;
+
+        &:before {
+          content: '';
+          display: block;
+          width: pxToRem(12px);
+          height: pxToRem(1px);
+          background-color: var(--color-teal-600);
+          position: absolute;
+          bottom: 0.5em;
+          right: calc(100% + var(--space-8));
+        }
+      }
+
+      &.has-parent {
+        color: var(--active-color);
+      }
+    }
+
+    &__back-icon {
+      position: absolute;
+      right: 100%;
+      padding-right: var(--space-8);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      @include transition(transform);
+    }
+  }
+
+  .actions {
+    align-content: end;
+  }
+
+  .action {
+    color: var(--color-teal-600);
+    @include transition('color, opacity');
+    cursor: pointer;
+
+    :global(svg) {
+      pointer-events: none;
+      @include transition(transform);
+    }
+
+    &:hover {
+      color: var(--body-color);
+    }
+
+    &__down {
+      &:hover {
+        :global(svg) {
+          transform: translateY(#{pxToRem(4px)});
+        }
+      }
+
+      &:not([data-scroll-next]) {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+
+  @include until(desktop) {
+    .sidebar {
+      $sidebar: &;
+
+      &--sticky {
+        display: block;
+
+        &[data-slide-ready='true'] {
+          top: 0;
+        }
+
+        &[data-slide-out='true'] {
+          top: -100%;
+        }
+
+        .actions {
+          display: block;
+        }
+      }
+    }
+
+    .actions {
+      display: none;
+    }
+  }
+
+  @include from(desktop) {
+    .sidebar {
+      --logo-width: #{pxToRem(120px)};
+
+      width: auto;
+      min-width: pxToRem(300px);
+      z-index: 0;
+
+      &__container {
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      &__header {
+        grid-column: span 2;
+        position: sticky;
+        top: var(--layout-padding-y);
+      }
+
+      &__footer {
+        flex-direction: row;
+        position: sticky;
+        bottom: var(--content-padding-bottom);
+        width: 100%;
+      }
+    }
+
+    .menu {
+      position: relative;
+    }
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+import type { Contact, Partner } from '@app/api/types'
+import Image from '@/components/Image.astro'
+import Setsetset from '@/components/Setsetset.astro'
+import LogoFooter from '@/assets/svgs/logo-footer.svg'
+import Credit from '@/components/Credit.astro'
+
+type Props = Contact.Data
+
+const { title, image, hook, address, email, phone, logoAlt, setsetset } = Astro.props
+
+const imageCredit = image && image.credit && (image.credit as Partner)
+---
+
+<div class="page">
+  <section class="header">
+    <h1 class="title">{title}</h1>
+  </section>
+
+  <div class="body">
+    <section class="hero" data-scroll-view="next">
+      {image && (
+        <div class="hero__image">
+          <Image
+            src={image.url}
+            alt={image.alt}
+            srcset={{
+              '600w': image.sizes?.[1000]?.url!,
+              '1200w': image.sizes?.[2000]?.url!,
+            }}
+            fetchpriority="high"
+            loading="eager"
+            decoding="async"
+            fit="contain"
+            width={image.width}
+            height={image.height}
+          />
+          {imageCredit && <Credit {...imageCredit} />}
+        </div>
+      )}
+      <div class="hero__body">
+        <div class="hero__header">
+          <div class="hero__logo" aria-label={logoAlt}>
+            <LogoFooter />
+          </div>
+          {hook && <p class="hero__hook">{hook}</p>}
+        </div>
+        <dl class="hero__details">
+          {address && <dd class="hero__detail" set:html={address} />}
+          {email && (
+            <dd class="hero__detail">
+              <a href={`mailto:${email}`} class="hero__link">
+                {email}
+              </a>
+            </dd>
+          )}
+          {phone && (
+            <dd class="hero__detail">
+              <a href={`tel:${phone}`} class="hero__link">
+                {phone}
+              </a>
+            </dd>
+          )}
+        </dl>
+      </div>
+    </section>
+
+    <section data-scroll-view="next">
+      <Setsetset {...setsetset} />
+    </section>
+  </div>
+</div>
+
+<style lang="scss">
+  @use '../styles/utilities' as *;
+
+  .page {
+    --grid-column-left-width: #{pxToRem(240px)};
+    --base-gap: var(--space-48);
+
+    padding: var(--page-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--page-gap);
+
+    .body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--page-content-gap);
+    }
+
+    .title {
+      @include heading(1);
+    }
+  }
+
+  .hero {
+    --body-left-padding: var(--content-padding-x);
+
+    position: relative;
+    padding-bottom: var(--section-padding-bottom);
+    @include bleed(dark);
+    display: flex;
+    flex-direction: column;
+
+    &__image {
+      --image-background-color: var(--color-teal-700);
+      height: var(--image-height);
+
+      :global(img) {
+        border-radius: var(--radius-1);
+        overflow: hidden;
+      }
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      color: var(--color-teal-50);
+      gap: var(--space-24);
+      margin-block-start: var(--section-padding-bottom);
+      margin-inline-start: var(--body-left-padding);
+    }
+
+    &__header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    &__logo {
+      width: pxToRem(120px);
+      color: var(--color-teal-200);
+    }
+
+    &__hook {
+      color: var(--color-teal-300);
+    }
+
+    &__details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    &__link {
+      @include transition(color);
+
+      &:hover {
+        color: var(--color-teal-300);
+      }
+    }
+  }
+
+  @include from(desktop) {
+    .hero {
+      --image-height: #{pxToRem(480px)};
+      --body-left-padding: var(--content-gap-col);
+
+      flex-direction: row;
+      align-items: end;
+    }
+  }
+</style>

@@ -1,3 +1,9 @@
 # Sukha
 
-Portfolio for Sukha architecture agency.
+## Development
+
+Run:
+
+```sh
+pnpm compose:dev up
+```

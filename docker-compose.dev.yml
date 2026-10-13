@@ -1,0 +1,67 @@
+services:
+  astro:
+    image: node:22-alpine
+    container_name: sukha-astro
+    working_dir: /workspace
+    command: >
+      sh -c "npm -g install pnpm && pnpm install && pnpm --filter @app/astro dev --port ${SERVER_PORT} --host"
+    ports:
+      - '${SERVER_PORT:-3000}:${SERVER_PORT:-3000}'
+    volumes:
+      - ./:/workspace
+      - pnpm_store:/pnpm/store
+      - node_modules:/workspace/node_modules
+      # - /workspace/apps/astro/.astro
+    tmpfs:
+      - /workspace/apps/astro/.astro
+    env_file:
+      - .env
+    stop_grace_period: 1s
+    networks:
+      - sukha
+
+  payload:
+    image: node:22-alpine
+    container_name: sukha-payload
+    working_dir: /workspace
+    command: >
+      sh -c "npm -g install pnpm && pnpm install && pnpm --filter @app/payload dev"
+    ports:
+      - '${PAYLOAD_PORT:-3001}:${PAYLOAD_PORT:-3001}'
+    volumes:
+      - ./:/workspace
+      - media:/workspace/media
+      - pnpm_store:/pnpm/store
+      - node_modules:/workspace/node_modules
+    depends_on:
+      mongo:
+        condition: service_started
+    env_file:
+      - .env
+    networks:
+      - sukha
+
+  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
+  mongo:
+    image: mongo:latest
+    container_name: sukha-mongo
+    ports:
+      - '${MONGO_PORT:-27017}:${MONGO_PORT:-27017}'
+    command:
+      - --storageEngine=wiredTiger
+    volumes:
+      - data:/data/db
+    logging:
+      driver: none
+    networks:
+      - sukha
+
+networks:
+  sukha:
+    name: sukha
+
+volumes:
+  data:
+  pnpm_store:
+  node_modules:
+  media:
