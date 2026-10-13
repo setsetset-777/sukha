@@ -23,7 +23,7 @@ let taggedUrl = appendTagSearch(url, search)
           '300w': image.sizes?.[500]?.url!,
         }}
         fetchpriority="high"
-        loading="eager"
+        loading="lazy"
         decoding="async"
         width={image.sizes?.[500]?.width}
         height={image.sizes?.[500]?.height}
