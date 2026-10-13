@@ -1,4 +1,4 @@
-import type { Locale, LocaleCode } from '@/types'
+import type { Locale, LocaleCode } from './types'
 
 export const localization: {
   locales: Locale[]
@@ -10,15 +10,15 @@ export const localization: {
       code: 'fr',
     },
     // TODO enable once en translation are added in CMS
-    // {
-    //   label: 'EN',
-    //   code: 'en',
-    // },
+    {
+      label: 'EN',
+      code: 'en',
+    },
   ],
   defaultLocale: 'fr',
 }
 
-export const defaultLocale = localization.locales.find(
+export const defaultLocale: Locale = localization.locales.find(
   ({ code }) => code === localization.defaultLocale,
 )!
 

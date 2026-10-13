@@ -12,8 +12,9 @@ User-agent: *
 Disallow: /
 `
 
-export const GET: APIRoute = () => {
-  const sitemapURL = `${process.env.CLIENT_URL}/sitemap.xml`
+export const GET: APIRoute = ({ site, url }) => {
+  const baseUrl = site?.href ?? url.origin
+  const sitemapURL = `${baseUrl}/sitemap.xml`
   const isProd =
     import.meta.env.PROD &&
     import.meta.env.MODE === 'production' &&
