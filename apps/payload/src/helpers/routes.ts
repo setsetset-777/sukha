@@ -86,6 +86,7 @@ const buildRoutes = async (payload: BasePayload): Promise<Routes> => {
       const collections = await payload.find({
         collection: children.slug as RoutedCollectionSlug,
         locale: 'all',
+        pagination: false,
         select: {
           id: true,
           urlSlug: true,
