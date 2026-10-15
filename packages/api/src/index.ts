@@ -8,20 +8,22 @@ init({
   servicePassword: `${process.env.PAYLOAD_SERVICE_PASSWORD}`,
 })
 
-const general = async (locale?: Locale): Promise<General.Data | null> => {
+const general = async (locale?: Locale | LocaleCode): Promise<General.Data | null> => {
+  const code = typeof locale === 'string' ? locale : locale?.code
   return request(
     buildUrl({
       slug: 'general',
-      params: { locale },
+      params: { locale: code },
     }),
   )
 }
 
-const page = async (path: string, locale?: Locale): Promise<PageData | null> => {
+const page = async (path: string, locale?: Locale | LocaleCode): Promise<PageData | null> => {
+  const code = typeof locale === 'string' ? locale : locale?.code
   return request(
     buildUrl({
       slug: 'page',
-      params: { path, locale },
+      params: { path, locale: code },
     }),
   )
 }
