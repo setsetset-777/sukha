@@ -11,7 +11,7 @@ const { meta } = Astro.props
 const analytics = {
   enable: process.env.ANALYTICS_ENABLE === 'true',
   id: process.env.ANALYTICS_ID,
-  domain: process.env.ANALYTICS_Domain,
+  domain: process.env.ANALYTICS_DOMAIN,
 }
 ---
 
@@ -26,19 +26,17 @@ const analytics = {
   {meta?.description && <meta property="og:description" content={meta.description} />}
   <meta property="og:type" content="website" />
   <meta property="og:url" content={Astro.url.href} />
-  {
-    meta?.image?.sizes?.og?.url && (
-      <>
-        <meta
-          property="og:image"
-          content={new URL(meta.image.sizes.og.url, process.env.MEDIA_URL).href}
-        />
-        <meta property="og:image:width" content={String(meta.image.sizes.og.width || 1200)} />
-        <meta property="og:image:height" content={String(meta.image.sizes.og.height || 630)} />
-        {meta.image.alt && <meta property="og:image:alt" content={meta.image.alt} />}
-      </>
-    )
-  }
+  {meta?.image?.sizes?.og?.url && (
+    <>
+      <meta
+        property="og:image"
+        content={new URL(meta.image.sizes.og.url, process.env.MEDIA_URL).href}
+      />
+      <meta property="og:image:width" content={String(meta.image.sizes.og.width || 1200)} />
+      <meta property="og:image:height" content={String(meta.image.sizes.og.height || 630)} />
+      {meta.image.alt && <meta property="og:image:alt" content={meta.image.alt} />}
+    </>
+  )}
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
@@ -101,16 +99,9 @@ const analytics = {
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#3A474A" media="(prefers-color-scheme: dark)" />
 
-  {
-    analytics.enable && (
-      <script
-        is:inline
-        defer
-        src={`${analytics.domain}/script.js`}
-        data-website-id={analytics.id}
-      />
-    )
-  }
+  {analytics.enable && (
+    <script is:inline defer src={`${analytics.domain}/script.js`} data-website-id={analytics.id} />
+  )}
 
   <ClientRouter transition:animate="slide" />
 </head>
