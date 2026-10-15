@@ -96,7 +96,7 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | 'fr' | 'fr'[];
   globals: {
     general: General;
     pageHome: PageHome;
@@ -111,7 +111,7 @@ export interface Config {
     pageProjects: PageProjectsSelect<false> | PageProjectsSelect<true>;
     pageContact: PageContactSelect<false> | PageContactSelect<true>;
   };
-  locale: 'fr' | 'en';
+  locale: 'fr';
   widgets: {
     collections: CollectionsWidget;
   };

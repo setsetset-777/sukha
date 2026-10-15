@@ -1,5 +1,5 @@
 import { getGeneral } from '@/lib/page'
-import { localeCodes } from '@app/api/i18n'
+import { localization } from '@app/api/i18n'
 import type { Route } from '@app/api/types'
 import type { APIRoute } from 'astro'
 
@@ -9,8 +9,8 @@ export const GET: APIRoute = async ({ site, url }) => {
   const baseUrl = (site?.origin ?? url.origin).replace(/\/$/, '')
 
   const entries = await Promise.all(
-    localeCodes.map(async (code) => {
-      const general = await getGeneral(code)
+    localization.locales.map(async (locale) => {
+      const general = await getGeneral(locale)
       const dates = Object.values<Route>(general?.routes || [])
         .map((r) => (r.updatedAt ? new Date(r.updatedAt).getTime() : 0))
         .filter(Boolean)
@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ site, url }) => {
         : ''
       return `
   <sitemap>
-    <loc>${baseUrl}/${code}/sitemap.xml</loc>${lastmod}
+    <loc>${baseUrl}/${locale.code}/sitemap.xml</loc>${lastmod}
   </sitemap>`
     }),
   )

@@ -10,10 +10,10 @@ export const localization: {
       code: 'fr',
     },
     // TODO enable once en translation are added in CMS
-    {
-      label: 'EN',
-      code: 'en',
-    },
+    // {
+    //   label: 'EN',
+    //   code: 'en',
+    // },
   ],
   defaultLocale: 'fr',
 }
