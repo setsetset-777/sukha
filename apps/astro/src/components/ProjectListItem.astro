@@ -21,7 +21,7 @@ let taggedUrl = appendTagSearch(url, search)
           '600w': image.sizes?.[1000]?.url!,
           '1200w': image.sizes?.[2000]?.url!,
         }}
-        fit="cover"
+        fit="height"
       />
     )}
   </div>
@@ -60,6 +60,7 @@ let taggedUrl = appendTagSearch(url, search)
       background-blend-mode: luminosity;
       @include transition('filter, transform');
       transform: scale(var(--image-scale));
+      display: flex;
     }
 
     &__info {
